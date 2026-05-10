@@ -1,0 +1,2444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joseph Paguirigan — Design Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { overflow-x: clip; overflow-y: auto; }
+
+  :root {
+    --black:      #000000;
+    --white:      #ffffff;
+    --red:        #E8312A;
+    --grey-dark:  #111111;
+    --grey-mid:   #666666;
+    --grey-light: #f2f2f2;
+    --font: "Helvetica Neue", Helvetica, "Inter", Arial, sans-serif;
+    --max: 1440px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font);
+    background: var(--white);
+    color: var(--black);
+    overflow-x: clip;
+    cursor: none;
+  }
+
+  /* ─── Custom Cursor ──────────────────────────────────── */
+  .cursor {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: var(--red);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    top: -100px; left: -100px;
+    opacity: 0;
+    transform: translate(-50%,-50%);
+    transition: transform .15s ease, opacity .2s;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid rgba(232,49,42,.6);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    top: -100px; left: -100px;
+    opacity: 0;
+    transform: translate(-50%,-50%);
+    transition: width .25s ease, height .25s ease, border-color .25s;
+  }
+  body:has(a:hover) .cursor-ring,
+  body:has(.work-item:hover) .cursor-ring { width: 56px; height: 56px; border-color: var(--red); }
+
+  /* ─── Progress Bar ───────────────────────────────────── */
+  #progress {
+    position: fixed; top: 0; left: 0;
+    height: 2px; width: 0%;
+    background: var(--red);
+    z-index: 500;
+    transition: width .08s linear;
+  }
+
+  /* ─── Navigation ─────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 10000;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 28px 56px;
+    transition: color .35s ease, background .35s ease;
+    /* Solid fallback — shown when backdrop-filter is unsupported */
+    background: rgba(255,255,255,.92);
+  }
+  nav.nav--light { background: rgba(0,0,0,.88); }
+  nav.nav--dark  { background: rgba(255,255,255,.92); }
+
+  /* Frosted glass — only when the browser actually supports it */
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    nav {
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      background: rgba(255,255,255,.40);
+    }
+    nav.nav--light { background: rgba(0,0,0,.32); }
+    nav.nav--dark  { background: rgba(255,255,255,.40); }
+  }
+  /* Dark nav — default (over white/light sections) */
+  nav.nav--dark .nav-logo,
+  nav.nav--dark .nav-links a { color: var(--black); }
+  /* Light nav — over dark/red sections */
+  nav.nav--light .nav-logo,
+  nav.nav--light .nav-links a { color: var(--white); }
+  .nav-logo {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: .12em;
+    color: var(--black); text-decoration: none;
+    display: flex; align-items: center;
+    transition: color .35s ease;
+  }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: .22em; text-transform: uppercase;
+    color: var(--black); text-decoration: none;
+    opacity: .7; transition: opacity .2s, color .35s ease;
+  }
+  .nav-links a:hover { opacity: 1; }
+
+  /* ─── HERO ───────────────────────────────────────────── */
+  .hero {
+    position: relative; height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 56px 88px;
+    overflow: hidden;
+  }
+
+  /* subtle column grid overlay */
+  .hero-grid {
+    position: absolute; inset: 0;
+    display: grid; grid-template-columns: repeat(12, 1fr);
+    gap: 1px; pointer-events: none;
+  }
+  .hero-grid span { border-right: 1px solid rgba(0,0,0,.04); }
+
+  /* large ghost text — layered chromatic offset (Yo La Tengo effect) */
+  .hero-ghost {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(160px, 22vw, 360px);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    pointer-events: none;
+    /* Base layer: near-invisible black */
+    color: rgba(0,0,0,.055);
+    /* Layer 2 (red) offset down-right
+       Layer 3 (black) offset up-left
+       Layer 4 (red, faint) further down-right for extra depth */
+    text-shadow:
+      14px  12px 0 rgba(232,49,42,.065),
+      -10px -8px 0 rgba(0,0,0,.04),
+      26px  22px 0 rgba(232,49,42,.03),
+      -20px -16px 0 rgba(0,0,0,.025);
+    animation: heroGhostChromatic 11s ease-in-out infinite;
+  }
+
+  /* vertical red rule */
+  .hero-rule {
+    position: absolute;
+    top: 18%; right: 10%;
+    width: 1px; height: 220px;
+    background: var(--red);
+    opacity: .55;
+    animation: heroRulePulse 3.8s ease-in-out infinite;
+  }
+  /* vertical label */
+  .hero-label-v {
+    position: absolute;
+    top: 22%; right: 13%;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: .22em; text-transform: uppercase;
+    color: rgba(0,0,0,.18);
+    writing-mode: vertical-rl;
+  }
+  /* circle accent */
+  .hero-circle {
+    position: absolute;
+    bottom: 28%; right: 7%;
+    width: 140px; height: 140px;
+    border: 1px solid rgba(232,49,42,.25);
+    border-radius: 50%;
+    animation: heroCirclePulse 6s ease-in-out infinite 1.2s;
+  }
+
+  .hero-eyebrow {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .28em; text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp .7s .3s forwards;
+  }
+
+  .hero-title {
+    font-size: clamp(72px, 11vw, 190px);
+    font-weight: 900; line-height: .88;
+    letter-spacing: -.04em; text-transform: uppercase;
+    color: var(--black);
+    opacity: 0;
+    animation: fadeUp .8s .5s forwards;
+  }
+  .hero-title .red { color: var(--red); }
+
+  .hero-footer {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-top: 52px;
+    opacity: 0; animation: fadeUp .7s .85s forwards;
+  }
+  .hero-desc {
+    font-size: 16px; line-height: 1.65; font-weight: 300;
+    color: rgba(0,0,0,.5); max-width: 380px;
+  }
+  .hero-cta {
+    display: flex; align-items: center; gap: 14px;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .22em; text-transform: uppercase;
+    color: var(--black); text-decoration: none;
+  }
+  .hero-cta .arrow {
+    display: block; width: 48px; height: 1px;
+    background: var(--red); position: relative;
+    transition: width .3s;
+  }
+  .hero-cta .arrow::after {
+    content: '';
+    position: absolute; right: 0; top: -3px;
+    border: 3px solid transparent;
+    border-left: 5px solid var(--red);
+  }
+  .hero-cta:hover .arrow { width: 72px; }
+
+  /* scroll worm */
+  .scroll-worm {
+    position: absolute; bottom: 40px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    opacity: 0; animation: fadeUp .6s 1.2s forwards;
+  }
+  .scroll-worm-line {
+    width: 1px; height: 44px;
+    background: linear-gradient(to bottom, var(--red), transparent);
+    animation: pulse 2.2s infinite;
+  }
+  .scroll-worm-text {
+    font-size: 8px; letter-spacing: .28em; text-transform: uppercase;
+    color: rgba(0,0,0,.3);
+  }
+
+  /* ─── SECTION COMMON ─────────────────────────────────── */
+  .section-wrap {
+    position: relative; overflow: hidden;
+    padding: 130px 56px;
+    overflow: hidden;
+  }
+  .section-inner { max-width: var(--max); margin: 0 auto; }
+
+  .eyebrow {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .28em; text-transform: uppercase;
+    color: var(--red);
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 72px;
+  }
+  .eyebrow::after {
+    content: ''; flex: 0 0 64px; height: 1px;
+    background: rgba(0,0,0,.15);
+  }
+
+  .section-heading {
+    font-size: clamp(48px, 7vw, 112px);
+    font-weight: 900; line-height: .92;
+    letter-spacing: -.04em; text-transform: uppercase;
+    color: var(--black);
+  }
+
+  /* ─── ABOUT (dark accent panel) ─────────────────────── */
+  .about-wrap {
+    background: var(--black); color: var(--white);
+    padding: 130px 56px;
+    position: relative; overflow: hidden;
+    /* subtle dot-matrix grid — "machine" texture */
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,.07) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+  /* lift content above texture */
+  .about-grid { position: relative; z-index: 1; }
+
+  /* Shared decoration SVG layer */
+  .hero-deco-svg,
+  .about-deco, .section-deco {
+    position: absolute; inset: 0;
+    pointer-events: none; z-index: 0;
+  }
+
+  /* Hero SVG layer animations — opacity only so parallax transform is unaffected */
+  #heroDeep { animation: heroDeepBreathe 14s ease-in-out infinite; }
+  #heroMid  { animation: heroMidBreathe  9s  ease-in-out infinite 2.5s; }
+  #heroNear { animation: heroNearBlink   7s  ease-in-out infinite 1s; }
+
+  /* Horizontal scan line element inside heroDeco */
+  #heroScan {
+    animation: heroScanH 9s linear infinite 1.5s;
+    transform-box: fill-box;
+  }
+  /* Slow rotation on the large faint background circle */
+  #heroMidRing {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: heroCircleRotate 60s linear infinite;
+  }
+  /* Lift all section inner content above deco */
+  .section-inner, .work-inner, .process-inner, .contact-inner { position: relative; z-index: 1; }
+  .about-grid {
+    max-width: var(--max); margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 96px; align-items: start;
+  }
+  .about-wrap .eyebrow { color: var(--red); }
+  .about-wrap .eyebrow::after { background: rgba(255,255,255,.15); }
+  .about-heading {
+    font-size: clamp(44px, 6vw, 96px);
+    font-weight: 900; line-height: .92;
+    letter-spacing: -.04em; text-transform: uppercase;
+    color: var(--white);
+  }
+  .about-heading em { font-style: normal; color: var(--red); }
+
+  .about-text {
+    font-size: 17px; line-height: 1.75; font-weight: 300;
+    color: rgba(255,255,255,.6); margin-bottom: 36px;
+  }
+  .about-stats {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 24px; margin-top: 48px;
+    border-top: 1px solid rgba(255,255,255,.12); padding-top: 44px;
+  }
+  .stat-big {
+    font-size: 52px; font-weight: 900;
+    letter-spacing: -.05em; line-height: 1;
+    color: var(--white);
+  }
+  .stat-big sup { font-size: .45em; color: var(--red); vertical-align: super; }
+  .stat-lbl {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: rgba(255,255,255,.35); margin-top: 8px;
+  }
+
+  /* ─── STACK ──────────────────────────────────────────── */
+  .stack-grid {
+    display: grid; grid-template-columns: repeat(4,1fr);
+    border: 1px solid rgba(0,0,0,.1);
+    margin-top: 80px;
+  }
+  .stack-cell {
+    padding: 44px 36px;
+    border-right: 1px solid rgba(0,0,0,.1);
+    transition: background .25s;
+  }
+  .stack-cell:last-child { border-right: none; }
+  .stack-cell:hover { background: rgba(0,0,0,.03); }
+  .stack-cat {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: .26em; text-transform: uppercase;
+    color: var(--red); margin-bottom: 24px;
+  }
+  .stack-tool {
+    font-size: 14px; font-weight: 400;
+    color: rgba(0,0,0,.65); line-height: 2.1;
+  }
+
+  /* ─── WORK ───────────────────────────────────────────── */
+  .work-wrap { background: var(--white); padding: 130px 56px; position: relative; overflow: hidden; }
+  .work-wrap .eyebrow::after { background: rgba(0,0,0,.15); }
+  .work-wrap .section-heading { color: var(--black); }
+  .work-inner { max-width: var(--max); margin: 0 auto; }
+
+  .work-list { margin-top: 80px; }
+
+  .work-item {
+    display: grid; grid-template-columns: 72px 1fr 340px;
+    gap: 56px; padding: 64px 0;
+    border-top: 1px solid rgba(0,0,0,.1);
+    transition: border-color .3s;
+    cursor: default;
+  }
+  .work-item:hover { border-top-color: var(--red); }
+  .work-item:hover .work-num { color: var(--red); }
+
+  .work-num {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: .18em; color: rgba(0,0,0,.18);
+    padding-top: 6px; transition: color .3s;
+    font-variant-numeric: tabular-nums;
+  }
+  .work-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .work-tag {
+    font-size: 8px; font-weight: 700;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: var(--red); padding: 4px 10px;
+    border: 1px solid rgba(232,49,42,.35);
+  }
+  .work-title {
+    font-size: clamp(30px, 3.5vw, 56px);
+    font-weight: 900; letter-spacing: -.04em;
+    text-transform: uppercase; line-height: .92;
+    margin-bottom: 22px; color: var(--black);
+  }
+  .work-desc {
+    font-size: 14px; line-height: 1.75; font-weight: 300;
+    color: rgba(0,0,0,.5); max-width: 500px;
+  }
+
+  .work-kpi {
+    border: 1px solid rgba(0,0,0,.1);
+    padding: 32px; margin-bottom: 20px;
+    background: var(--grey-light);
+  }
+  .kpi-label {
+    font-size: 8px; font-weight: 700;
+    letter-spacing: .24em; text-transform: uppercase;
+    color: var(--red); margin-bottom: 10px;
+  }
+  .kpi-value {
+    font-size: 44px; font-weight: 900;
+    letter-spacing: -.05em; line-height: 1; color: var(--black);
+  }
+  .kpi-note {
+    font-size: 11px; line-height: 1.6;
+    color: rgba(0,0,0,.4); margin-top: 10px;
+  }
+  .work-tools-lbl {
+    font-size: 8px; font-weight: 700;
+    letter-spacing: .22em; text-transform: uppercase;
+    color: rgba(0,0,0,.25); margin-bottom: 8px;
+  }
+  .work-tools-val {
+    font-size: 11px; letter-spacing: .05em;
+    color: rgba(0,0,0,.35); line-height: 1.9;
+  }
+
+  /* ─── PROCESS ────────────────────────────────────────── */
+  .process-wrap {
+    background: var(--grey-light); padding: 130px 56px;
+    position: relative; overflow: hidden;
+  }
+  .process-wrap .eyebrow::after { background: rgba(0,0,0,.15); }
+  .process-inner { max-width: var(--max); margin: 0 auto; }
+  .process-steps {
+    display: grid; grid-template-columns: repeat(5,1fr);
+    border: 1px solid rgba(0,0,0,.1);
+    margin-top: 80px;
+  }
+  .process-step {
+    padding: 48px 32px;
+    border-right: 1px solid rgba(0,0,0,.1);
+    position: relative; overflow: hidden;
+    background: var(--white);
+  }
+  .process-step:last-child { border-right: none; }
+  .process-step::after {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px; background: var(--red);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .4s ease;
+  }
+  .process-step:hover::after { transform: scaleX(1); }
+  .step-bg-num {
+    font-size: 72px; font-weight: 900;
+    letter-spacing: -.06em; color: rgba(0,0,0,.05);
+    line-height: 1; margin-bottom: 28px;
+  }
+  .step-name {
+    font-size: 13px; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    margin-bottom: 12px; color: var(--black);
+  }
+  .step-desc {
+    font-size: 12px; line-height: 1.75; font-weight: 300;
+    color: rgba(0,0,0,.45);
+  }
+  .step-ai {
+    display: inline-block; margin-top: 14px;
+    font-size: 8px; font-weight: 700;
+    letter-spacing: .2em; text-transform: uppercase;
+    background: rgba(232,49,42,.1); color: var(--red);
+    padding: 3px 9px;
+  }
+
+  /* ─── PORTFOLIO GALLERY ─────────────────────────────── */
+  .portfolio-wrap {
+    background: var(--grey-light);
+    padding: 130px 56px;
+    position: relative; overflow: hidden;
+  }
+  .portfolio-wrap .eyebrow::after { background: rgba(0,0,0,.15); }
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 80px;
+  }
+  .portfolio-card {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    background: var(--white);
+  }
+  .portfolio-thumb {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+  .portfolio-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: top center;
+    display: block;
+    transition: transform .6s ease;
+  }
+  .portfolio-card:hover .portfolio-thumb img { transform: scale(1.04); }
+  .portfolio-overlay {
+    position: absolute; inset: 0;
+    background: rgba(232,49,42,.88);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity .3s ease;
+  }
+  .portfolio-card:hover .portfolio-overlay { opacity: 1; }
+  .portfolio-view {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .28em; text-transform: uppercase;
+    color: var(--white);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .portfolio-view::after {
+    content: '↗'; font-size: 18px; letter-spacing: 0; font-weight: 300;
+  }
+  .portfolio-info {
+    padding: 24px 28px 28px;
+    border-top: none;
+  }
+  .portfolio-tags {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .portfolio-tag-item {
+    font-size: 8px; font-weight: 700;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: var(--red); padding: 3px 8px;
+    border: 1px solid rgba(232,49,42,.35);
+  }
+  .portfolio-title {
+    font-size: 18px; font-weight: 900;
+    letter-spacing: -.03em; text-transform: uppercase;
+    color: var(--black); line-height: 1;
+    margin-bottom: 6px;
+  }
+  .portfolio-year {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: .18em; color: rgba(0,0,0,.35);
+  }
+
+  /* ─── LIGHTBOX ───────────────────────────────────────── */
+  .lb-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.92);
+    z-index: 2000;
+    display: flex; align-items: flex-start; justify-content: center;
+    padding: 40px 20px;
+    overflow-y: auto;
+    opacity: 0; pointer-events: none;
+    transition: opacity .3s ease;
+    -webkit-overflow-scrolling: touch;
+  }
+  .lb-overlay.lb-open { opacity: 1; pointer-events: all; }
+  .lb-inner {
+    position: relative;
+    max-width: 900px; width: 100%;
+  }
+  .lb-img {
+    width: 100%; display: block;
+    border: 1px solid rgba(255,255,255,.1);
+  }
+  .lb-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 16px;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .lb-title {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: .22em; text-transform: uppercase;
+    color: rgba(255,255,255,.7);
+  }
+  .lb-close {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .22em; text-transform: uppercase;
+    color: rgba(255,255,255,.5); cursor: pointer;
+    background: none; border: none;
+    transition: color .2s;
+  }
+  .lb-close:hover { color: var(--white); }
+
+  /* Fixed close X — always visible, never scrolls away */
+  .lb-close-fixed {
+    position: fixed;
+    top: 76px; right: 24px;
+    z-index: 2100;
+    width: 44px; height: 44px;
+    display: none;
+    align-items: center; justify-content: center;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background .2s, border-color .2s, transform .2s;
+    color: var(--white);
+    font-size: 18px; line-height: 1;
+  }
+  .lb-overlay.lb-open ~ .lb-close-fixed,
+  .lb-close-fixed.lb-visible { display: flex; }
+  .lb-close-fixed:hover {
+    background: var(--red);
+    border-color: var(--red);
+    transform: scale(1.1);
+  }
+  .lb-nav {
+    display: flex; gap: 24px; align-items: center;
+  }
+  .lb-prev, .lb-next {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .22em; text-transform: uppercase;
+    color: rgba(255,255,255,.5); cursor: pointer;
+    background: none; border: none;
+    transition: color .2s; padding: 0;
+  }
+  .lb-prev:hover, .lb-next:hover { color: var(--white); }
+  .lb-counter {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .15em;
+    color: rgba(255,255,255,.3);
+  }
+  .lb-hit-prev, .lb-hit-next {
+    position: fixed; top: 0; bottom: 0;
+    width: max(60px, calc((100vw - 900px) / 2));
+    display: flex; align-items: center;
+    cursor: pointer; z-index: 2010;
+    opacity: 0; transition: opacity .25s ease;
+  }
+  .lb-hit-prev { left: 0; justify-content: center; }
+  .lb-hit-next { right: 0; justify-content: center; }
+  .lb-hit-prev:hover, .lb-hit-next:hover { opacity: 1; }
+  .lb-hit-arrow {
+    width: 64px; height: 64px;
+    border: 2px solid rgba(255,255,255,.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; color: var(--white);
+    transition: border-color .2s, background .2s;
+  }
+  .lb-hit-prev:hover .lb-hit-arrow,
+  .lb-hit-next:hover .lb-hit-arrow {
+    background: var(--red);
+    border-color: var(--red);
+  }
+  @media (max-width: 960px) {
+    .lb-hit-prev, .lb-hit-next { display: none; }
+  }
+
+  /* ─── PHILOSOPHY MARQUEE ─────────────────────────────── */
+  .marquee-wrap {
+    background: var(--red); overflow: hidden;
+    padding: 24px 0; border-top: none;
+  }
+  .marquee-track {
+    display: flex; gap: 0;
+    animation: marquee 20s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-item {
+    font-size: 13px; font-weight: 700;
+    letter-spacing: .18em; text-transform: uppercase;
+    color: var(--white); padding: 0 48px; flex-shrink: 0;
+  }
+  .marquee-dot { color: rgba(255,255,255,.4); }
+
+  /* ─── CONTACT ────────────────────────────────────────── */
+  .contact-wrap {
+    background: var(--red);
+    padding: 160px 56px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .contact-ghost {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    font-size: clamp(72px, 13vw, 210px);
+    font-weight: 900; letter-spacing: -.05em;
+    text-transform: uppercase;
+    white-space: nowrap; pointer-events: none; line-height: 1;
+    /* Base: visible-but-ghosted white on red */
+    color: rgba(255,255,255,.08);
+    /* Chromatic layers — white up-left, dark down-right */
+    text-shadow:
+      14px  12px 0 rgba(255,255,255,.09),
+      -10px -8px  0 rgba(0,0,0,.07),
+      26px  22px  0 rgba(255,255,255,.04),
+      -20px -16px 0 rgba(0,0,0,.05);
+    animation: contactGhostChromatic 13s ease-in-out infinite;
+  }
+  @keyframes contactGhostChromatic {
+    0%,100% {
+      text-shadow:
+        14px  12px 0 rgba(255,255,255,.09),
+        -10px -8px  0 rgba(0,0,0,.07),
+        26px  22px  0 rgba(255,255,255,.04),
+        -20px -16px 0 rgba(0,0,0,.05);
+    }
+    35% {
+      text-shadow:
+        22px  18px 0 rgba(255,255,255,.13),
+        -15px -12px 0 rgba(0,0,0,.10),
+        40px  32px  0 rgba(255,255,255,.06),
+        -30px -24px 0 rgba(0,0,0,.07);
+    }
+    70% {
+      text-shadow:
+        7px   6px  0 rgba(255,255,255,.05),
+        -5px  -4px 0 rgba(0,0,0,.04),
+        12px  10px 0 rgba(255,255,255,.02),
+        -9px  -7px 0 rgba(0,0,0,.03);
+    }
+  }
+  .contact-inner { position: relative; z-index: 1; }
+  .contact-eyebrow {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .28em; text-transform: uppercase;
+    color: rgba(255,255,255,.75); margin-bottom: 36px;
+  }
+  .contact-heading {
+    font-size: clamp(56px, 9vw, 140px);
+    font-weight: 900; letter-spacing: -.05em;
+    text-transform: uppercase; line-height: .88;
+    margin-bottom: 56px; color: var(--white);
+  }
+  .contact-email {
+    display: inline-block;
+    font-size: clamp(16px, 2vw, 24px); font-weight: 300;
+    letter-spacing: .04em; color: var(--white);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,255,255,.4);
+    padding-bottom: 6px;
+    transition: border-color .25s, opacity .25s;
+  }
+  .contact-email:hover { border-color: var(--white); opacity: .75; }
+
+  /* ─── FOOTER ─────────────────────────────────────────── */
+  footer {
+    background: var(--white);
+    padding: 36px 56px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid rgba(0,0,0,.1);
+  }
+  .footer-name {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: var(--black);
+  }
+  .footer-note {
+    font-size: 10px; letter-spacing: .1em;
+    color: rgba(0,0,0,.3);
+  }
+
+  /* ─── ABOUT SECTION ANIMATIONS ──────────────────────── */
+  /* transform-box so scale() pivots from each element's own centre */
+  .about-node { transform-box: fill-box; transform-origin: center; }
+
+  /* Node breathing — white hidden layer nodes */
+  @keyframes nodeBreath {
+    0%,100% { opacity:.28; transform:scale(1); }
+    50%      { opacity:.7;  transform:scale(1.6); }
+  }
+  /* Node breathing — red input/output nodes */
+  @keyframes nodeBreathRed {
+    0%,100% { opacity:.45; transform:scale(1); }
+    50%      { opacity:1;   transform:scale(1.8); }
+  }
+  /* Output ring pulse */
+  @keyframes outputRing {
+    0%,100% { opacity:.55; transform:scale(1); }
+    50%      { opacity:1;   transform:scale(1.4); }
+  }
+  /* Data packet travelling along a connection line */
+  @keyframes flowPacket {
+    0%   { stroke-dashoffset:220; opacity:0; }
+    8%   { opacity:1; }
+    92%  { opacity:1; }
+    100% { stroke-dashoffset:0;   opacity:0; }
+  }
+  /* Scan line sweeping down */
+  @keyframes scanSweep {
+    0%   { transform:translateY(-20px); opacity:0; }
+    4%   { opacity:.6; }
+    96%  { opacity:.3; }
+    100% { transform:translateY(700px); opacity:0; }
+  }
+  /* Background particle drift */
+  @keyframes particleFloat {
+    0%,100% { opacity:0;    transform:translateY(0)   translateX(0); }
+    20%     { opacity:.35; }
+    80%     { opacity:.35; }
+    100%    { opacity:0;    transform:translateY(-32px) translateX(12px); }
+  }
+  /* Ripple from output node */
+  @keyframes ripple {
+    0%   { r:6;   opacity:.5; }
+    100% { r:40;  opacity:0; }
+  }
+
+  /* ─── SECTION-WIDE LAYER BREATHE ────────────────────────
+     Each depth layer pulses at its own cadence so the whole
+     composition feels alive without any single thing moving. */
+  @keyframes sectionBreathe {
+    0%,100% { opacity: .75; }
+    50%      { opacity: 1; }
+  }
+  @keyframes sectionDim {
+    0%,100% { opacity: 1; }
+    50%      { opacity: .55; }
+  }
+
+  /* ── Stack layer timing ── */
+  #stackDeep { animation: sectionBreathe 16s ease-in-out infinite; }
+  #stackMid  { animation: sectionBreathe 11s ease-in-out infinite 2s; }
+  #stackNear { animation: sectionDim     7s  ease-in-out infinite 1s; }
+
+  /* ── Stack — Venn circles staggered breathe ── */
+  @keyframes vennCirclePulse {
+    0%,100% { opacity: .7; }
+    50%      { opacity: 1; }
+  }
+  .stackVenn { animation: vennCirclePulse 8s ease-in-out infinite; }
+  .stackVenn.v2 { animation-delay: 2.5s; }
+  .stackVenn.v3 { animation-delay: 5s; }
+
+  /* ── Stack — YOU dot + ripple ── */
+  @keyframes youDotPulse {
+    0%,100% { opacity: .55; transform: scale(1); }
+    50%      { opacity: 1;   transform: scale(1.8); }
+  }
+  @keyframes youRipple {
+    0%   { r: 3;   opacity: .4; stroke-width: 1; }
+    100% { r: 28;  opacity: 0;  stroke-width: .3; }
+  }
+  #stackYouDot {
+    transform-box: fill-box; transform-origin: center;
+    animation: youDotPulse 2.8s ease-in-out infinite;
+  }
+  .stackRipple { animation: youRipple 2.8s ease-out infinite; }
+  .stackRipple.sr2 { animation-delay: .93s; }
+  .stackRipple.sr3 { animation-delay: 1.86s; }
+
+  /* ── Work layer timing ── */
+  #workDeep { animation: sectionBreathe 14s ease-in-out infinite .5s; }
+  #workMid  { animation: sectionBreathe 10s ease-in-out infinite 3s; }
+  #workNear { animation: sectionBreathe  8s ease-in-out infinite 1.5s; }
+
+  /* ── Work — CTA button pulse ── */
+  @keyframes workBtnPulse {
+    0%,100% { opacity: .1; }
+    50%      { opacity: .22; }
+  }
+  #workCtaBtn { animation: workBtnPulse 3.5s ease-in-out infinite; }
+
+  /* ── Work — metric line opacity throb ── */
+  @keyframes workLinePulse {
+    0%,100% { opacity: .18; }
+    50%      { opacity: .4; }
+  }
+  #workMetricLine { animation: workLinePulse 5s ease-in-out infinite; }
+  #workMetricArea { animation: workLinePulse 5s ease-in-out infinite; }
+
+  /* ── Work — data point staggered pulse ── */
+  @keyframes workDotPulse {
+    0%,100% { opacity: .35; transform: scale(1); }
+    50%      { opacity: .9;  transform: scale(1.8); }
+  }
+  .workDot {
+    transform-box: fill-box; transform-origin: center;
+    animation: workDotPulse 3s ease-in-out infinite;
+  }
+  .workDot.d2 { animation-delay: .7s; }
+  .workDot.d3 { animation-delay: 1.4s; }
+  .workDot.d4 { animation-delay: 2.1s; }
+
+  /* ── Process layer timing ── */
+  #processDeep { animation: sectionBreathe 16s ease-in-out infinite 1s; }
+  #processMid  { animation: sectionBreathe 10s ease-in-out infinite .5s; }
+  #processNear { animation: sectionBreathe  8s ease-in-out infinite 2s; }
+
+  /* ── Process — ITERATE arc flowing dashes ── */
+  @keyframes processArcDash {
+    from { stroke-dashoffset: 0; }
+    to   { stroke-dashoffset: -96; }
+  }
+  #processArc { animation: processArcDash 4s linear infinite; }
+
+  /* ── Process — step nodes staggered pulse ── */
+  @keyframes processNodePulse {
+    0%,100% { opacity: .35; transform: scale(1); }
+    50%      { opacity: 1;   transform: scale(1.6); }
+  }
+  .pNode {
+    transform-box: fill-box; transform-origin: center;
+    animation: processNodePulse 4s ease-in-out infinite;
+  }
+  .pNode.pn2 { animation-delay: .8s; }
+  .pNode.pn3 { animation-delay: 1.6s; }
+  .pNode.pn4 { animation-delay: 2.4s; }
+  .pNode.pn5 { animation-delay: 3.2s; }
+
+  /* ── Contact layer timing ── */
+  #contactDeep { animation: sectionBreathe 12s ease-in-out infinite; }
+  #contactMid  { animation: sectionBreathe  7s ease-in-out infinite 1s; }
+  #contactNear { animation: sectionBreathe  9s ease-in-out infinite 2s; }
+
+  /* ── Contact — concentric rings outward ripple ── */
+  @keyframes contactRingExpand {
+    0%   { r: 80;  opacity: .06; }
+    100% { r: 280; opacity: 0; }
+  }
+  .contactRippleRing { animation: contactRingExpand 4s ease-out infinite; }
+  .contactRippleRing.crr2 { animation-delay: 1.33s; }
+  .contactRippleRing.crr3 { animation-delay: 2.66s; }
+
+  /* ── Contact — center dot pulse ── */
+  @keyframes contactCenterPulse {
+    0%,100% { opacity: .25; transform: scale(1); }
+    50%      { opacity: .8;  transform: scale(2); }
+  }
+  #contactCenterDot {
+    transform-box: fill-box; transform-origin: center;
+    animation: contactCenterPulse 3s ease-in-out infinite;
+  }
+
+  /* ── Contact — radar sweep rotation ── */
+  @keyframes radarSweep {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  #contactSweepGroup { animation: radarSweep 5s linear infinite; }
+
+  /* ─── REVEAL ANIMATIONS ──────────────────────────────── */
+  .reveal {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .d1 { transition-delay: .1s; }
+  .d2 { transition-delay: .2s; }
+  .d3 { transition-delay: .3s; }
+  .d4 { transition-delay: .4s; }
+
+  /* ─── KEYFRAMES ──────────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%,100% { opacity: .35; }
+    50%      { opacity: 1; }
+  }
+
+  /* ─── HERO ANIMATIONS ────────────────────────────────── */
+  /* Chromatic shadow drift — ghost DESIGN text layers slowly separate & close */
+  @keyframes heroGhostChromatic {
+    0%,100% {
+      text-shadow:
+        14px  12px 0 rgba(232,49,42,.065),
+        -10px -8px  0 rgba(0,0,0,.04),
+        26px  22px  0 rgba(232,49,42,.03),
+        -20px -16px 0 rgba(0,0,0,.025);
+    }
+    35% {
+      text-shadow:
+        22px  18px 0 rgba(232,49,42,.09),
+        -15px -12px 0 rgba(0,0,0,.055),
+        40px  32px  0 rgba(232,49,42,.05),
+        -32px -24px 0 rgba(0,0,0,.04);
+    }
+    70% {
+      text-shadow:
+        8px   6px  0 rgba(232,49,42,.045),
+        -6px  -4px 0 rgba(0,0,0,.025),
+        14px  10px 0 rgba(232,49,42,.02),
+        -10px -7px 0 rgba(0,0,0,.015);
+    }
+  }
+  /* Hero circle breath */
+  @keyframes heroCirclePulse {
+    0%,100% { opacity: .25; transform: scale(1); }
+    50%      { opacity: .55; transform: scale(1.06); }
+  }
+  /* Hero rule opacity throb */
+  @keyframes heroRulePulse {
+    0%,100% { opacity: .3; }
+    50%      { opacity: .8; }
+  }
+  /* SVG layer opacity breathing — different rhythms per depth layer */
+  @keyframes heroDeepBreathe {
+    0%,100% { opacity: .7; }
+    50%      { opacity: 1; }
+  }
+  @keyframes heroMidBreathe {
+    0%,100% { opacity: .5; }
+    50%      { opacity: 1; }
+  }
+  @keyframes heroNearBlink {
+    0%,100% { opacity: 1; }
+    40%,60%  { opacity: .4; }
+  }
+  /* Scan line that sweeps across the hero SVG */
+  @keyframes heroScanH {
+    0%   { transform: translateX(-100px); opacity: 0; }
+    5%   { opacity: .4; }
+    95%  { opacity: .2; }
+    100% { transform: translateX(1540px); opacity: 0; }
+  }
+  /* Slow rotation for the large faint circle in heroMid */
+  @keyframes heroCircleRotate {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ─── RESPONSIVE ─────────────────────────────────────── */
+  @media (max-width: 1100px) {
+    .work-item { grid-template-columns: 48px 1fr; }
+    .work-kpi-col { grid-column: 2; }
+    .stack-grid { grid-template-columns: repeat(2,1fr); }
+    .process-steps { grid-template-columns: repeat(2,1fr) 1fr; }
+    .about-grid { grid-template-columns: 1fr; gap: 48px; }
+  }
+
+  /* ── Tablet ─────────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .process-steps { grid-template-columns: repeat(2,1fr); }
+    .work-item { grid-template-columns: 48px 1fr; gap: 32px; }
+    .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ── Mobile ─────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    /* Nav */
+    nav {
+      padding: 18px 20px;
+      align-items: center;
+    }
+    .nav-links { gap: 20px; }
+    .nav-links a { font-size: 9px; letter-spacing: .16em; }
+
+    /* Hero */
+    .hero { padding: 0 20px 64px; min-height: 100svh; }
+    .hero-footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 32px;
+      margin-top: 36px;
+    }
+    .hero-desc { font-size: 14px; max-width: 100%; }
+    .hero-rule, .hero-label-v, .hero-circle { display: none; }
+    .scroll-worm { display: none; }
+
+    /* Section padding */
+    .section-wrap { padding: 80px 20px; }
+    .about-wrap   { padding: 80px 20px; }
+    .work-wrap    { padding: 80px 20px; }
+    .process-wrap { padding: 80px 20px; }
+    .contact-wrap { padding: 100px 20px; }
+
+    /* Section heading + eyebrow spacing */
+    .eyebrow { margin-bottom: 48px; }
+
+    /* About */
+    .about-heading { font-size: clamp(40px, 10vw, 80px); }
+    .about-text { font-size: 15px; }
+    .about-stats {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      padding-top: 32px;
+      margin-top: 36px;
+    }
+    .stat-big { font-size: 40px; }
+
+    /* Stack */
+    .stack-grid { grid-template-columns: 1fr; margin-top: 48px; }
+    .stack-cell { padding: 32px 24px; border-right: none; border-bottom: 1px solid rgba(0,0,0,.1); }
+    .stack-cell:last-child { border-bottom: none; }
+
+    /* Portfolio */
+    .portfolio-wrap { padding: 80px 20px; }
+    .portfolio-grid { grid-template-columns: repeat(2, 1fr); margin-top: 48px; }
+    .portfolio-info { padding: 18px 20px 22px; }
+
+    /* Work */
+    .work-list { margin-top: 48px; }
+    .work-item {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      padding: 40px 0;
+    }
+    .work-num { display: none; }
+    .work-kpi { padding: 24px; }
+    .kpi-value { font-size: 36px; }
+
+    /* Process */
+    .process-steps {
+      grid-template-columns: 1fr;
+      margin-top: 48px;
+    }
+    .process-step {
+      border-right: none;
+      border-bottom: 1px solid rgba(0,0,0,.1);
+      padding: 36px 24px;
+    }
+    .process-step:last-child { border-bottom: none; }
+
+    /* Contact */
+    .contact-ghost { font-size: clamp(48px, 16vw, 120px); }
+    .contact-heading { font-size: clamp(44px, 12vw, 100px); margin-bottom: 40px; }
+
+    /* Footer */
+    footer { flex-direction: column; gap: 10px; text-align: center; padding: 24px 20px; }
+  }
+
+  /* ── Small mobile ────────────────────────────────────── */
+  @media (max-width: 480px) {
+    /* Nav — hide links, keep logo */
+    .nav-links { display: none; }
+    nav { justify-content: flex-start; }
+
+    /* Tighten hero */
+    .hero { padding: 0 16px 56px; }
+    .hero-title { font-size: clamp(60px, 16vw, 120px); }
+
+    /* Section padding */
+    .section-wrap,
+    .about-wrap, .work-wrap,
+    .process-wrap { padding: 64px 16px; }
+    .contact-wrap { padding: 80px 16px; }
+
+    /* About stats — stack to 1 col */
+    .about-stats { grid-template-columns: 1fr; gap: 24px; }
+    .stat-big { font-size: 48px; }
+
+    /* Stack cells */
+    .stack-cell { padding: 28px 16px; }
+
+    /* Portfolio */
+    .portfolio-grid { grid-template-columns: 1fr; }
+
+    /* Work items */
+    .work-item { padding: 32px 0; gap: 20px; }
+  }
+  /* Safety net: if JS never fires, reveal elements still appear after 1s */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal:not(.in) { animation: revealFallback 0s 1.5s forwards; }
+  }
+  @keyframes revealFallback {
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Progress -->
+<div id="progress"></div>
+
+<!-- Cursor -->
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="curRing"></div>
+
+<!-- ══════════════════ NAV ══════════════════ -->
+<nav class="nav--dark">
+  <a href="tel:3103087383" class="nav-logo">
+    <svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor" style="vertical-align:middle;margin-right:7px;margin-bottom:1px"><path d="M26,29h-.17C6.18,27.87,3.39,11.29,3,6.23A3,3,0,0,1,5.76,3h5.51a2,2,0,0,1,1.86,1.26L14.65,8a2,2,0,0,1-.44,2.16l-2.13,2.15a9.37,9.37,0,0,0,7.58,7.6l2.17-2.15A2,2,0,0,1,24,17.35l3.77,1.51A2,2,0,0,1,29,20.72V26A3,3,0,0,1,26,29ZM6,5A1,1,0,0,0,5,6v.08C5.46,12,8.41,26,25.94,27A1,1,0,0,0,27,26.06V20.72l-3.77-1.51-2.87,2.85L19.88,22C11.18,20.91,10,12.21,10,12.12l-.06-.48,2.84-2.87L11.28,5Z"/></svg>310.308.7383
+  </a>
+  <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<div class="hero" id="hero">
+  <!-- 12-col grid overlay -->
+  <div class="hero-grid" aria-hidden="true">
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- Three-layer hero SVG parallax -->
+  <svg class="hero-deco-svg" id="heroDeco" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- DEEP: faint dot grid + long reference lines -->
+    <g id="heroDeep">
+      <!-- horizontal reference lines -->
+      <line x1="0" y1="150" x2="1440" y2="150" stroke="rgba(0,0,0,.03)" stroke-width=".6"/>
+      <line x1="0" y1="450" x2="1440" y2="450" stroke="rgba(0,0,0,.03)" stroke-width=".6"/>
+      <line x1="0" y1="750" x2="1440" y2="750" stroke="rgba(0,0,0,.03)" stroke-width=".6"/>
+      <!-- vertical reference lines -->
+      <line x1="360"  y1="0" x2="360"  y2="900" stroke="rgba(0,0,0,.025)" stroke-width=".5"/>
+      <line x1="720"  y1="0" x2="720"  y2="900" stroke="rgba(0,0,0,.025)" stroke-width=".5"/>
+      <line x1="1080" y1="0" x2="1080" y2="900" stroke="rgba(0,0,0,.025)" stroke-width=".5"/>
+      <!-- dot field — upper right -->
+      <circle cx="900"  cy="120" r="1.5" fill="rgba(0,0,0,.06)"/>
+      <circle cx="940"  cy="120" r="1.5" fill="rgba(0,0,0,.06)"/>
+      <circle cx="980"  cy="120" r="1.5" fill="rgba(0,0,0,.06)"/>
+      <circle cx="1020" cy="120" r="1.5" fill="rgba(0,0,0,.06)"/>
+      <circle cx="900"  cy="155" r="1.5" fill="rgba(0,0,0,.05)"/>
+      <circle cx="940"  cy="155" r="1.5" fill="rgba(0,0,0,.05)"/>
+      <circle cx="980"  cy="155" r="1.5" fill="rgba(0,0,0,.05)"/>
+      <circle cx="1020" cy="155" r="1.5" fill="rgba(0,0,0,.05)"/>
+      <circle cx="900"  cy="190" r="1.5" fill="rgba(0,0,0,.04)"/>
+      <circle cx="940"  cy="190" r="1.5" fill="rgba(0,0,0,.04)"/>
+      <circle cx="980"  cy="190" r="1.5" fill="rgba(0,0,0,.04)"/>
+      <circle cx="1020" cy="190" r="1.5" fill="rgba(0,0,0,.04)"/>
+    </g>
+
+    <!-- Horizontal scan line — animates across the full width -->
+    <line id="heroScan" x1="0" y1="460" x2="80" y2="460" stroke="rgba(232,49,42,.18)" stroke-width=".6"/>
+
+    <!-- MID: Swiss geometric shapes -->
+    <g id="heroMid">
+      <!-- Large right-aligned composition rectangle (blueprint) -->
+      <rect x="1100" y="200" width="280" height="400" rx="0" fill="none" stroke="rgba(0,0,0,.04)" stroke-width="1"/>
+      <rect x="1120" y="220" width="240" height="360" rx="0" fill="none" stroke="rgba(232,49,42,.03)" stroke-width=".6"/>
+      <!-- horizontal rule through rect centre -->
+      <line x1="1100" y1="400" x2="1380" y2="400" stroke="rgba(0,0,0,.05)" stroke-width=".5" stroke-dasharray="4 8"/>
+      <!-- large faint circle — left composition, slow rotating dashed ring -->
+      <circle cx="220" cy="420" r="260" fill="none" stroke="rgba(0,0,0,.035)" stroke-width="1"/>
+      <circle id="heroMidRing" cx="220" cy="420" r="180" fill="none" stroke="rgba(232,49,42,.025)" stroke-width=".7" stroke-dasharray="8 16"/>
+    </g>
+
+    <!-- NEAR: measurement annotations + corner marks -->
+    <g id="heroNear">
+      <!-- corner registration — all four -->
+      <line x1="56"   y1="56"  x2="56"   y2="88"  stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <line x1="40"   y1="72"  x2="72"   y2="72"  stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <line x1="1384" y1="56"  x2="1384" y2="88"  stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <line x1="1368" y1="72"  x2="1400" y2="72"  stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <line x1="56"   y1="812" x2="56"   y2="844" stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <line x1="40"   y1="828" x2="72"   y2="828" stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <line x1="1384" y1="812" x2="1384" y2="844" stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <line x1="1368" y1="828" x2="1400" y2="828" stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <!-- coordinate label top-right -->
+      <text x="1390" y="110" font-family="Helvetica Neue,Helvetica,Inter,Arial,sans-serif" font-size="7" fill="rgba(232,49,42,.3)" letter-spacing="1.5" text-anchor="end">01 / HERO</text>
+      <!-- scattered crosshairs -->
+      <line x1="600" y1="200" x2="600" y2="216" stroke="rgba(0,0,0,.09)" stroke-width=".7"/>
+      <line x1="592" y1="208" x2="608" y2="208" stroke="rgba(0,0,0,.09)" stroke-width=".7"/>
+      <line x1="1200" y1="680" x2="1200" y2="696" stroke="rgba(0,0,0,.07)" stroke-width=".7"/>
+      <line x1="1192" y1="688" x2="1208" y2="688" stroke="rgba(0,0,0,.07)" stroke-width=".7"/>
+      <!-- small dimension tick marks right edge -->
+      <line x1="1420" y1="300" x2="1435" y2="300" stroke="rgba(0,0,0,.07)" stroke-width=".6"/>
+      <line x1="1420" y1="450" x2="1435" y2="450" stroke="rgba(0,0,0,.07)" stroke-width=".6"/>
+      <line x1="1420" y1="600" x2="1435" y2="600" stroke="rgba(0,0,0,.07)" stroke-width=".6"/>
+      <line x1="1428" y1="300" x2="1428" y2="600" stroke="rgba(0,0,0,.05)" stroke-width=".5"/>
+    </g>
+  </svg>
+
+  <!-- Parallax decorations -->
+  <div class="hero-ghost"   data-speed="0.22" aria-hidden="true">DESIGN</div>
+  <div class="hero-rule"    data-speed="0.60" aria-hidden="true"></div>
+  <div class="hero-label-v" data-speed="0.44" aria-hidden="true">Joseph Paguirigan · 2025</div>
+  <div class="hero-circle"  data-speed="0.78" aria-hidden="true"></div>
+
+  <h1 class="hero-title" id="heroTitle" data-speed="0.14">
+    Joseph<br>
+    <span class="red">Paguiri-</span><br>
+    gan.
+  </h1>
+
+  <div class="hero-footer">
+    <p class="hero-desc">
+      Most designers hand off comps. I hand off products.
+      Figma, AI, and just enough code to make engineers nervous.
+    </p>
+    <a href="#work" class="hero-cta">
+      Case Studies <span class="arrow"></span>
+    </a>
+  </div>
+
+  <div class="scroll-worm" aria-hidden="true">
+    <div class="scroll-worm-line"></div>
+    <span class="scroll-worm-text">Scroll</span>
+  </div>
+</div>
+
+<!-- ══════════════════ ABOUT ══════════════════ -->
+<div class="about-wrap" id="about">
+
+  <!-- ═══ Animated Neural Net Decoration ═══ -->
+  <svg class="about-deco" id="aboutDeco" viewBox="0 0 1440 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <!-- Glow filter for output node -->
+      <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="4" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <!-- Subtle red glow -->
+      <filter id="redglow" x="-80%" y="-80%" width="260%" height="260%">
+        <feColorMatrix type="matrix" values="1 0 0 0 .9  0 0 0 0 .12  0 0 0 0 .1  0 0 0 1 0" result="red"/>
+        <feGaussianBlur in="red" stdDeviation="6" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <!-- ══ LAYER 1 — deep background particles (slowest parallax) ══ -->
+    <g id="aboutDeep">
+      <!-- Floating micro particles -->
+      <circle cx="620" cy="120" r="1.2" fill="rgba(255,255,255,.18)" style="animation:particleFloat 9s 0s ease-in-out infinite"/>
+      <circle cx="680" cy="220" r="1"   fill="rgba(255,255,255,.12)" style="animation:particleFloat 11s 1.5s ease-in-out infinite"/>
+      <circle cx="720" cy="480" r="1.2" fill="rgba(255,255,255,.15)" style="animation:particleFloat 8s 3s ease-in-out infinite"/>
+      <circle cx="560" cy="380" r="1"   fill="rgba(232,49,42,.2)"    style="animation:particleFloat 12s 0.8s ease-in-out infinite"/>
+      <circle cx="750" cy="560" r="1.2" fill="rgba(255,255,255,.1)"  style="animation:particleFloat 10s 2.2s ease-in-out infinite"/>
+      <circle cx="900" cy="100" r="1"   fill="rgba(232,49,42,.15)"   style="animation:particleFloat 7s 4s ease-in-out infinite"/>
+      <circle cx="1050" cy="580" r="1.2" fill="rgba(255,255,255,.12)" style="animation:particleFloat 13s 1s ease-in-out infinite"/>
+      <circle cx="1380" cy="200" r="1"  fill="rgba(232,49,42,.18)"   style="animation:particleFloat 9s 2.8s ease-in-out infinite"/>
+      <circle cx="1200" cy="600" r="1"  fill="rgba(255,255,255,.1)"  style="animation:particleFloat 11s 5s ease-in-out infinite"/>
+      <circle cx="480"  cy="300" r="1.2" fill="rgba(255,255,255,.14)" style="animation:particleFloat 8.5s 3.5s ease-in-out infinite"/>
+
+      <!-- Dashed horizontal reference lines -->
+      <line x1="56"  y1="180" x2="790" y2="180" stroke="rgba(255,255,255,.04)" stroke-width=".5" stroke-dasharray="3 12"/>
+      <line x1="56"  y1="350" x2="790" y2="350" stroke="rgba(255,255,255,.04)" stroke-width=".5" stroke-dasharray="3 12"/>
+      <line x1="56"  y1="520" x2="790" y2="520" stroke="rgba(255,255,255,.04)" stroke-width=".5" stroke-dasharray="3 12"/>
+    </g>
+
+    <!-- ══ LAYER 2 — connection lines (mid parallax) ══ -->
+    <g id="aboutMid">
+      <!-- Static base connections — L1→L2 (white, subtle) -->
+      <line x1="820" y1="160" x2="980" y2="200" stroke="rgba(255,255,255,.08)" stroke-width=".8"/>
+      <line x1="820" y1="160" x2="980" y2="340" stroke="rgba(255,255,255,.06)" stroke-width=".8"/>
+      <line x1="820" y1="160" x2="980" y2="480" stroke="rgba(255,255,255,.04)" stroke-width=".8"/>
+      <line x1="820" y1="280" x2="980" y2="200" stroke="rgba(255,255,255,.08)" stroke-width=".8"/>
+      <line x1="820" y1="280" x2="980" y2="340" stroke="rgba(255,255,255,.11)" stroke-width=".8"/>
+      <line x1="820" y1="280" x2="980" y2="480" stroke="rgba(255,255,255,.08)" stroke-width=".8"/>
+      <line x1="820" y1="400" x2="980" y2="200" stroke="rgba(255,255,255,.04)" stroke-width=".8"/>
+      <line x1="820" y1="400" x2="980" y2="340" stroke="rgba(255,255,255,.08)" stroke-width=".8"/>
+      <line x1="820" y1="400" x2="980" y2="480" stroke="rgba(255,255,255,.11)" stroke-width=".8"/>
+      <line x1="820" y1="520" x2="980" y2="340" stroke="rgba(255,255,255,.06)" stroke-width=".8"/>
+      <line x1="820" y1="520" x2="980" y2="480" stroke="rgba(255,255,255,.11)" stroke-width=".8"/>
+      <!-- L2→L3 (red-tinted) -->
+      <line x1="980" y1="200" x2="1140" y2="260" stroke="rgba(232,49,42,.13)" stroke-width=".8"/>
+      <line x1="980" y1="200" x2="1140" y2="420" stroke="rgba(232,49,42,.07)" stroke-width=".8"/>
+      <line x1="980" y1="340" x2="1140" y2="260" stroke="rgba(232,49,42,.15)" stroke-width=".8"/>
+      <line x1="980" y1="340" x2="1140" y2="420" stroke="rgba(232,49,42,.15)" stroke-width=".8"/>
+      <line x1="980" y1="480" x2="1140" y2="260" stroke="rgba(232,49,42,.07)" stroke-width=".8"/>
+      <line x1="980" y1="480" x2="1140" y2="420" stroke="rgba(232,49,42,.13)" stroke-width=".8"/>
+      <!-- L3→Output -->
+      <line x1="1140" y1="260" x2="1300" y2="340" stroke="rgba(232,49,42,.25)" stroke-width="1"/>
+      <line x1="1140" y1="420" x2="1300" y2="340" stroke="rgba(232,49,42,.25)" stroke-width="1"/>
+
+      <!-- ── Animated data packets flowing along key paths ── -->
+      <!-- packet: L1n1 → L2n2 (strong path) -->
+      <line x1="820" y1="280" x2="980" y2="340"
+        stroke="rgba(255,255,255,.9)" stroke-width="1.5"
+        stroke-dasharray="6 220"
+        style="animation:flowPacket 3.2s 0s linear infinite"/>
+      <!-- packet: L2n2 → L3n1 -->
+      <line x1="980" y1="340" x2="1140" y2="260"
+        stroke="rgba(232,49,42,.95)" stroke-width="1.5"
+        stroke-dasharray="6 200"
+        style="animation:flowPacket 2.8s 0.6s linear infinite"/>
+      <!-- packet: L3n1 → Output -->
+      <line x1="1140" y1="260" x2="1300" y2="340"
+        stroke="rgba(232,49,42,.95)" stroke-width="2"
+        stroke-dasharray="6 200"
+        style="animation:flowPacket 2.2s 1.2s linear infinite"/>
+      <!-- packet: L1n3 → L2n3 -->
+      <line x1="820" y1="400" x2="980" y2="480"
+        stroke="rgba(255,255,255,.8)" stroke-width="1.5"
+        stroke-dasharray="6 220"
+        style="animation:flowPacket 3.8s 1.8s linear infinite"/>
+      <!-- packet: L2n3 → L3n2 → Output -->
+      <line x1="980" y1="480" x2="1140" y2="420"
+        stroke="rgba(232,49,42,.9)" stroke-width="1.5"
+        stroke-dasharray="6 200"
+        style="animation:flowPacket 2.6s 2.4s linear infinite"/>
+      <line x1="1140" y1="420" x2="1300" y2="340"
+        stroke="rgba(232,49,42,.9)" stroke-width="2"
+        stroke-dasharray="6 200"
+        style="animation:flowPacket 2s 2.9s linear infinite"/>
+    </g>
+
+    <!-- ══ LAYER 3 — nodes (nearest, most parallax) ══ -->
+    <g id="aboutNear">
+      <!-- INPUT label -->
+      <text x="826" y="136" font-family="Helvetica Neue,Helvetica,Inter,Arial,sans-serif" font-size="7" fill="rgba(255,255,255,.22)" letter-spacing="1.5">INPUT</text>
+      <line x1="826" y1="140" x2="826" y2="148" stroke="rgba(255,255,255,.15)" stroke-width=".6"/>
+
+      <!-- L1 — input nodes (red) -->
+      <g class="about-node" style="animation:nodeBreathRed 2.8s 0s ease-in-out infinite">
+        <circle cx="820" cy="160" r="3.5" fill="rgba(232,49,42,.7)" filter="url(#redglow)"/>
+      </g>
+      <g class="about-node" style="animation:nodeBreathRed 2.8s 0.5s ease-in-out infinite">
+        <circle cx="820" cy="280" r="3.5" fill="rgba(232,49,42,.7)" filter="url(#redglow)"/>
+      </g>
+      <g class="about-node" style="animation:nodeBreathRed 2.8s 1s ease-in-out infinite">
+        <circle cx="820" cy="400" r="3.5" fill="rgba(232,49,42,.7)" filter="url(#redglow)"/>
+      </g>
+      <g class="about-node" style="animation:nodeBreathRed 2.8s 1.5s ease-in-out infinite">
+        <circle cx="820" cy="520" r="3.5" fill="rgba(232,49,42,.7)" filter="url(#redglow)"/>
+      </g>
+
+      <!-- L2 — hidden nodes (white) -->
+      <g class="about-node" style="animation:nodeBreath 3.5s 0.3s ease-in-out infinite">
+        <circle cx="980" cy="200" r="3.5" fill="rgba(255,255,255,.5)"/>
+      </g>
+      <g class="about-node" style="animation:nodeBreath 3.5s 0.9s ease-in-out infinite">
+        <circle cx="980" cy="340" r="3.5" fill="rgba(255,255,255,.5)"/>
+      </g>
+      <g class="about-node" style="animation:nodeBreath 3.5s 1.5s ease-in-out infinite">
+        <circle cx="980" cy="480" r="3.5" fill="rgba(255,255,255,.5)"/>
+      </g>
+
+      <!-- L3 — hidden nodes (red, dimmer) -->
+      <g class="about-node" style="animation:nodeBreathRed 3s 0.7s ease-in-out infinite">
+        <circle cx="1140" cy="260" r="3.5" fill="rgba(232,49,42,.6)" filter="url(#redglow)"/>
+      </g>
+      <g class="about-node" style="animation:nodeBreathRed 3s 1.3s ease-in-out infinite">
+        <circle cx="1140" cy="420" r="3.5" fill="rgba(232,49,42,.6)" filter="url(#redglow)"/>
+      </g>
+
+      <!-- Output node — double ring + ripple -->
+      <circle cx="1300" cy="340" r="40" fill="none" stroke="rgba(232,49,42,.06)"
+        style="animation:ripple 3s 0s ease-out infinite; transform-box:fill-box; transform-origin:center"/>
+      <circle cx="1300" cy="340" r="40" fill="none" stroke="rgba(232,49,42,.05)"
+        style="animation:ripple 3s 1s ease-out infinite; transform-box:fill-box; transform-origin:center"/>
+      <circle cx="1300" cy="340" r="8"  fill="none" stroke="rgba(232,49,42,.5)" stroke-width="1"
+        style="animation:outputRing 2s ease-in-out infinite; transform-box:fill-box; transform-origin:center" filter="url(#redglow)"/>
+      <circle cx="1300" cy="340" r="3"  fill="rgba(232,49,42,.9)" filter="url(#glow)"
+        style="animation:nodeBreathRed 2s ease-in-out infinite; transform-box:fill-box; transform-origin:center"/>
+      <!-- OUT label -->
+      <text x="1314" y="337" font-family="Helvetica Neue,Helvetica,Inter,Arial,sans-serif" font-size="7" fill="rgba(232,49,42,.6)" letter-spacing="1.5">OUT</text>
+
+      <!-- ── Swiss registration / corner marks ── -->
+      <g stroke="rgba(232,49,42,.4)" stroke-width=".9">
+        <line x1="32"   y1="20"  x2="32"   y2="56"/>  <line x1="20"  y1="32"  x2="56"  y2="32"/>
+        <line x1="1408" y1="20"  x2="1408" y2="56"/>  <line x1="1384" y1="32" x2="1420" y2="32"/>
+        <line x1="32"   y1="660" x2="32"   y2="680"/> <line x1="20"  y1="668" x2="56"  y2="668"/>
+        <line x1="1408" y1="660" x2="1408" y2="680"/> <line x1="1384" y1="668" x2="1420" y2="668"/>
+      </g>
+
+      <!-- ── Precision crosshairs ── -->
+      <g stroke="rgba(255,255,255,.14)" stroke-width=".7">
+        <line x1="640" y1="96"  x2="640" y2="114"/> <line x1="631" y1="105" x2="649" y2="105"/>
+        <line x1="700" y1="580" x2="700" y2="598"/> <line x1="691" y1="589" x2="709" y2="589"/>
+        <line x1="200" y1="90"  x2="200" y2="108"/> <line x1="191" y1="99"  x2="209" y2="99"/>
+        <line x1="430" y1="610" x2="430" y2="628"/> <line x1="421" y1="619" x2="439" y2="619"/>
+      </g>
+
+      <!-- ── Scan line (sweeps top→bottom every ~8s) ── -->
+      <rect x="700" y="0" width="700" height="1.5" rx=".5"
+        fill="url(#scanGrad)"
+        style="animation:scanSweep 8s 2s ease-in-out infinite; transform-box:fill-box"/>
+    </g>
+
+    <!-- Gradient for scan line -->
+    <defs>
+      <linearGradient id="scanGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%"   stop-color="rgba(232,49,42,0)"/>
+        <stop offset="30%"  stop-color="rgba(232,49,42,.5)"/>
+        <stop offset="70%"  stop-color="rgba(232,49,42,.5)"/>
+        <stop offset="100%" stop-color="rgba(232,49,42,0)"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="about-grid">
+    <div>
+      <div class="eyebrow reveal">01 — About</div>
+      <h2 class="about-heading reveal d1">
+        Sharp<br>instincts.<br><em>Shipped.</em>
+      </h2>
+    </div>
+    <div>
+      <p class="about-text reveal">
+        I've shipped game UI for Bungie, mobile apps for Norton,
+        defense tools for the government, and everything in between.
+        The common thread: I figure out what needs to exist and then
+        I make it. No hand-holding required.
+      </p>
+      <p class="about-text reveal d1">
+        I pair deep design instinct with AI to move embarrassingly fast.
+        Figma, Claude, a little code, a lot of opinions. From blank canvas
+        to shipped product faster than most teams finish their kickoff meeting.
+      </p>
+      <div class="about-stats">
+        <div class="reveal">
+          <div class="stat-big">4<sup>+</sup></div>
+          <div class="stat-lbl">Industries</div>
+        </div>
+        <div class="reveal d1">
+          <div class="stat-big">40<sup>+</sup></div>
+          <div class="stat-lbl">Things Shipped</div>
+        </div>
+        <div class="reveal d2">
+          <div class="stat-big">3<sup>×</sup></div>
+          <div class="stat-lbl">Faster With AI</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ STACK ══════════════════ -->
+<div class="section-wrap" id="stack">
+
+  <!-- Deco: overlapping discipline circles + grid spec lines -->
+  <svg class="section-deco" id="stackDeco" viewBox="0 0 1440 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- DEEP: background lines, ticks, crosshairs -->
+    <g id="stackDeep">
+      <!-- Measurement tick baseline -->
+      <line x1="56"  y1="560" x2="1384" y2="560" stroke="rgba(0,0,0,.06)" stroke-width=".5"/>
+      <line x1="56"  y1="555" x2="56"   y2="565" stroke="rgba(0,0,0,.1)"  stroke-width=".8"/>
+      <line x1="380" y1="555" x2="380"  y2="565" stroke="rgba(0,0,0,.1)"  stroke-width=".8"/>
+      <line x1="704" y1="555" x2="704"  y2="565" stroke="rgba(0,0,0,.1)"  stroke-width=".8"/>
+      <line x1="1028" y1="555" x2="1028" y2="565" stroke="rgba(0,0,0,.1)" stroke-width=".8"/>
+      <line x1="1384" y1="555" x2="1384" y2="565" stroke="rgba(0,0,0,.1)" stroke-width=".8"/>
+      <!-- Scattered crosshairs -->
+      <line x1="720" y1="80"  x2="720" y2="96"  stroke="rgba(0,0,0,.08)" stroke-width=".7"/>
+      <line x1="712" y1="88"  x2="728" y2="88"  stroke="rgba(0,0,0,.08)" stroke-width=".7"/>
+      <line x1="780" y1="500" x2="780" y2="516" stroke="rgba(0,0,0,.08)" stroke-width=".7"/>
+      <line x1="772" y1="508" x2="788" y2="508" stroke="rgba(0,0,0,.08)" stroke-width=".7"/>
+    </g>
+
+    <!-- MID: Venn circles (discipline overlap) -->
+    <g id="stackMid">
+      <!-- Corner registration marks -->
+      <line x1="32" y1="20" x2="32" y2="52"  stroke="rgba(232,49,42,.25)" stroke-width=".8"/>
+      <line x1="20" y1="32" x2="52" y2="32"  stroke="rgba(232,49,42,.25)" stroke-width=".8"/>
+      <line x1="1408" y1="20" x2="1408" y2="52" stroke="rgba(232,49,42,.25)" stroke-width=".8"/>
+      <line x1="1388" y1="32" x2="1420" y2="32" stroke="rgba(232,49,42,.25)" stroke-width=".8"/>
+      <line x1="32"   y1="568" x2="32"   y2="580" stroke="rgba(232,49,42,.25)" stroke-width=".8"/>
+      <line x1="20"   y1="574" x2="52"   y2="574" stroke="rgba(232,49,42,.25)" stroke-width=".8"/>
+      <line x1="1408" y1="568" x2="1408" y2="580" stroke="rgba(232,49,42,.25)" stroke-width=".8"/>
+      <line x1="1388" y1="574" x2="1420" y2="574" stroke="rgba(232,49,42,.25)" stroke-width=".8"/>
+      <!-- Large overlapping discipline circles — each breathes at staggered phase -->
+      <circle class="stackVenn"    cx="1080" cy="260" r="180" fill="rgba(232,49,42,.015)" stroke="rgba(232,49,42,.07)" stroke-width="1"/>
+      <circle class="stackVenn v2" cx="1210" cy="320" r="180" fill="rgba(0,0,0,.01)"      stroke="rgba(0,0,0,.06)"     stroke-width="1"/>
+      <circle class="stackVenn v3" cx="1145" cy="160" r="180" fill="rgba(0,0,0,.01)"      stroke="rgba(0,0,0,.05)"     stroke-width="1"/>
+    </g>
+
+    <!-- NEAR: foreground labels + centre dot -->
+    <g id="stackNear">
+      <!-- Discipline labels -->
+      <text x="1010" y="430" font-family="Helvetica Neue,Helvetica,Inter,Arial,sans-serif" font-size="8" fill="rgba(232,49,42,.4)" letter-spacing="2" text-anchor="middle">AI</text>
+      <text x="1270" y="430" font-family="Helvetica Neue,Helvetica,Inter,Arial,sans-serif" font-size="8" fill="rgba(0,0,0,.25)" letter-spacing="2" text-anchor="middle">ENGINEERING</text>
+      <text x="1145" y="68"  font-family="Helvetica Neue,Helvetica,Inter,Arial,sans-serif" font-size="8" fill="rgba(0,0,0,.25)" letter-spacing="2" text-anchor="middle">DESIGN</text>
+      <!-- Intersection label + dot + ripple rings -->
+      <text x="1145" y="300" font-family="Helvetica Neue,Helvetica,Inter,Arial,sans-serif" font-size="7" fill="rgba(232,49,42,.55)" letter-spacing="1.5" text-anchor="middle">JP</text>
+      <!-- Outward ripple rings emanating from YOU dot -->
+      <circle class="stackRipple"     cx="1145" cy="280" r="3" fill="none" stroke="rgba(232,49,42,.5)" stroke-width="1"/>
+      <circle class="stackRipple sr2" cx="1145" cy="280" r="3" fill="none" stroke="rgba(232,49,42,.5)" stroke-width="1"/>
+      <circle class="stackRipple sr3" cx="1145" cy="280" r="3" fill="none" stroke="rgba(232,49,42,.5)" stroke-width="1"/>
+      <!-- YOU centre dot -->
+      <circle id="stackYouDot" cx="1145" cy="280" r="2.5" fill="rgba(232,49,42,.55)"/>
+    </g>
+  </svg>
+
+  <div class="section-inner" id="stackInner">
+    <div class="eyebrow reveal">02 — Stack</div>
+    <h2 class="section-heading reveal d1">What I<br>Use.</h2>
+
+    <div class="stack-grid">
+      <div class="stack-cell reveal">
+        <div class="stack-cat">AI Tools</div>
+        <div class="stack-tool">Claude</div>
+        <div class="stack-tool">Perplexity</div>
+        <div class="stack-tool">Nano Banana</div>
+      </div>
+      <div class="stack-cell reveal d1">
+        <div class="stack-cat">Design</div>
+        <div class="stack-tool">Figma</div>
+        <div class="stack-tool">Photoshop</div>
+        <div class="stack-tool">Illustrator</div>
+        <div class="stack-tool">After Effects</div>
+      </div>
+      <div class="stack-cell reveal d2">
+        <div class="stack-cat">Engineering</div>
+        <div class="stack-tool">HTML / CSS</div>
+        <div class="stack-tool">React / JSX</div>
+        <div class="stack-tool">GitHub</div>
+      </div>
+      <div class="stack-cell reveal d3">
+        <div class="stack-cat">Research</div>
+        <div class="stack-tool">User Interviews</div>
+        <div class="stack-tool">Usability Testing</div>
+        <div class="stack-tool">AI Synthesis</div>
+        <div class="stack-tool">Design Systems</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ WORK ══════════════════ -->
+<div class="work-wrap" id="work">
+
+  <!-- Deco: wireframe screens + rising metric bars -->
+  <svg class="section-deco" id="workDeco" viewBox="0 0 1440 1200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- DEEP: corner marks + scattered crosshairs + chart grid -->
+    <g id="workDeep">
+      <!-- Corner marks -->
+      <line x1="32"   y1="20"   x2="32"   y2="52"   stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <line x1="20"   y1="32"   x2="52"   y2="32"   stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <line x1="1408" y1="20"   x2="1408" y2="52"   stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <line x1="1388" y1="32"   x2="1420" y2="32"   stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <line x1="32"   y1="1168" x2="32"   y2="1180" stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <line x1="20"   y1="1174" x2="52"   y2="1174" stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <line x1="1408" y1="1168" x2="1408" y2="1180" stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <line x1="1388" y1="1174" x2="1420" y2="1174" stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <!-- Scattered crosshairs -->
+      <line x1="80"  y1="300" x2="80"  y2="316" stroke="rgba(0,0,0,.07)" stroke-width=".7"/>
+      <line x1="72"  y1="308" x2="88"  y2="308" stroke="rgba(0,0,0,.07)" stroke-width=".7"/>
+      <line x1="120" y1="900" x2="120" y2="916" stroke="rgba(0,0,0,.07)" stroke-width=".7"/>
+      <line x1="112" y1="908" x2="128" y2="908" stroke="rgba(0,0,0,.07)" stroke-width=".7"/>
+      <line x1="740" y1="80"  x2="740" y2="96"  stroke="rgba(0,0,0,.07)" stroke-width=".7"/>
+      <line x1="732" y1="88"  x2="748" y2="88"  stroke="rgba(0,0,0,.07)" stroke-width=".7"/>
+      <!-- Chart grid lines -->
+      <line x1="1050" y1="1100" x2="1390" y2="1100" stroke="rgba(0,0,0,.07)" stroke-width=".5"/>
+      <line x1="1050" y1="1040" x2="1390" y2="1040" stroke="rgba(0,0,0,.04)" stroke-width=".5" stroke-dasharray="4 6"/>
+      <line x1="1050" y1="980"  x2="1390" y2="980"  stroke="rgba(0,0,0,.04)" stroke-width=".5" stroke-dasharray="4 6"/>
+      <line x1="1050" y1="920"  x2="1390" y2="920"  stroke="rgba(0,0,0,.04)" stroke-width=".5" stroke-dasharray="4 6"/>
+    </g>
+
+    <!-- MID: wireframe browser screens -->
+    <g id="workMid">
+      <!-- Wireframe browser/screen — top right -->
+      <rect x="1140" y="60" width="260" height="180" rx="2" fill="none" stroke="rgba(0,0,0,.07)" stroke-width="1"/>
+      <line x1="1140" y1="82" x2="1400" y2="82" stroke="rgba(0,0,0,.06)" stroke-width=".8"/>
+      <circle cx="1156" cy="71" r="4" fill="none" stroke="rgba(232,49,42,.25)" stroke-width=".8"/>
+      <circle cx="1170" cy="71" r="4" fill="none" stroke="rgba(0,0,0,.12)"     stroke-width=".8"/>
+      <circle cx="1184" cy="71" r="4" fill="none" stroke="rgba(0,0,0,.08)"     stroke-width=".8"/>
+      <rect x="1156" y="96"  width="80"  height="6"  rx="1" fill="rgba(0,0,0,.06)"/>
+      <rect x="1156" y="108" width="120" height="4"  rx="1" fill="rgba(0,0,0,.04)"/>
+      <rect x="1156" y="118" width="100" height="4"  rx="1" fill="rgba(0,0,0,.04)"/>
+      <rect x="1156" y="134" width="220" height="60" rx="2" fill="rgba(232,49,42,.04)" stroke="rgba(232,49,42,.08)" stroke-width=".5"/>
+      <rect id="workCtaBtn" x="1156" y="210" width="60" height="14" rx="1" fill="rgba(232,49,42,.1)"/>
+      <!-- Second smaller screen -->
+      <rect x="1200" y="270" width="180" height="120" rx="2" fill="none" stroke="rgba(0,0,0,.06)" stroke-width="1"/>
+      <line x1="1200" y1="286" x2="1380" y2="286" stroke="rgba(0,0,0,.05)" stroke-width=".8"/>
+      <rect x="1214" y="298" width="60"  height="5"  rx="1" fill="rgba(0,0,0,.05)"/>
+      <rect x="1214" y="309" width="140" height="3"  rx="1" fill="rgba(0,0,0,.04)"/>
+      <rect x="1214" y="318" width="100" height="3"  rx="1" fill="rgba(0,0,0,.04)"/>
+      <rect x="1214" y="332" width="140" height="40" rx="1" fill="rgba(0,0,0,.03)" stroke="rgba(0,0,0,.05)" stroke-width=".5"/>
+    </g>
+
+    <!-- NEAR: metric chart line + data points + arrow -->
+    <g id="workNear">
+      <!-- Area fill -->
+      <polygon id="workMetricArea"
+        points="1050,1100 1100,1070 1160,1040 1220,980 1280,920 1340,860 1390,780 1390,1100"
+        fill="rgba(232,49,42,.04)"/>
+      <!-- Rising line -->
+      <polyline id="workMetricLine"
+        points="1050,1100 1100,1070 1160,1040 1220,980 1280,920 1340,860 1390,780"
+        fill="none" stroke="rgba(232,49,42,.18)" stroke-width="1.5" stroke-linejoin="round"/>
+      <!-- Data points — staggered pulse -->
+      <circle class="workDot"    cx="1100" cy="1070" r="3" fill="rgba(232,49,42,.35)"/>
+      <circle class="workDot d2" cx="1220" cy="980"  r="3" fill="rgba(232,49,42,.35)"/>
+      <circle class="workDot d3" cx="1340" cy="860"  r="3" fill="rgba(232,49,42,.35)"/>
+      <circle class="workDot d4" cx="1390" cy="780"  r="4" fill="rgba(232,49,42,.6)"/>
+      <text x="1395" y="783" font-family="Helvetica Neue,Helvetica,Inter,Arial,sans-serif" font-size="7" fill="rgba(232,49,42,.5)" letter-spacing="1">↑</text>
+    </g>
+  </svg>
+
+  <div class="work-inner" id="workInner">
+    <div class="eyebrow reveal">03 — Selected Work</div>
+    <h2 class="section-heading reveal d1">Case<br>Studies.</h2>
+
+    <div class="work-list">
+
+      <!-- ── Case 01 ── -->
+      <div class="work-item reveal">
+        <div class="work-num">01</div>
+        <div>
+          <div class="work-tags">
+            <span class="work-tag">Design System</span>
+            <span class="work-tag">AI-Augmented</span>
+          </div>
+          <h3 class="work-title">Meridian<br>Design System</h3>
+          <p class="work-desc">
+            Series B SaaS company needed a design system. 200+ components,
+            full Figma variable library, auto-generated docs. Done in 6 weeks.
+            Most teams quote 6 months. AI helped. A lot.
+          </p>
+        </div>
+        <div class="work-kpi-col">
+          <div class="work-kpi">
+            <div class="kpi-label">Key Outcome</div>
+            <div class="kpi-value">6×</div>
+            <div class="kpi-note">Faster component handoff across 4 product teams. Design and code in sync from day one.</div>
+          </div>
+          <div class="work-tools-lbl">Tools Used</div>
+          <div class="work-tools-val">Figma · Claude · GitHub · React</div>
+        </div>
+      </div>
+
+      <!-- ── Case 02 ── -->
+      <div class="work-item reveal">
+        <div class="work-num">02</div>
+        <div>
+          <div class="work-tags">
+            <span class="work-tag">Conversational UI</span>
+            <span class="work-tag">Interaction Design</span>
+          </div>
+          <h3 class="work-title">AI Onboarding<br>Rethought</h3>
+          <p class="work-desc">
+            12-step onboarding wizard. Nobody was finishing it. Killed it.
+            Replaced it with a conversational flow that adapts to what the
+            user actually wants to do. Activation went up. Imagine that.
+          </p>
+        </div>
+        <div class="work-kpi-col">
+          <div class="work-kpi">
+            <div class="kpi-label">Key Outcome</div>
+            <div class="kpi-value">+44%</div>
+            <div class="kpi-note">Activation in A/B test. Time to first value dropped from 8 minutes to under 2.</div>
+          </div>
+          <div class="work-tools-lbl">Tools Used</div>
+          <div class="work-tools-val">Figma · Claude</div>
+        </div>
+      </div>
+
+      <!-- ── Case 03 ── -->
+      <div class="work-item reveal">
+        <div class="work-num">03</div>
+        <div>
+          <div class="work-tags">
+            <span class="work-tag">Rapid Prototyping</span>
+            <span class="work-tag">Design Engineering</span>
+          </div>
+          <h3 class="work-title">48-Hour<br>Concept Sprint</h3>
+          <p class="work-desc">
+            Healthcare startup needed something to show investors. Friday
+            afternoon, blank canvas. Monday morning, live clickable prototype
+            with real data. Claude did the research. I did the rest.
+          </p>
+        </div>
+        <div class="work-kpi-col">
+          <div class="work-kpi">
+            <div class="kpi-label">Key Outcome</div>
+            <div class="kpi-value">$2M</div>
+            <div class="kpi-note">Seed round closed off the prototype. No engineers. Just me and some very good AI.</div>
+          </div>
+          <div class="work-tools-lbl">Tools Used</div>
+          <div class="work-tools-val">Claude · Figma</div>
+        </div>
+      </div>
+
+      <!-- ── Case 04 ── -->
+      <div class="work-item reveal">
+        <div class="work-num">04</div>
+        <div>
+          <div class="work-tags">
+            <span class="work-tag">User Research</span>
+            <span class="work-tag">Strategy</span>
+          </div>
+          <h3 class="work-title">Research<br>at AI Speed</h3>
+          <p class="work-desc">
+            28 user interviews in 3 weeks. Claude synthesized the themes,
+            built the affinity maps, and wrote the 40-page report. Normally
+            that's a 3-month project. We had it done before the next sprint.
+          </p>
+        </div>
+        <div class="work-kpi-col">
+          <div class="work-kpi">
+            <div class="kpi-label">Key Outcome</div>
+            <div class="kpi-value">12×</div>
+            <div class="kpi-note">Faster than traditional synthesis. Stakeholders aligned after the very first readout.</div>
+          </div>
+          <div class="work-tools-lbl">Tools Used</div>
+          <div class="work-tools-val">Claude · Figma</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ MARQUEE ══════════════════ -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-item">Research</span><span class="marquee-item marquee-dot">·</span>
+    <span class="marquee-item">Systems Thinking</span><span class="marquee-item marquee-dot">·</span>
+    <span class="marquee-item">AI-Native Design</span><span class="marquee-item marquee-dot">·</span>
+    <span class="marquee-item">Vibe Coding</span><span class="marquee-item marquee-dot">·</span>
+    <span class="marquee-item">Design Engineering</span><span class="marquee-item marquee-dot">·</span>
+    <span class="marquee-item">Prototyping</span><span class="marquee-item marquee-dot">·</span>
+    <span class="marquee-item">Design Systems</span><span class="marquee-item marquee-dot">·</span>
+    <span class="marquee-item">Ship It</span><span class="marquee-item marquee-dot">·</span>
+    <!-- duplicate for seamless loop -->
+    <span class="marquee-item">Research</span><span class="marquee-item marquee-dot">·</span>
+    <span class="marquee-item">Systems Thinking</span><span class="marquee-item marquee-dot">·</span>
+    <span class="marquee-item">AI-Native Design</span><span class="marquee-item marquee-dot">·</span>
+    <span class="marquee-item">Vibe Coding</span><span class="marquee-item marquee-dot">·</span>
+    <span class="marquee-item">Design Engineering</span><span class="marquee-item marquee-dot">·</span>
+    <span class="marquee-item">Prototyping</span><span class="marquee-item marquee-dot">·</span>
+    <span class="marquee-item">Design Systems</span><span class="marquee-item marquee-dot">·</span>
+    <span class="marquee-item">Ship It</span><span class="marquee-item marquee-dot">·</span>
+  </div>
+</div>
+
+<!-- ══════════════════ PORTFOLIO ══════════════════ -->
+<div class="portfolio-wrap" id="portfolio">
+  <div class="section-inner">
+    <div class="eyebrow reveal">04 — Design Portfolio</div>
+    <h2 class="section-heading reveal d1">Work.</h2>
+
+    <div class="portfolio-grid">
+
+      <!-- 01 Halo: Reach -->
+      <div class="portfolio-card reveal" data-img="portfolio-halo-reach.jpg" data-title="Halo: Reach: Game UI">
+        <div class="portfolio-thumb">
+          <img src="portfolio-halo-reach.jpg" alt="Halo: Reach UI design" loading="lazy">
+          <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-tags">
+            <span class="portfolio-tag-item">Game UI</span>
+            <span class="portfolio-tag-item">Xbox 360</span>
+          </div>
+          <div class="portfolio-title">Halo: Reach</div>
+        </div>
+      </div>
+
+      <!-- 02 Norton Security -->
+      <div class="portfolio-card reveal d1" data-img="portfolio-norton.jpg" data-title="Norton Security: Mobile App">
+        <div class="portfolio-thumb">
+          <img src="portfolio-norton.jpg" alt="Norton Security mobile app" loading="lazy">
+          <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-tags">
+            <span class="portfolio-tag-item">Mobile</span>
+            <span class="portfolio-tag-item">iOS</span>
+          </div>
+          <div class="portfolio-title">Norton Security</div>
+        </div>
+      </div>
+
+      <!-- 03 Cannes Lions -->
+      <div class="portfolio-card reveal d2" data-img="portfolio-cannes-lions.jpg" data-title="Cannes Lions: Interactive Installation">
+        <div class="portfolio-thumb">
+          <img src="portfolio-cannes-lions.jpg" alt="Cannes Lions interactive installation" loading="lazy">
+          <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-tags">
+            <span class="portfolio-tag-item">Installation</span>
+            <span class="portfolio-tag-item">Touch UI</span>
+          </div>
+          <div class="portfolio-title">Cannes Lions</div>
+        </div>
+      </div>
+
+      <!-- 04 Relay Strat -->
+      <div class="portfolio-card reveal d1" data-img="portfolio-relay-strat.jpg" data-title="Relay Strat: Military Operations Platform">
+        <div class="portfolio-thumb">
+          <img src="portfolio-relay-strat.jpg" alt="Relay Strat operations platform" loading="lazy">
+          <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-tags">
+            <span class="portfolio-tag-item">SaaS</span>
+            <span class="portfolio-tag-item">Gov · Defense</span>
+          </div>
+          <div class="portfolio-title">Relay Strat</div>
+        </div>
+      </div>
+
+      <!-- 05 Insights -->
+      <div class="portfolio-card reveal d2" data-img="portfolio-insights.jpg" data-title="Insights: HR Analytics Dashboard">
+        <div class="portfolio-thumb">
+          <img src="portfolio-insights.jpg" alt="Insights HR analytics dashboard" loading="lazy">
+          <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-tags">
+            <span class="portfolio-tag-item">Dashboard</span>
+            <span class="portfolio-tag-item">Data Viz</span>
+          </div>
+          <div class="portfolio-title">Insights</div>
+        </div>
+      </div>
+
+      <!-- 06 Section 31 -->
+      <div class="portfolio-card reveal d3" data-img="portfolio-section31.jpg" data-title="Section 31: Brand & Product Design">
+        <div class="portfolio-thumb">
+          <img src="portfolio-section31.jpg" alt="Section 31 brand and product design" loading="lazy">
+          <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-tags">
+            <span class="portfolio-tag-item">Brand</span>
+            <span class="portfolio-tag-item">Product</span>
+          </div>
+          <div class="portfolio-title">Section 31</div>
+        </div>
+      </div>
+
+      <div class="portfolio-card reveal" data-img="portfolio-norton360.jpg" data-title="Norton 360 for Gamers: Mobile App">
+        <div class="portfolio-thumb">
+          <img src="portfolio-norton360.jpg" alt="Norton 360 for Gamers mobile app" loading="lazy">
+          <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-tags">
+            <span class="portfolio-tag-item">Mobile</span>
+            <span class="portfolio-tag-item">Product</span>
+          </div>
+          <div class="portfolio-title">Norton 360 for Gamers</div>
+        </div>
+      </div>
+
+      <div class="portfolio-card reveal d1" data-img="portfolio-affirm-mobile.jpg" data-title="Affirm: Mobile App">
+        <div class="portfolio-thumb">
+          <img src="portfolio-affirm-mobile.jpg" alt="Affirm mobile app" loading="lazy">
+          <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-tags">
+            <span class="portfolio-tag-item">Mobile</span>
+            <span class="portfolio-tag-item">Fintech</span>
+          </div>
+          <div class="portfolio-title">Affirm</div>
+        </div>
+      </div>
+
+      <div class="portfolio-card reveal d2" data-img="portfolio-target-ticket.jpg" data-title="Target Ticket: Entertainment Platform">
+        <div class="portfolio-thumb">
+          <img src="portfolio-target-ticket.jpg" alt="Target Ticket entertainment platform" loading="lazy">
+          <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-tags">
+            <span class="portfolio-tag-item">Product</span>
+            <span class="portfolio-tag-item">Streaming</span>
+          </div>
+          <div class="portfolio-title">Target Ticket</div>
+        </div>
+      </div>
+
+      <div class="portfolio-card reveal d1" data-img="portfolio-kobayashi-maru.jpg" data-title="Kobayashi Maru: Defense Tech Brand">
+        <div class="portfolio-thumb">
+          <img src="portfolio-kobayashi-maru.jpg" alt="Kobayashi Maru defense tech brand" loading="lazy">
+          <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-tags">
+            <span class="portfolio-tag-item">Brand</span>
+            <span class="portfolio-tag-item">Defense</span>
+          </div>
+          <div class="portfolio-title">Kobayashi Maru</div>
+        </div>
+      </div>
+
+      <div class="portfolio-card reveal d2" data-img="portfolio-twc.jpg" data-title="Time Warner Cable: On Demand UI">
+        <div class="portfolio-thumb">
+          <img src="portfolio-twc.jpg" alt="Time Warner Cable On Demand UI" loading="lazy">
+          <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-tags">
+            <span class="portfolio-tag-item">TV/OTT</span>
+            <span class="portfolio-tag-item">Product</span>
+          </div>
+          <div class="portfolio-title">Time Warner Cable</div>
+        </div>
+      </div>
+
+      <div class="portfolio-card reveal d3" data-img="portfolio-affirm-web.jpg" data-title="Affirm: Website & Landing Pages">
+        <div class="portfolio-thumb">
+          <img src="portfolio-affirm-web.jpg" alt="Affirm website and landing pages" loading="lazy">
+          <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-tags">
+            <span class="portfolio-tag-item">Web</span>
+            <span class="portfolio-tag-item">Fintech</span>
+          </div>
+          <div class="portfolio-title">Affirm</div>
+        </div>
+      </div>
+
+    </div><!-- /portfolio-grid -->
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lb-overlay" id="lightbox" role="dialog" aria-modal="true">
+  <div class="lb-inner">
+    <div class="lb-header">
+      <span class="lb-title" id="lb-title"></span>
+      <div class="lb-nav">
+        <button class="lb-prev" id="lb-prev">← Prev</button>
+        <span class="lb-counter" id="lb-counter"></span>
+        <button class="lb-next" id="lb-next">Next →</button>
+        <button class="lb-close" id="lb-close">Close ✕</button>
+      </div>
+    </div>
+    <img class="lb-img" id="lb-img" src="" alt="">
+  </div>
+  <div class="lb-hit-prev" id="lb-hit-prev">
+    <div class="lb-hit-arrow">←</div>
+  </div>
+  <div class="lb-hit-next" id="lb-hit-next">
+    <div class="lb-hit-arrow">→</div>
+  </div>
+</div>
+<!-- Fixed close button — always visible while lightbox is open -->
+<button class="lb-close-fixed" id="lb-close-fixed" aria-label="Close">✕</button>
+
+<!-- ══════════════════ PROCESS ══════════════════ -->
+<div class="process-wrap" id="process">
+
+  <!-- Deco: stepped flow path + iteration loop -->
+  <svg class="section-deco" id="processDeco" viewBox="0 0 1440 560" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- DEEP: corner marks + scattered crosshairs + horizontal baseline -->
+    <g id="processDeep">
+      <line x1="32"   y1="20"  x2="32"   y2="52"  stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <line x1="20"   y1="32"  x2="52"   y2="32"  stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <line x1="1408" y1="20"  x2="1408" y2="52"  stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <line x1="1388" y1="32"  x2="1420" y2="32"  stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <line x1="32"   y1="528" x2="32"   y2="540" stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <line x1="20"   y1="534" x2="52"   y2="534" stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <line x1="1408" y1="528" x2="1408" y2="540" stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <line x1="1388" y1="534" x2="1420" y2="534" stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
+      <!-- Horizontal baseline -->
+      <line x1="56" y1="490" x2="1384" y2="490" stroke="rgba(0,0,0,.07)" stroke-width=".6"/>
+      <!-- Scattered crosshairs -->
+      <line x1="80"   y1="80"  x2="80"   y2="96"  stroke="rgba(0,0,0,.08)" stroke-width=".7"/>
+      <line x1="72"   y1="88"  x2="88"   y2="88"  stroke="rgba(0,0,0,.08)" stroke-width=".7"/>
+      <line x1="1360" y1="80"  x2="1360" y2="96"  stroke="rgba(0,0,0,.08)" stroke-width=".7"/>
+      <line x1="1352" y1="88"  x2="1368" y2="88"  stroke="rgba(0,0,0,.08)" stroke-width=".7"/>
+      <line x1="720"  y1="52"  x2="720"  y2="68"  stroke="rgba(0,0,0,.08)" stroke-width=".7"/>
+      <line x1="712"  y1="60"  x2="728"  y2="60"  stroke="rgba(0,0,0,.08)" stroke-width=".7"/>
+    </g>
+
+    <!-- MID: iterative loop arc + ITERATE label -->
+    <g id="processMid">
+      <path id="processArc" d="M 196 420 C 196 220, 1348 220, 1348 420"
+        fill="none" stroke="rgba(232,49,42,.06)" stroke-width="1" stroke-dasharray="6 10"/>
+      <polygon points="1348,420 1342,408 1354,408" fill="rgba(232,49,42,.12)"/>
+      <line x1="770" y1="218" x2="770" y2="228" stroke="rgba(232,49,42,.15)" stroke-width=".8"/>
+      <text x="730" y="215" font-family="Helvetica Neue,Helvetica,Inter,Arial,sans-serif" font-size="7" fill="rgba(232,49,42,.3)" letter-spacing="1.5">ITERATE</text>
+    </g>
+
+    <!-- NEAR: step nodes + drop lines + inner dots -->
+    <g id="processNear">
+      <!-- Outer ring nodes — staggered pulse sequence -->
+      <circle class="pNode"     cx="196"  cy="490" r="5" fill="none" stroke="rgba(232,49,42,.35)" stroke-width="1.2"/>
+      <circle class="pNode pn2" cx="484"  cy="490" r="5" fill="none" stroke="rgba(0,0,0,.2)"      stroke-width="1.2"/>
+      <circle class="pNode pn3" cx="772"  cy="490" r="5" fill="none" stroke="rgba(232,49,42,.35)" stroke-width="1.2"/>
+      <circle class="pNode pn4" cx="1060" cy="490" r="5" fill="none" stroke="rgba(232,49,42,.35)" stroke-width="1.2"/>
+      <circle class="pNode pn5" cx="1348" cy="490" r="5" fill="none" stroke="rgba(0,0,0,.2)"      stroke-width="1.2"/>
+      <!-- Inner dots -->
+      <circle cx="196"  cy="490" r="2" fill="rgba(232,49,42,.4)"/>
+      <circle cx="772"  cy="490" r="2" fill="rgba(232,49,42,.4)"/>
+      <circle cx="1060" cy="490" r="2" fill="rgba(232,49,42,.4)"/>
+      <!-- Vertical drop lines -->
+      <line x1="196"  y1="470" x2="196"  y2="485" stroke="rgba(232,49,42,.25)" stroke-width=".8"/>
+      <line x1="484"  y1="470" x2="484"  y2="485" stroke="rgba(0,0,0,.15)"     stroke-width=".8"/>
+      <line x1="772"  y1="470" x2="772"  y2="485" stroke="rgba(232,49,42,.25)" stroke-width=".8"/>
+      <line x1="1060" y1="470" x2="1060" y2="485" stroke="rgba(232,49,42,.25)" stroke-width=".8"/>
+      <line x1="1348" y1="470" x2="1348" y2="485" stroke="rgba(0,0,0,.15)"     stroke-width=".8"/>
+    </g>
+  </svg>
+
+  <div class="process-inner" id="processInner">
+    <div class="eyebrow reveal">05 — Process</div>
+    <h2 class="section-heading reveal d1">How It<br>Gets Done.</h2>
+
+    <div class="process-steps">
+      <div class="process-step reveal">
+        <div class="step-bg-num">01</div>
+        <div class="step-name">Discover</div>
+        <div class="step-desc">Interviews, competitive analysis, stakeholder alignment. I actually talk to users before touching Figma. Wild concept, I know.</div>
+        <span class="step-ai">AI-Augmented</span>
+      </div>
+      <div class="process-step reveal d1">
+        <div class="step-bg-num">02</div>
+        <div class="step-name">Define</div>
+        <div class="step-desc">Figure out the actual problem before trying to solve it. Personas, jobs-to-be-done, a real north star. Not glamorous. Completely necessary.</div>
+      </div>
+      <div class="process-step reveal d2">
+        <div class="step-bg-num">03</div>
+        <div class="step-name">Design</div>
+        <div class="step-desc">Rough ideas in Claude, polished in Figma, interactive in Framer. I'm moving through options while most people are still scheduling the design review.</div>
+        <span class="step-ai">AI-Augmented</span>
+      </div>
+      <div class="process-step reveal d3">
+        <div class="step-bg-num">04</div>
+        <div class="step-name">Test</div>
+        <div class="step-desc">Real users, real tasks, real feedback. I run the sessions, Claude helps make sense of it. If something's broken, we find out before it ships.</div>
+        <span class="step-ai">AI-Augmented</span>
+      </div>
+      <div class="process-step reveal d4">
+        <div class="step-bg-num">05</div>
+        <div class="step-name">Ship</div>
+        <div class="step-desc">Design systems, component handoff, or I just build the thing myself. The gap between design and production is a choice. I choose to close it.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ CONTACT ══════════════════ -->
+<div class="contact-wrap" id="contact">
+  <!-- Deco: radiating signal rings + blueprint grid -->
+  <svg class="section-deco" id="contactDeco" style="z-index:0" viewBox="0 0 1440 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- DEEP: outer faint rings + crosshair lines + diagonals -->
+    <g id="contactDeep">
+      <circle cx="720" cy="300" r="320" fill="none" stroke="rgba(255,255,255,.03)"  stroke-width="1"/>
+      <circle cx="720" cy="300" r="400" fill="none" stroke="rgba(255,255,255,.025)" stroke-width="1"/>
+      <circle cx="720" cy="300" r="500" fill="none" stroke="rgba(255,255,255,.02)"  stroke-width="1"/>
+      <line x1="720" y1="0"    x2="720"  y2="600" stroke="rgba(255,255,255,.04)"  stroke-width=".5"/>
+      <line x1="0"   y1="300"  x2="1440" y2="300" stroke="rgba(255,255,255,.04)"  stroke-width=".5"/>
+      <line x1="420" y1="0"    x2="1020" y2="600" stroke="rgba(255,255,255,.025)" stroke-width=".5"/>
+      <line x1="1020" y1="0"   x2="420"  y2="600" stroke="rgba(255,255,255,.025)" stroke-width=".5"/>
+    </g>
+
+    <!-- MID: inner concentric circles + outward ripple rings -->
+    <g id="contactMid">
+      <circle cx="720" cy="300" r="80"  fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+      <circle cx="720" cy="300" r="160" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+      <circle cx="720" cy="300" r="240" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+      <!-- Outward ripple rings — 3 staggered -->
+      <circle class="contactRippleRing"      cx="720" cy="300" r="80" fill="none" stroke="rgba(255,255,255,.12)" stroke-width=".8"/>
+      <circle class="contactRippleRing crr2" cx="720" cy="300" r="80" fill="none" stroke="rgba(255,255,255,.12)" stroke-width=".8"/>
+      <circle class="contactRippleRing crr3" cx="720" cy="300" r="80" fill="none" stroke="rgba(255,255,255,.12)" stroke-width=".8"/>
+      <!-- Centre dot — pulsing -->
+      <circle cx="720" cy="300" r="4"   fill="rgba(255,255,255,.25)"/>
+      <circle id="contactCenterDot" cx="720" cy="300" r="1.5" fill="rgba(255,255,255,.7)"/>
+    </g>
+
+    <!-- NEAR: corner marks + rotating radar sweep -->
+    <g id="contactNear">
+      <line x1="32"   y1="20"  x2="32"   y2="52"  stroke="rgba(255,255,255,.3)" stroke-width=".8"/>
+      <line x1="20"   y1="32"  x2="52"   y2="32"  stroke="rgba(255,255,255,.3)" stroke-width=".8"/>
+      <line x1="1408" y1="20"  x2="1408" y2="52"  stroke="rgba(255,255,255,.3)" stroke-width=".8"/>
+      <line x1="1388" y1="32"  x2="1420" y2="32"  stroke="rgba(255,255,255,.3)" stroke-width=".8"/>
+      <line x1="32"   y1="568" x2="32"   y2="580" stroke="rgba(255,255,255,.3)" stroke-width=".8"/>
+      <line x1="20"   y1="574" x2="52"   y2="574" stroke="rgba(255,255,255,.3)" stroke-width=".8"/>
+      <line x1="1408" y1="568" x2="1408" y2="580" stroke="rgba(255,255,255,.3)" stroke-width=".8"/>
+      <line x1="1388" y1="574" x2="1420" y2="574" stroke="rgba(255,255,255,.3)" stroke-width=".8"/>
+      <!-- Radar sweep — rotates around centre (720,300) -->
+      <g id="contactSweepGroup" style="transform-origin:720px 300px">
+        <line x1="720" y1="300" x2="880" y2="140" stroke="rgba(255,255,255,.18)" stroke-width=".8"/>
+        <!-- Glow trail behind sweep -->
+        <line x1="720" y1="300" x2="840" y2="160" stroke="rgba(255,255,255,.06)" stroke-width="4"/>
+      </g>
+      <!-- Static dashed reference arc -->
+      <path d="M 660 170 A 160 160 0 0 1 880 170" fill="none" stroke="rgba(255,255,255,.07)" stroke-width=".8" stroke-dasharray="3 6"/>
+    </g>
+  </svg>
+
+  <div class="contact-ghost" aria-hidden="true">I GET SHIT DONE</div>
+  <div class="contact-inner" id="contactInner">
+    <div class="contact-eyebrow reveal">Open to New Projects</div>
+    <h2 class="contact-heading reveal d1">Let's<br>Go.</h2>
+    <a href="mailto:josephpaguirigan@gmail.com" class="contact-email reveal d2">
+      josephpaguirigan@gmail.com
+    </a>
+  </div>
+</div>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer>
+  <span class="footer-name">Joseph Paguirigan</span>
+  <span class="footer-note">Design Engineer · 2025</span>
+</footer>
+
+<script>
+/* ────────────────────────────────────────────
+   CURSOR
+──────────────────────────────────────────── */
+(function () {
+  const cur     = document.getElementById('cur');
+  const curRing = document.getElementById('curRing');
+  if (!cur || !curRing) return;
+
+  let mx = -200, my = -200, rx = -200, ry = -200;
+  cur.style.opacity = '0';
+  curRing.style.opacity = '0';
+
+  if ('ontouchstart' in window) {
+    cur.style.display = 'none';
+    curRing.style.display = 'none';
+    return;
+  }
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cur.style.left = mx + 'px';
+    cur.style.top  = my + 'px';
+    // Hide cursor when hovering over the nav bar area
+    const overNav = e.clientY < 80;
+    cur.style.opacity = overNav ? '0' : '1';
+    curRing.style.opacity = overNav ? '0' : '1';
+  });
+
+  (function animRing() {
+    rx += (mx - rx) * 0.10;
+    ry += (my - ry) * 0.10;
+    curRing.style.left = rx + 'px';
+    curRing.style.top  = ry + 'px';
+    requestAnimationFrame(animRing);
+  })();
+})();
+
+/* ────────────────────────────────────────────
+   PROGRESS BAR
+──────────────────────────────────────────── */
+(function () {
+  const bar = document.getElementById('progress');
+  if (!bar) return;
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.documentElement.scrollHeight - innerHeight) * 100;
+    bar.style.width = pct + '%';
+  }, { passive: true });
+})();
+
+/* ────────────────────────────────────────────
+   PARALLAX — data-speed handler removed;
+   all parallax is now handled by makeParallax
+   below using section-centre-relative offsets.
+──────────────────────────────────────────── */
+
+/* ────────────────────────────────────────────
+   MULTI-LAYER PARALLAX — ALL SECTIONS
+   Disabled on mobile/touch to prevent scroll
+   height issues and improve performance.
+──────────────────────────────────────────── */
+try { (function () {
+  // Skip parallax on touch/mobile devices entirely
+  const noParallax = window.matchMedia('(max-width: 768px)').matches ||
+                     ('ontouchstart' in window);
+
+  if (noParallax) return;
+
+  function makeParallax (sectionId, deepId, midId, nearId, speeds, contentId) {
+    const section = document.getElementById(sectionId);
+    const deep    = document.getElementById(deepId);
+    const mid     = document.getElementById(midId);
+    const near    = document.getElementById(nearId);
+    // Content wrappers intentionally NOT parallaxed to avoid overflow issues
+    if (!section || !deep || !mid || !near) return;
+
+    const s = speeds || { deep: 0.06, mid: 0.16, near: 0.30 };
+
+    function update () {
+      const rect   = section.getBoundingClientRect();
+      const offset = (window.innerHeight * 0.5) - (rect.top + rect.height * 0.5);
+      deep.style.transform = `translateY(${offset * s.deep}px)`;
+      mid.style.transform  = `translateY(${offset * s.mid}px)`;
+      near.style.transform = `translateY(${offset * s.near}px)`;
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  }
+
+  // Hero SVG layers
+  makeParallax('hero', 'heroDeep', 'heroMid', 'heroNear',
+    { deep: 0.05, mid: 0.13, near: 0.24 });
+
+  // Content sections
+  makeParallax('stack',   'stackDeep',   'stackMid',   'stackNear',
+    { deep: 0.05, mid: 0.14, near: 0.28 });
+
+  makeParallax('work',    'workDeep',    'workMid',    'workNear',
+    { deep: 0.05, mid: 0.14, near: 0.28 });
+
+  makeParallax('process', 'processDeep', 'processMid', 'processNear',
+    { deep: 0.05, mid: 0.14, near: 0.28 });
+
+  makeParallax('contact', 'contactDeep', 'contactMid', 'contactNear',
+    { deep: 0.04, mid: 0.11, near: 0.22 });
+
+  makeParallax('about', 'aboutDeep', 'aboutMid', 'aboutNear',
+    { deep: 0.05, mid: 0.14, near: 0.28 });
+})(); } catch(e) {}
+
+/* ────────────────────────────────────────────
+   SCROLL REVEAL
+──────────────────────────────────────────── */
+try {
+  const revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px 0px 0px' });
+    revealEls.forEach(el => observer.observe(el));
+  } else {
+    // Fallback: show everything immediately
+    revealEls.forEach(el => el.classList.add('in'));
+  }
+} catch(e) {
+  // Last-resort fallback: make all reveal elements visible
+  document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+}
+
+/* ────────────────────────────────────────────
+   PORTFOLIO LIGHTBOX
+──────────────────────────────────────────── */
+(function () {
+  const overlay      = document.getElementById('lightbox');
+  const lbImg        = document.getElementById('lb-img');
+  const lbTitle      = document.getElementById('lb-title');
+  const lbClose      = document.getElementById('lb-close');
+  const lbCloseFixed = document.getElementById('lb-close-fixed');
+  const lbPrev       = document.getElementById('lb-prev');
+  const lbNext       = document.getElementById('lb-next');
+  const lbCounter    = document.getElementById('lb-counter');
+  const lbHitPrev    = document.getElementById('lb-hit-prev');
+  const lbHitNext    = document.getElementById('lb-hit-next');
+
+  const cards = Array.from(document.querySelectorAll('.portfolio-card'));
+  let currentIndex = 0;
+
+  function showCard(index, instant) {
+    currentIndex = (index + cards.length) % cards.length;
+    const card = cards[currentIndex];
+    if (instant) {
+      lbImg.src = card.dataset.img;
+      lbTitle.textContent = card.dataset.title;
+      lbCounter.textContent = (currentIndex + 1) + ' / ' + cards.length;
+      overlay.scrollTop = 0;
+      return;
+    }
+    // fade out
+    lbImg.style.transition = 'opacity .25s ease';
+    lbImg.style.opacity = '0';
+    setTimeout(() => {
+      lbImg.src = card.dataset.img;
+      lbTitle.textContent = card.dataset.title;
+      lbCounter.textContent = (currentIndex + 1) + ' / ' + cards.length;
+      overlay.scrollTop = 0;
+      // fade in once image loaded
+      lbImg.onload = () => { lbImg.style.opacity = '1'; lbImg.onload = null; };
+      // fallback in case onload doesn't fire (cached)
+      setTimeout(() => { lbImg.style.opacity = '1'; }, 50);
+    }, 250);
+  }
+
+  function openLightbox(index) {
+    lbImg.style.opacity = '1';
+    showCard(index, true);
+    overlay.classList.add('lb-open');
+    document.body.style.overflow = 'hidden';
+    if (lbCloseFixed) lbCloseFixed.classList.add('lb-visible');
+  }
+
+  function closeLightbox() {
+    overlay.classList.remove('lb-open');
+    document.body.style.overflow = '';
+    if (lbCloseFixed) lbCloseFixed.classList.remove('lb-visible');
+    setTimeout(() => { lbImg.src = ''; }, 300);
+  }
+
+  cards.forEach((card, i) => {
+    card.addEventListener('click', () => openLightbox(i));
+  });
+
+  lbPrev.addEventListener('click', e => { e.stopPropagation(); showCard(currentIndex - 1); });
+  lbNext.addEventListener('click', e => { e.stopPropagation(); showCard(currentIndex + 1); });
+  lbHitPrev.addEventListener('click', e => { e.stopPropagation(); showCard(currentIndex - 1); });
+  lbHitNext.addEventListener('click', e => { e.stopPropagation(); showCard(currentIndex + 1); });
+  lbClose.addEventListener('click', closeLightbox);
+  if (lbCloseFixed) lbCloseFixed.addEventListener('click', closeLightbox);
+
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) closeLightbox();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (!overlay.classList.contains('lb-open')) return;
+    if (e.key === 'Escape')      closeLightbox();
+    if (e.key === 'ArrowRight')  showCard(currentIndex + 1);
+    if (e.key === 'ArrowLeft')   showCard(currentIndex - 1);
+  });
+
+  // Swipe support for mobile
+  let touchStartX = 0;
+  overlay.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+  overlay.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) dx < 0 ? showCard(currentIndex + 1) : showCard(currentIndex - 1);
+  }, { passive: true });
+})();
+
+/* ──────────────────────────────────────────────
+   NAV COLOUR — swap dark/light based on section bg
+   Light sections (white/grey): nav--dark (black text)
+   Dark sections (black/red):   nav--light (white text)
+──────────────────────────────────────────────── */
+try {
+  (function () {
+    const navEl = document.querySelector('nav');
+    if (!navEl) return;
+    const lightNavSections = ['about', 'contact'];
+
+    function updateNav () {
+      const mid = window.innerHeight * 0.08;
+      let useLightNav = false;
+      lightNavSections.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= mid && rect.bottom > mid) useLightNav = true;
+      });
+      navEl.classList.toggle('nav--light', useLightNav);
+      navEl.classList.toggle('nav--dark',  !useLightNav);
+    }
+
+    window.addEventListener('scroll', updateNav, { passive: true });
+    updateNav();
+  })();
+} catch(e) {}
+</script>
+</body>
+</html>
