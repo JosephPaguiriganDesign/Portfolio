@@ -1,0 +1,2046 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HireRight Screening Manager — Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* HireRight brand */
+    --navy:#1A2A44;
+    --navy-deep:#0F1B2E;
+    --navy-soft:#314866;
+    --accent:#E11827;        /* HireRight red */
+    --accent-deep:#B5121E;
+    --accent-soft:#F26C75;
+    --paper:#F5F2EB;
+    --paper-warm:#EAE2D2;
+    --ink:#15171C;
+    --ink-2:#3A3F4A;
+    --mute:#8A8F99;
+    /* product UI */
+    --ui-bg:#F4F6F8;
+    --side-bg:#FAFAFC;
+    --side-border:#E8E8EC;
+    --ui-border:#E5E7EC;
+    --ui-border-2:#EEF0F4;
+    --ui-text:#1A1A1A;
+    --ui-text-2:#525252;
+    --ui-text-3:#8A8F99;
+    --ok:#1A8C45;
+    --warn:#D97706;
+    --bad:#C0271A;
+    --info:#1F66C2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#fff;color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  body{width:1920px;margin:0 auto;overflow-x:hidden}
+
+  .scene{position:relative;width:1920px;overflow:hidden}
+
+  /* Shared scene headings */
+  .scene-label{
+    font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.3em;
+    color:var(--mute);text-transform:uppercase;
+  }
+  .scene-head{
+    font-family:'Inter',sans-serif;font-size:56px;font-weight:700;
+    line-height:1.05;letter-spacing:-0.025em;color:var(--navy);
+  }
+  .scene-sub{
+    font-family:'Inter',sans-serif;font-size:21px;line-height:1.45;
+    color:var(--ink-2);max-width:720px;
+  }
+
+  /* ===================== SCREEN CHROME (shared frame) ===================== */
+  .scr{
+    display:block;background:#fff;
+    box-shadow:
+      0 60px 100px -30px rgba(11,37,69,0.30),
+      0 30px 50px -20px rgba(0,0,0,0.16),
+      0 0 0 1px rgba(11,37,69,0.06);
+    border-radius:6px;overflow:hidden;
+  }
+
+  /* ===================== HIRERIGHT PRODUCT UI BASE ===================== */
+  .hr{
+    font-family:'Inter','Helvetica Neue',sans-serif;
+    color:var(--ui-text);background:#fff;
+    -webkit-font-smoothing:antialiased;
+  }
+  .hr *{box-sizing:border-box}
+  /* layout */
+  .hr-app{display:grid;grid-template-columns:240px 1fr;min-height:100%;background:var(--ui-bg)}
+  .hr-sidenav{
+    background:#fff;color:var(--ui-text);padding:22px 0 16px;
+    display:flex;flex-direction:column;gap:0;
+    border-right:1px solid var(--side-border);
+  }
+  .hr-logo{display:flex;align-items:center;gap:10px;padding:0 22px 22px;border-bottom:1px solid var(--side-border);margin-bottom:8px}
+  .hr-logo img{display:block;height:104px;width:auto}
+  .hr-wordmark img{display:block;height:104px;width:auto}
+  .hr-mob-top .hr-logo img{height:76px}
+  /* legacy wordmark CSS (kept for cover-mark; image overrides where used) */
+  .hr-wordmark{
+    font-family:'Inter',sans-serif;font-weight:800;font-size:20px;
+    letter-spacing:-0.01em;color:#1A1A1A;display:inline-flex;align-items:baseline;gap:6px;line-height:1;
+  }
+  .hr-wordmark .right{
+    position:relative;
+  }
+  .hr-wordmark .right::after{
+    content:"";position:absolute;left:0;right:0;bottom:-3px;height:2px;background:var(--accent);
+  }
+  .hr-wordmark .tick{
+    position:absolute;left:36%;top:-6px;width:7px;height:7px;
+    background:var(--accent);border-radius:1px;transform:rotate(20deg);
+  }
+  .hr-section-title{
+    font-size:10.5px;text-transform:uppercase;letter-spacing:0.14em;
+    color:var(--ui-text-3);font-weight:600;padding:14px 22px 6px;
+  }
+  .hr-nav-item{
+    display:flex;align-items:center;gap:10px;
+    padding:9px 22px;font-size:13.5px;font-weight:500;
+    color:var(--ui-text);cursor:default;position:relative;
+  }
+  .hr-nav-item .ic{width:14px;height:14px;flex:none;color:var(--ui-text-2)}
+  .hr-nav-item .chev{width:10px;height:10px;color:var(--ui-text-3);margin-right:-2px}
+  .hr-nav-item.active{color:var(--accent);font-weight:600}
+  .hr-nav-item.active::before{
+    content:"";position:absolute;left:0;top:6px;bottom:6px;width:3px;background:var(--accent);border-radius:0 2px 2px 0;
+  }
+  .hr-nav-item.active .ic{color:var(--accent)}
+  .hr-nav-item .badge{
+    margin-left:auto;background:var(--accent);color:#fff;
+    font-size:10px;font-weight:700;padding:1px 7px;border-radius:999px;
+    min-width:18px;text-align:center;
+  }
+
+  /* main */
+  .hr-main{display:flex;flex-direction:column;background:var(--ui-bg);min-width:0}
+  .hr-topbar{
+    background:#fff;border-bottom:1px solid var(--side-border);
+    display:flex;align-items:center;padding:14px 28px;gap:24px;height:64px;
+  }
+  .hr-search{
+    flex:1;max-width:520px;display:flex;align-items:center;gap:10px;
+    background:#fff;border:1px solid var(--ui-border);border-radius:4px;
+    padding:9px 14px;font-size:13px;color:var(--ui-text-3);
+  }
+  .hr-search .ic{width:14px;height:14px;color:var(--ui-text-2);margin-left:auto;flex:none}
+  .hr-acct{
+    display:flex;flex-direction:column;gap:4px;font-size:11px;
+    text-align:right;color:var(--ui-text-3);
+  }
+  .hr-acct .lbl{font-size:10.5px;color:var(--ui-text-3)}
+  .hr-acct .val{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:12.5px;color:var(--ui-text);font-weight:600;letter-spacing:-0.005em;
+  }
+  .hr-acct .val .chev{width:9px;height:9px;color:var(--ui-text-2)}
+  .hr-topbar-right{display:flex;flex-direction:column;gap:4px;align-items:flex-end;font-size:11px}
+  .hr-topbar-right .who{font-size:13px;color:var(--ui-text);font-weight:600}
+  .hr-topbar-right .who a{color:var(--info);text-decoration:underline;font-weight:500}
+  .hr-topbar-right .geo{font-size:11.5px;color:var(--ui-text-3)}
+  .hr-topbar-right .geo b{color:var(--ui-text);font-weight:600}
+
+  /* page header */
+  .hr-page-header{
+    padding:18px 28px 12px;display:flex;align-items:center;justify-content:space-between;gap:24px;
+  }
+  .hr-page-header h1{
+    font-size:30px;font-weight:700;color:var(--ui-text);letter-spacing:-0.015em;
+  }
+  .hr-page-actions{display:flex;align-items:center;gap:18px;font-size:13px;color:var(--ui-text-2)}
+  .hr-action{display:inline-flex;align-items:center;gap:6px;color:var(--ui-text-2);font-weight:500}
+  .hr-action .ic{width:14px;height:14px;color:var(--ui-text-3)}
+  .hr-action.disabled{color:var(--ui-text-3)}
+  .hr-action.disabled .ic{color:#C5CBD3}
+  .hr-divider{width:1px;height:18px;background:var(--side-border)}
+  .hr-btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:9px 18px;border-radius:3px;
+    font-size:13px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;
+    cursor:default;border:1px solid transparent;
+  }
+  .hr-btn.primary{background:var(--accent);color:#fff}
+  .hr-btn.primary .split{padding-left:14px;border-left:1px solid rgba(255,255,255,0.3);margin-left:6px;display:inline-flex;align-items:center}
+  .hr-btn.secondary{background:#fff;color:var(--ui-text);border-color:var(--ui-border)}
+  .hr-btn.ghost{background:transparent;color:var(--ui-text-2);text-transform:none;letter-spacing:-0.005em;font-weight:500;padding:6px 0}
+  .hr-btn .ic{width:14px;height:14px}
+
+  /* tabs */
+  .hr-tabs{
+    border-bottom:1px solid var(--ui-border);padding:0 28px;
+    display:flex;gap:32px;background:#fff;
+  }
+  .hr-tab{
+    padding:14px 0;font-size:13px;font-weight:500;
+    color:var(--ui-text-2);position:relative;
+  }
+  .hr-tab.active{color:var(--accent);font-weight:600}
+  .hr-tab.active::after{
+    content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent);
+  }
+  .hr-tab .count{
+    display:inline-block;margin-left:6px;
+    color:var(--ui-text-3);
+    font-size:11.5px;font-weight:600;
+  }
+  .hr-tab.active .count{color:var(--accent)}
+  /* application top tabs */
+  .hr-apptabs{
+    background:#fff;padding:0 28px;display:flex;gap:28px;
+    border-bottom:1px solid var(--side-border);
+  }
+  .hr-apptab{
+    padding:12px 0;font-size:13.5px;font-weight:500;color:var(--ui-text-2);
+    position:relative;
+  }
+  .hr-apptab.active{color:var(--accent);font-weight:600}
+  .hr-apptab.active::after{
+    content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent);
+  }
+  .hr-apptab .close{margin-left:8px;color:var(--ui-text-3);font-weight:400}
+
+  /* filter row — dropdown style like real product */
+  .hr-filters{
+    padding:16px 28px 12px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+    background:#fff;
+  }
+  .hr-fld{display:flex;flex-direction:column;gap:4px;min-width:160px}
+  .hr-fld label{font-size:11px;color:var(--ui-text-3);font-weight:500;letter-spacing:-0.005em}
+  .hr-fld .ctrl{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:6px 0 7px;border-bottom:1px solid var(--ui-border);
+    font-size:13px;color:var(--ui-text);font-weight:500;
+  }
+  .hr-fld .ctrl .chev{width:10px;height:10px;color:var(--ui-text-2)}
+  .hr-fld.action{align-self:flex-end}
+  .hr-fld.action a{color:var(--info);font-size:13px;text-decoration:underline;font-weight:500}
+  .hr-refreshed{margin-left:auto;align-self:flex-end;font-size:11.5px;color:var(--ui-text-3);font-weight:500;padding-bottom:6px}
+  .hr-refreshed b{color:var(--ui-text);font-weight:600}
+  /* tab row (sub) — Invitations / Not Submitted / In Progress / etc. */
+  .hr-subtabs{
+    background:#fff;padding:6px 28px 0;border-bottom:1px solid var(--ui-border);
+    display:flex;gap:28px;align-items:center;
+  }
+  .hr-subtab{
+    padding:12px 0;font-size:12.5px;font-weight:500;color:var(--ui-text-2);position:relative;
+  }
+  .hr-subtab.active{color:var(--accent);font-weight:600}
+  .hr-subtab.active::after{
+    content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent);
+  }
+  .hr-subtab .ic{width:12px;height:12px;color:var(--ui-text-3);margin-left:auto}
+
+  /* table — matches real product structure */
+  .hr-table{
+    background:#fff;
+    margin:0 28px;
+  }
+  .hr-thead{
+    display:grid;
+    grid-template-columns: 30px 28px 1.3fr 1.2fr 1fr 1fr 1fr 1.1fr 1.2fr 1.4fr;
+    align-items:center;padding:0 14px;
+    border-bottom:1.5px solid var(--ui-border);background:#fff;
+    font-size:12.5px;color:var(--ui-text);font-weight:700;height:44px;
+  }
+  .hr-thead .sort{font-size:9px;margin-left:6px;color:var(--ui-text-3)}
+  .hr-row{
+    display:grid;
+    grid-template-columns: 30px 28px 1.3fr 1.2fr 1fr 1fr 1fr 1.1fr 1.2fr 1.4fr;
+    align-items:center;padding:0 14px;
+    border-bottom:1px solid var(--ui-border-2);min-height:54px;
+    font-size:13px;color:var(--ui-text);
+  }
+  .hr-row:last-child{border-bottom:none}
+  .hr-row .check{
+    width:13px;height:13px;border:1.5px solid var(--ui-text-3);border-radius:0;
+  }
+  .hr-row .flag-cell{display:flex;align-items:center;justify-content:center}
+  .hr-row .flag-cell .flag-on{color:var(--accent)}
+  .hr-row .flag-cell .flag-off{color:transparent}
+  .hr-row .acct{font-size:12px;color:var(--ui-text);line-height:1.35}
+  .hr-row .ssn{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ui-text)}
+  .hr-pill{
+    display:inline-flex;align-items:center;
+    font-size:12px;color:var(--ui-text);font-weight:500;line-height:1.3;
+  }
+  .hr-pill.ok{color:var(--ok)}
+  .hr-pill.review{color:#A66700}
+  .hr-pill.progress{color:#1D4FA9}
+  .hr-pill.pending{color:var(--ui-text-2)}
+  .hr-pill.flag{color:var(--accent);font-weight:600}
+  .hr-date{color:var(--ui-text);font-size:13px;font-variant-numeric:tabular-nums}
+
+  /* table footer */
+  .hr-tfoot{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 28px;border-top:1px solid var(--ui-border);
+    font-size:12.5px;color:var(--ui-text-2);background:#fff;
+  }
+  .hr-tfoot-pages{display:flex;align-items:center;gap:4px}
+  .hr-tfoot-pages .pg{
+    width:26px;height:26px;display:grid;place-items:center;
+    border-radius:3px;font-size:12px;color:var(--ui-text-2);font-weight:500;
+  }
+  .hr-tfoot-pages .pg.active{background:var(--accent);color:#fff;font-weight:600}
+
+  /* helpers */
+  .hr-name-strong{font-weight:600;color:var(--ui-text)}
+  .hr-cand .av{width:26px;height:26px;border-radius:50%;flex:none;font-size:10.5px;font-weight:600;color:#fff;display:grid;place-items:center;letter-spacing:-0.02em}
+  .hr-cand{display:flex;align-items:center;gap:10px;min-width:0}
+  .av.c1{background:#1F4576}.av.c2{background:#A14B2C}.av.c3{background:#3B6E47}
+  .av.c4{background:#7D3E8C}.av.c5{background:#0E6E6E}.av.c6{background:#A8732A}
+  .av.c7{background:#244E89}.av.c8{background:#7A3D1E}.av.c9{background:#4F4F6B}
+
+  /* ===================== CANDIDATE REPORT SCREEN ===================== */
+  .hr-rep{display:grid;grid-template-columns:240px 1fr;min-height:100%}
+  .hr-rep-side{background:#fff} /* matches dashboard sidenav */
+
+  .hr-rep-main{background:var(--ui-bg);display:flex;flex-direction:column;min-width:0}
+  .hr-rep-header{
+    background:#fff;border-bottom:1px solid var(--ui-border);
+    padding:22px 28px 18px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;
+  }
+  .hr-rep-header .id{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;
+    color:var(--ui-text-3);text-transform:uppercase;margin-bottom:6px;
+  }
+  .hr-rep-header h1{font-size:26px;font-weight:700;letter-spacing:-0.015em;color:var(--ui-text)}
+  .hr-rep-header .who{display:flex;align-items:center;gap:14px;margin-top:10px}
+  .hr-rep-header .who .av{width:42px;height:42px;font-size:14px}
+  .hr-rep-header .who .meta{font-size:13px;color:var(--ui-text-2)}
+  .hr-rep-header .who .meta b{display:block;color:var(--ui-text);font-size:15px;font-weight:600;letter-spacing:-0.005em}
+  .hr-rep-header .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+
+  .hr-rep-summary{
+    display:grid;grid-template-columns:repeat(4, 1fr);gap:1px;
+    background:var(--ui-border);border-radius:0;
+    border-top:1px solid var(--ui-border);border-bottom:1px solid var(--ui-border);
+  }
+  .hr-summary-cell{
+    background:#fff;padding:16px 20px;
+  }
+  .hr-summary-cell .lbl{
+    font-size:11px;text-transform:uppercase;letter-spacing:0.12em;
+    color:var(--ui-text-3);font-weight:600;
+  }
+  .hr-summary-cell .val{
+    font-size:22px;font-weight:700;color:var(--ui-text);margin-top:6px;letter-spacing:-0.01em;
+  }
+  .hr-summary-cell .sub{font-size:12px;color:var(--ui-text-2);margin-top:2px}
+  .hr-summary-cell.accent .val{color:var(--accent)}
+  .hr-summary-cell.ok .val{color:#0F7A37}
+
+  .hr-rep-body{
+    display:grid;grid-template-columns:1.6fr 1fr;gap:1px;
+    background:var(--ui-border);flex:1;
+  }
+  .hr-rep-col{background:#fff;padding:24px 28px}
+
+  /* sections */
+  .hr-section{margin-bottom:24px}
+  .hr-section-h{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-bottom:10px;border-bottom:1px solid var(--ui-border);margin-bottom:14px;
+  }
+  .hr-section-h h3{font-size:14px;font-weight:700;color:var(--ui-text);letter-spacing:-0.005em}
+  .hr-section-h .hr-pill{font-size:10.5px;padding:2px 8px}
+
+  .hr-kv{display:grid;grid-template-columns:140px 1fr;gap:4px 18px;font-size:13px}
+  .hr-kv dt{color:var(--ui-text-3);font-weight:500}
+  .hr-kv dd{color:var(--ui-text);font-weight:500}
+
+  .hr-check-list{display:flex;flex-direction:column;gap:10px}
+  .hr-check{
+    display:grid;grid-template-columns:18px 1fr auto;align-items:center;gap:12px;
+    padding:12px 14px;border:1px solid var(--ui-border);border-radius:8px;
+    background:#FCFCFD;
+  }
+  .hr-check .ico{
+    width:18px;height:18px;border-radius:50%;
+    display:grid;place-items:center;font-size:10px;font-weight:800;color:#fff;
+  }
+  .hr-check .ico.ok{background:#16A34A}
+  .hr-check .ico.warn{background:#F59E0B}
+  .hr-check .ico.run{background:#2563EB}
+  .hr-check .ico.wait{background:#9AA4B2}
+  .hr-check .body{min-width:0}
+  .hr-check .ttl{font-size:13.5px;font-weight:600;color:var(--ui-text);letter-spacing:-0.005em}
+  .hr-check .meta{font-size:11.5px;color:var(--ui-text-3);margin-top:2px}
+
+  /* timeline */
+  .hr-timeline{display:flex;flex-direction:column;gap:14px;position:relative}
+  .hr-timeline::before{
+    content:"";position:absolute;left:9px;top:6px;bottom:6px;width:1.5px;background:var(--ui-border);
+  }
+  .hr-time-item{display:grid;grid-template-columns:20px 1fr auto;gap:12px;align-items:flex-start;position:relative}
+  .hr-time-dot{
+    width:20px;height:20px;border-radius:50%;background:#fff;
+    border:2px solid var(--ui-border);z-index:1;
+    display:grid;place-items:center;
+  }
+  .hr-time-dot.active{border-color:var(--accent);background:var(--accent)}
+  .hr-time-dot.done{border-color:#16A34A;background:#16A34A}
+  .hr-time-dot.done::after{content:"";width:5px;height:5px;background:#fff;border-radius:50%}
+  .hr-time-text{font-size:13px;color:var(--ui-text);font-weight:500;line-height:1.35;padding-top:1px}
+  .hr-time-text small{display:block;color:var(--ui-text-3);font-weight:500;margin-top:2px;font-size:11.5px}
+  .hr-time-date{font-size:11.5px;color:var(--ui-text-3);font-variant-numeric:tabular-nums;padding-top:3px;text-align:right}
+
+  /* ===================== INSIGHTS / ANALYTICS SCREEN ===================== */
+  .hr-ins{display:grid;grid-template-columns:240px 1fr;min-height:100%}
+  .hr-ins-main{background:var(--ui-bg);min-width:0;display:flex;flex-direction:column}
+  .hr-kpi-row{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+    padding:20px 28px 0;
+  }
+  .hr-kpi{
+    background:#fff;border:1px solid var(--ui-border);border-radius:8px;padding:18px 20px;
+  }
+  .hr-kpi .lbl{font-size:11.5px;text-transform:uppercase;letter-spacing:0.1em;color:var(--ui-text-3);font-weight:600}
+  .hr-kpi .val{font-size:30px;font-weight:700;color:var(--ui-text);margin-top:8px;letter-spacing:-0.02em}
+  .hr-kpi .delta{
+    display:inline-flex;align-items:center;gap:4px;
+    font-size:12px;font-weight:600;margin-top:6px;
+  }
+  .hr-kpi .delta.up{color:#0F7A37}
+  .hr-kpi .delta.down{color:#B32A14}
+  .hr-kpi .spark{margin-top:10px;display:block}
+
+  .hr-charts{
+    display:grid;grid-template-columns:1.5fr 1fr;gap:16px;padding:16px 28px 24px;
+  }
+  .hr-card{background:#fff;border:1px solid var(--ui-border);border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+  .hr-card-h{display:flex;align-items:center;justify-content:space-between}
+  .hr-card-h h4{font-size:14px;font-weight:700;color:var(--ui-text);letter-spacing:-0.005em}
+  .hr-card-h .seg{
+    display:inline-flex;background:var(--ui-bg);border-radius:6px;padding:2px;
+    font-size:11px;font-weight:600;color:var(--ui-text-2);
+  }
+  .hr-card-h .seg span{padding:4px 10px;border-radius:4px}
+  .hr-card-h .seg span.on{background:#fff;color:var(--ui-text);box-shadow:0 1px 2px rgba(0,0,0,0.06)}
+
+  .hr-legend{display:flex;gap:14px;font-size:11.5px;color:var(--ui-text-2);font-weight:500}
+  .hr-legend span{display:inline-flex;align-items:center;gap:6px}
+  .hr-legend i{width:10px;height:10px;border-radius:2px;display:block}
+
+  /* ===================== SCENE 1: COVER ===================== */
+  .cover{
+    height:1400px;
+    background:
+      radial-gradient(1200px 800px at 80% 20%, rgba(225,24,39,0.14), transparent 60%),
+      radial-gradient(900px 700px at 15% 80%, rgba(26,42,68,0.08), transparent 60%),
+      linear-gradient(180deg, #F7F4ED 0%, #EFE9DD 100%);
+    padding:120px 140px 0;
+  }
+  .cover-meta{
+    display:flex;align-items:center;gap:24px;
+    font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .cover-meta .dot{width:10px;height:10px;border-radius:50%;background:var(--accent)}
+  .cover-meta span{position:relative}
+  .cover-meta span + span::before{content:"";position:absolute;left:-14px;top:50%;transform:translateY(-50%);width:4px;height:4px;border-radius:50%;background:var(--mute)}
+
+  .cover-title{
+    margin-top:48px;font-family:'Inter',sans-serif;
+    font-weight:800;font-size:188px;line-height:0.92;letter-spacing:-0.04em;color:var(--navy);
+    text-wrap:balance;
+  }
+  .cover-title em{font-style:normal;color:var(--accent)}
+  .cover-sub{
+    margin-top:48px;max-width:1100px;font-family:'Inter',sans-serif;
+    font-size:30px;line-height:1.35;color:var(--ink-2);font-weight:400;
+  }
+  .cover-tags{margin-top:64px;display:flex;gap:16px;flex-wrap:wrap}
+  .cover-tags span{
+    padding:14px 26px;border:1.5px solid var(--ink);border-radius:999px;
+    font-family:'Inter',sans-serif;font-size:18px;font-weight:500;
+    background:rgba(255,255,255,0.5);backdrop-filter:blur(2px);
+  }
+  .cover-bar{
+    position:absolute;left:0;right:0;bottom:0;height:14px;
+    background:linear-gradient(90deg, var(--navy) 0 22%, var(--accent) 22% 100%);
+  }
+  .cover-mark{
+    position:absolute;top:120px;right:140px;display:flex;align-items:center;gap:18px;
+    padding:18px 28px;background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(21,53,92,0.10);
+  }
+  .cover-mark .burst{
+    width:auto;height:auto;border-radius:8px;
+    background:#fff;border:1px solid var(--side-border);
+    display:grid;place-items:center;padding:12px 18px;
+  }
+  .cover-mark .burst img{display:block;height:30px;width:auto}
+  .cover-mark .stack{display:flex;flex-direction:column;line-height:1.1;font-family:'Inter',sans-serif}
+  .cover-mark .stack small{font-size:11px;letter-spacing:0.16em;color:var(--mute);text-transform:uppercase}
+  .cover-mark .stack b{font-size:22px;font-weight:800;color:var(--navy);letter-spacing:0.04em}
+
+  /* ===================== SCENE 2: DASHBOARD HERO ===================== */
+  .scene-dash{
+    padding:160px 0 200px;
+    background:
+      radial-gradient(1100px 700px at 50% 0%, rgba(225,24,39,0.06), transparent 70%),
+      linear-gradient(180deg, #F7F4ED 0%, #EFE9DD 100%);
+  }
+  .head-row{
+    display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;
+    padding:0 140px;margin-bottom:80px;
+  }
+  .head-row .right{display:flex;flex-direction:column;align-items:flex-end;gap:14px;text-align:right}
+
+  .dash-stage{
+    width:1620px;margin:0 auto;
+  }
+  .dash-stage .scr{
+    height:920px;
+  }
+  .dash-stage .scr .hr{height:100%}
+
+  .annotate-row{
+    margin-top:120px;padding:0 140px;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:60px;
+  }
+  .annotate .num{
+    font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.2em;
+    color:var(--accent);text-transform:uppercase;margin-bottom:14px;font-weight:600;
+  }
+  .annotate h4{
+    font-family:'Inter',sans-serif;font-size:26px;font-weight:700;
+    line-height:1.15;letter-spacing:-0.01em;color:var(--navy);margin-bottom:14px;
+  }
+  .annotate p{
+    font-family:'Inter',sans-serif;font-size:17px;line-height:1.55;color:var(--ink-2);
+  }
+
+  /* ===================== SCENE 3: CANDIDATE REPORT ===================== */
+  .scene-rep{
+    padding:160px 0 200px;
+    background:
+      radial-gradient(900px 600px at 90% 10%, rgba(225,24,39,0.06), transparent 60%),
+      linear-gradient(180deg, #FAF7F1 0%, #F3EEDF 100%);
+    color:var(--ink);
+  }
+  .scene-rep::before{display:none}
+  .scene-rep .head-row{position:relative;z-index:1}
+  .scene-rep .scene-label{color:var(--mute)}
+  .scene-rep .scene-head{color:var(--navy)}
+  .scene-rep .scene-sub{color:var(--ink-2)}
+
+  .rep-stage{
+    width:1620px;margin:0 auto;position:relative;z-index:1;
+  }
+  .rep-stage .scr{height:1020px}
+  .rep-stage .scr .hr{height:100%}
+
+  /* ===================== SCENE 4: INSIGHTS ===================== */
+  .scene-ins{
+    padding:160px 140px 200px;
+    background:
+      radial-gradient(1000px 700px at 50% 100%, rgba(224,78,39,0.16), transparent 60%),
+      linear-gradient(180deg, var(--navy-deep) 0%, #143864 100%);
+    color:#fff;
+  }
+  .scene-ins .scene-label{color:rgba(244,122,85,0.95)}
+  .scene-ins .scene-head{color:#fff}
+  .scene-ins .scene-sub{color:rgba(255,255,255,0.78)}
+
+  .ins-stage{
+    width:100%;
+  }
+  .ins-stage .scr{height:780px}
+  .ins-stage .scr .hr{height:100%}
+
+  .ins-callouts{
+    margin-top:80px;display:grid;grid-template-columns:repeat(4,1fr);gap:40px;
+  }
+  .ins-callout{padding-top:22px;border-top:1.5px solid rgba(255,255,255,0.2)}
+  .ins-callout .lbl{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent-soft);letter-spacing:0.18em;text-transform:uppercase;font-weight:600;margin-bottom:10px}
+  .ins-callout h5{font-family:'Inter',sans-serif;font-size:18px;font-weight:700;color:#fff;line-height:1.25;letter-spacing:-0.005em;margin-bottom:8px}
+  .ins-callout p{font-family:'Inter',sans-serif;font-size:14.5px;line-height:1.5;color:rgba(255,255,255,0.72)}
+
+  /* ===================== SCENE 5: MOBILE + ORDER FLOW ===================== */
+  .scene-mob{
+    padding:160px 140px 200px;
+    background:
+      radial-gradient(900px 600px at 80% 0%, rgba(21,53,92,0.05), transparent 70%),
+      linear-gradient(180deg, #F7F4ED 0%, #EFE9DD 100%);
+  }
+  .mob-stage{
+    display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;align-items:flex-start;
+  }
+  .mob-stage .scr{
+    overflow:hidden;
+  }
+  .mob-frame{
+    width:100%;background:#fff;border-radius:18px;overflow:hidden;
+    box-shadow:
+      0 60px 100px -30px rgba(11,37,69,0.35),
+      0 30px 50px -20px rgba(0,0,0,0.18),
+      0 0 0 1px rgba(11,37,69,0.06);
+  }
+  .mob-frame .hr{display:block}
+  .mob-meta{margin-top:24px;padding-top:20px;border-top:1.5px solid var(--ink)}
+  .mob-meta .code{
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.2em;
+    color:var(--mute);text-transform:uppercase;
+  }
+  .mob-meta h5{
+    font-family:'Inter',sans-serif;font-size:22px;font-weight:700;color:var(--navy);
+    margin:8px 0 8px;letter-spacing:-0.01em;
+  }
+  .mob-meta p{font-family:'Inter',sans-serif;font-size:15px;line-height:1.5;color:var(--ink-2)}
+
+  /* mobile UI specifics */
+  .hr-mob{
+    font-family:'Inter',sans-serif;background:var(--ui-bg);display:flex;flex-direction:column;
+  }
+  .hr-mob-top{
+    background:#fff;padding:16px 18px 12px;border-bottom:1px solid var(--ui-border);
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .hr-mob-top .hr-logo{padding:0;border-bottom:none;margin-bottom:0}
+  .hr-mob-top .hr-wordmark{font-size:15px}
+
+  .hr-mob-tabs{
+    background:#fff;padding:0 18px;display:flex;gap:18px;border-bottom:1px solid var(--ui-border);
+  }
+  .hr-mob-tabs .hr-tab{padding:12px 0;font-size:13px}
+  .hr-mob-list{padding:14px 18px;display:flex;flex-direction:column;gap:10px}
+  .hr-mob-row{
+    background:#fff;border:1px solid var(--ui-border);border-radius:8px;padding:14px;
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .hr-mob-row .top{display:flex;align-items:center;gap:10px}
+  .hr-mob-row .top .av{width:32px;height:32px;border-radius:50%;color:#fff;font-size:11px;font-weight:600;display:grid;place-items:center}
+  .hr-mob-row .name{font-size:13.5px;font-weight:600;color:var(--ui-text);letter-spacing:-0.005em}
+  .hr-mob-row .meta{font-size:11.5px;color:var(--ui-text-3);margin-top:1px}
+  .hr-mob-row .bottom{display:flex;align-items:center;justify-content:space-between;margin-top:2px}
+  .hr-mob-row .pkg{font-size:11.5px;color:var(--ui-text-2)}
+
+  /* ===================== FOOTER ===================== */
+  .footer{
+    height:240px;background:var(--navy-deep);color:#fff;
+    display:flex;align-items:center;justify-content:space-between;padding:0 140px;
+  }
+  .footer h6{font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.2em;color:var(--accent-soft);text-transform:uppercase;font-weight:500}
+  .footer .name{font-family:'Inter',sans-serif;font-size:28px;font-weight:700;margin-top:6px}
+  .footer .right{font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.2em;color:rgba(255,255,255,0.6);text-transform:uppercase}
+
+  /* Inline svg icon helper */
+  .ic{display:inline-block;vertical-align:middle}
+
+  /* JP: real HireRight logo image */
+  .hr-logo-img { display: block; height: 30px; width: auto; }
+  .hr-logo .hr-logo-img { height: 30px; }
+  .cover-mark .burst .hr-logo-img { height: 30px; }
+  .hr-mob-top .hr-logo .hr-logo-img { height: 22px; }
+
+/* ─── MOBILE-NATIVE LAYOUT (< 768px) ─────────────────── */
+@media (max-width: 767px) {
+  html, body { width: 100% !important; overflow-x: hidden !important; }
+  .scene { width: 100% !important; overflow: visible !important; }
+
+  /* Cover */
+  .cover { height: auto !important; padding: 80px 22px 40px !important; }
+  .cover-meta { font-size: 11px !important; flex-wrap: wrap; gap: 14px !important; }
+  .cover-title { font-size: 52px !important; margin-top: 28px !important; line-height: 1.0 !important; }
+  .cover-sub { font-size: 16px !important; margin-top: 24px !important; max-width: 100% !important; }
+  .cover-tags { margin-top: 28px !important; gap: 8px !important; }
+  .cover-tags span { font-size: 11px !important; padding: 8px 14px !important; }
+  .cover-bar { height: 6px !important; }
+  .cover-mark { display: none !important; }
+
+  /* Scene padding + headings */
+  .scene-dash, .scene-rep, .scene-ins, .scene-mob { padding: 56px 22px !important; }
+  .scene-head { font-size: 28px !important; line-height: 1.12 !important; }
+  .scene-sub { font-size: 15px !important; max-width: 100% !important; }
+  .scene-label { font-size: 11px !important; }
+
+  /* Stacked 2-col headers */
+  .head-row {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important; padding: 0 !important; margin-bottom: 32px !important;
+  }
+  .head-row .right { align-items: flex-start !important; text-align: left !important; }
+
+  /* Wide product screens — full-bleed container; JS scales the .scr to fit */
+  .dash-stage, .rep-stage, .ins-stage {
+    width: 100% !important; margin: 0 !important;
+  }
+  .dash-stage .scr, .rep-stage .scr { width: 1620px !important; }
+  .ins-stage .scr { width: 1640px !important; }
+
+  /* Annotations + callouts → single column */
+  .annotate-row { grid-template-columns: 1fr !important; padding: 0 !important; margin-top: 40px !important; gap: 28px !important; }
+  .annotate h4 { font-size: 20px !important; }
+  .annotate p { font-size: 15px !important; }
+  .ins-callouts { grid-template-columns: 1fr !important; gap: 28px !important; margin-top: 48px !important; }
+
+  /* Mobile scene — stack the phone frames, cap width */
+  .mob-stage { grid-template-columns: 1fr !important; gap: 48px !important; }
+  .mob-frame { max-width: 320px !important; margin: 0 auto !important; }
+  .mob-meta { max-width: 320px !important; margin-left: auto !important; margin-right: auto !important; }
+
+  /* Footer */
+  .footer { height: auto !important; padding: 32px 22px !important; flex-direction: column !important; gap: 16px !important; align-items: flex-start !important; }
+  .footer .name { font-size: 20px !important; }
+
+  /* Back nav */
+  .jp-back-nav { top: 16px !important; left: 16px !important; font-size: 11px !important; padding: 10px 16px !important; }
+}
+</style>
+</head>
+<body>
+<!-- Back to Portfolio nav (JP) -->
+<style>
+  .jp-back-nav{
+    position:fixed;top:24px;left:24px;z-index:99999;
+    display:inline-flex;align-items:center;gap:10px;padding:12px 20px;
+    background:rgba(15,27,46,0.92);color:#fff;
+    font-family:'Inter',system-ui,sans-serif;font-size:13px;font-weight:600;
+    letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;
+    border-radius:999px;backdrop-filter:blur(8px);
+    box-shadow:0 8px 24px rgba(15,27,46,0.25);
+    transition:background .2s ease, transform .2s ease;
+  }
+  .jp-back-nav:hover{background:#E11827;transform:translateX(-2px)}
+  .jp-back-nav .arr{display:inline-block;transition:transform .2s ease}
+  .jp-back-nav:hover .arr{transform:translateX(-3px)}
+</style>
+<a class="jp-back-nav" href="index.html#work">
+  <span class="arr">&larr;</span> Back to Portfolio
+</a>
+<script>
+  if (window.self !== window.top) {
+    var n = document.querySelector('.jp-back-nav');
+    if (n) n.style.display = 'none';
+  }
+</script>
+
+
+<!-- shared icon defs -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-dash" viewBox="0 0 16 16"><path fill="currentColor" d="M2 2h5v5H2zM9 2h5v3H9zM9 7h5v7H9zM2 9h5v5H2z"/></symbol>
+    <symbol id="i-order" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.4" d="M3 4h10l-1 9H4zM6 4V2h4v2"/></symbol>
+    <symbol id="i-candidates" viewBox="0 0 16 16"><circle cx="6" cy="6" r="2.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2 14c0-2.5 2-4 4-4s4 1.5 4 4M11 7a2 2 0 100-4M14 14c0-2-1.5-3-3-3" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+    <symbol id="i-reports" viewBox="0 0 16 16"><path d="M3 2h7l3 3v9H3z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M9 2v3h4M6 8h4M6 11h4" stroke="currentColor" stroke-width="1.4"/></symbol>
+    <symbol id="i-insights" viewBox="0 0 16 16"><path d="M2 13V5l3 3 3-3 3 4 3-5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 16 16"><path d="M4 11h8l-1-2V7a3 3 0 10-6 0v2zM6 13a2 2 0 004 0" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3 3l1.5 1.5M11.5 11.5L13 13M3 13l1.5-1.5M11.5 4.5L13 3" stroke="currentColor" stroke-width="1.4"/></symbol>
+    <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.4"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 16 16"><path d="M2 4h12l-4.5 5v4l-3-2V9z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 16 16"><path d="M5 6l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-dots" viewBox="0 0 16 16"><circle cx="3.5" cy="8" r="1.2" fill="currentColor"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/><circle cx="12.5" cy="8" r="1.2" fill="currentColor"/></symbol>
+    <symbol id="i-flag" viewBox="0 0 16 16"><path d="M3 2v12M3 3h9l-1.5 3L12 9H3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-dl" viewBox="0 0 16 16"><path d="M8 2v8m-3-3l3 3 3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 16 16"><path d="M3 8l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow-up" viewBox="0 0 12 12"><path d="M6 9V3M3 6l3-3 3 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow-dn" viewBox="0 0 12 12"><path d="M6 3v6M3 6l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<!-- ===================== SCENE 1: COVER ===================== -->
+<section class="scene cover">
+  <div class="cover-meta">
+    <span class="dot"></span>
+    <span>Case&nbsp;Study&nbsp;/&nbsp;02</span>
+    <span>2022&nbsp;–&nbsp;2023</span>
+    <span>Lead&nbsp;Product&nbsp;Designer</span>
+  </div>
+
+  <h1 class="cover-title">Screening,<br>at the speed<br>of <em>hiring.</em></h1>
+
+  <p class="cover-sub">Reimagining <b>HireRight Screening Manager</b> &mdash; a global background-check platform used by 40,000+ organizations &mdash; into a real-time command center for HR teams.</p>
+
+  <div class="cover-tags">
+    <span>Enterprise SaaS</span>
+    <span>Workflow &amp; Compliance</span>
+    <span>Data Visualization</span>
+    <span>Design System</span>
+    <span>Mobile &amp; Web</span>
+  </div>
+
+  <div class="cover-bar"></div>
+</section>
+
+<!-- ===================== SCENE 2: DASHBOARD ===================== -->
+<section class="scene scene-dash">
+  <div class="head-row">
+    <div>
+      <div class="scene-label" style="margin-bottom:16px">01 &nbsp;·&nbsp; The Command Center</div>
+      <h2 class="scene-head">Every candidate,<br>every status, one screen.</h2>
+    </div>
+    <div class="right">
+      <div class="scene-label">Orders Dashboard</div>
+      <p class="scene-sub">Recruiters live here. A real-time list of every background check in flight &mdash; filterable, sortable, exportable &mdash; with status pills that mean the same thing whether you're hiring in Dallas or Düsseldorf.</p>
+    </div>
+  </div>
+
+  <div class="dash-stage">
+    <div class="scr">
+      <div class="hr">
+        <div class="hr-app">
+
+          <!-- side nav -->
+          <aside class="hr-sidenav">
+            <div class="hr-logo">
+              <img class="hr-logo-img" src="case-screening-assets/hireright-logo.png" alt="HireRight">
+            </div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-bell"/></svg>Alerts</div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-bell"/></svg>Announcement<span class="badge">1</span></div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-chev"/></svg>Compliance Workbench</div>
+            <div class="hr-nav-item">Customers</div>
+            <div class="hr-nav-item">DHS Manager</div>
+            <div class="hr-nav-item">MyCompliance</div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-chev"/></svg>Random Compliance Program</div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-chev"/></svg>Rosters and Monitoring</div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-chev"/></svg>Instant Search</div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-chev"/></svg>Entity Screening</div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-chev"/></svg>I-9 Forms</div>
+            <div class="hr-nav-item">My Collection Sites</div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-chev"/></svg>Employment Screening</div>
+            <div class="hr-nav-item">Management Reports</div>
+          </aside>
+
+          <!-- main -->
+          <div class="hr-main">
+            <!-- topbar -->
+            <div class="hr-topbar">
+              <div class="hr-search">
+                E.g, Joe, Jo%, ab-1234567cd
+                <svg class="ic"><use href="#i-search"/></svg>
+              </div>
+              <div class="hr-acct">
+                <span class="lbl">Select Account</span>
+                <span class="val">North Highland Co. &middot; Engineering <svg class="ic chev"><use href="#i-chev"/></svg></span>
+              </div>
+              <div class="hr-topbar-right">
+                <div class="who">Allison Johnson, <a>Sign Out</a></div>
+                <div class="geo">Data Location: <b>United States</b></div>
+              </div>
+            </div>
+
+            <!-- app tabs -->
+            <div class="hr-apptabs">
+              <div class="hr-apptab active">Screening Manager</div>
+              <div class="hr-apptab">COVID-19 Affecte..</div>
+            </div>
+
+            <!-- page header -->
+            <div class="hr-page-header">
+              <h1>Orders and Reports</h1>
+              <div class="hr-page-actions">
+                <div class="hr-action"><svg class="ic"><use href="#i-dl"/></svg>Print/Download</div>
+                <div class="hr-divider"></div>
+                <div class="hr-action"><svg class="ic"><use href="#i-dl"/></svg>Advanced Download</div>
+                <div class="hr-divider"></div>
+                <div class="hr-action"><svg class="ic"><use href="#i-reports"/></svg>Note</div>
+                <div class="hr-divider"></div>
+                <div class="hr-action disabled">More Options <svg class="ic"><use href="#i-chev"/></svg></div>
+                <div class="hr-divider"></div>
+                <div class="hr-action" style="gap:8px"><span style="width:13px;height:13px;border:1.5px solid var(--ui-text-3);display:inline-block"></span>COVID-</div>
+                <div class="hr-btn primary">NEW <span class="split"><svg class="ic"><use href="#i-chev"/></svg></span></div>
+              </div>
+            </div>
+
+            <!-- filters -->
+            <div class="hr-filters">
+              <div class="hr-fld">
+                <label>account</label>
+                <div class="ctrl">All Accounts <svg class="ic chev"><use href="#i-chev"/></svg></div>
+              </div>
+              <div class="hr-fld">
+                <label>user</label>
+                <div class="ctrl">All Users <svg class="ic chev"><use href="#i-chev"/></svg></div>
+              </div>
+              <div class="hr-fld">
+                <label>request date</label>
+                <div class="ctrl">Last 150 days <svg class="ic chev"><use href="#i-chev"/></svg></div>
+              </div>
+              <div class="hr-fld">
+                <label>view</label>
+                <div class="ctrl">Requests Only <svg class="ic chev"><use href="#i-chev"/></svg></div>
+              </div>
+              <div class="hr-fld action">
+                <a>Show all filters</a>
+              </div>
+              <div class="hr-refreshed">Refreshed <b>just now</b></div>
+            </div>
+
+            <!-- sub-tabs -->
+            <div class="hr-subtabs">
+              <div class="hr-subtab">Invitations</div>
+              <div class="hr-subtab">Not Submitted</div>
+              <div class="hr-subtab">In Progress</div>
+              <div class="hr-subtab">Pending Hire</div>
+              <div class="hr-subtab">Pending Adjudication</div>
+              <div class="hr-subtab active">Completed</div>
+              <div class="hr-subtab">Cancelled</div>
+              <div style="margin-left:auto;display:flex;align-items:center"><svg class="ic" style="width:12px;height:12px;color:var(--ui-text-2)"><use href="#i-chev"/></svg></div>
+            </div>
+
+            <!-- table -->
+            <div class="hr-table">
+              <div class="hr-thead">
+                <div></div>
+                <div class="flag-cell"><svg style="width:11px;height:11px;color:var(--ui-text-2)"><use href="#i-flag"/></svg></div>
+                <div>Middle Name <span class="sort">▼</span></div>
+                <div>Account <span class="sort">▼</span></div>
+                <div>Last Name <span class="sort">▼</span></div>
+                <div>First Name <span class="sort">▼</span></div>
+                <div>SSN/National ID <span class="sort">▼</span></div>
+                <div>Request Date <span class="sort">▼</span></div>
+                <div>Conditional Hire <span class="sort">▼</span></div>
+                <div>Status <span class="sort">▼</span></div>
+              </div>
+
+              <div class="hr-row">
+                <div class="check"></div>
+                <div class="flag-cell flag-off">·</div>
+                <div>Maria</div>
+                <div class="acct">North Highland Co.<br><span style="color:var(--ui-text-3);font-size:11px">Engineering</span></div>
+                <div class="hr-name-strong">Aboagye</div>
+                <div>Kwame</div>
+                <div class="ssn">***-**-1182</div>
+                <div class="hr-date">May 17, 2026</div>
+                <div>Yes</div>
+                <div><span class="hr-pill ok">Meets Company Standards</span></div>
+              </div>
+
+              <div class="hr-row">
+                <div class="check"></div>
+                <div class="flag-cell flag-off">·</div>
+                <div>Alessandra</div>
+                <div class="acct">North Highland Co.<br><span style="color:var(--ui-text-3);font-size:11px">Engineering</span></div>
+                <div class="hr-name-strong">Bianchi</div>
+                <div>Sofia</div>
+                <div class="ssn">***-**-2941</div>
+                <div class="hr-date">May 16, 2026</div>
+                <div>Yes</div>
+                <div><span class="hr-pill ok">Meets Company Standards</span></div>
+              </div>
+
+              <div class="hr-row">
+                <div class="check"></div>
+                <div class="flag-cell"><svg style="width:13px;height:13px" class="flag-on"><use href="#i-flag"/></svg></div>
+                <div>James</div>
+                <div class="acct">North Highland Co.<br><span style="color:var(--ui-text-3);font-size:11px">Operations</span></div>
+                <div class="hr-name-strong">Carter</div>
+                <div>Marcus</div>
+                <div class="ssn">***-**-3712</div>
+                <div class="hr-date">May 14, 2026</div>
+                <div style="color:var(--ui-text-3)">&mdash;</div>
+                <div><span class="hr-pill flag">Does Not Meet Company Standards</span></div>
+              </div>
+
+              <div class="hr-row">
+                <div class="check"></div>
+                <div class="flag-cell flag-off">·</div>
+                <div style="color:var(--ui-text-3)">&mdash;</div>
+                <div class="acct">North Highland Co. &middot; LLC<br><span style="color:var(--ui-text-3);font-size:11px">Operations</span></div>
+                <div class="hr-name-strong">Chen</div>
+                <div>Renee</div>
+                <div class="ssn">***-**-4408</div>
+                <div class="hr-date">May 12, 2026</div>
+                <div>Yes</div>
+                <div><span class="hr-pill ok">Eligible</span></div>
+              </div>
+
+              <div class="hr-row">
+                <div class="check"></div>
+                <div class="flag-cell flag-off">·</div>
+                <div>K.</div>
+                <div class="acct">North Highland Co.<br><span style="color:var(--ui-text-3);font-size:11px">Engineering</span></div>
+                <div class="hr-name-strong">Devereaux</div>
+                <div>Linnea</div>
+                <div class="ssn">***-**-5519</div>
+                <div class="hr-date">May 11, 2026</div>
+                <div>Yes</div>
+                <div><span class="hr-pill ok">Meets Company Standards</span></div>
+              </div>
+
+              <div class="hr-row">
+                <div class="check"></div>
+                <div class="flag-cell"><svg style="width:13px;height:13px" class="flag-on"><use href="#i-flag"/></svg></div>
+                <div>Alvarez</div>
+                <div class="acct">North Highland Co. &middot; LLC<br><span style="color:var(--ui-text-3);font-size:11px">Sales</span></div>
+                <div class="hr-name-strong">Garc&iacute;a</div>
+                <div>Sebasti&aacute;n</div>
+                <div class="ssn">***-**-6720</div>
+                <div class="hr-date">May 9, 2026</div>
+                <div style="color:var(--ui-text-3)">&mdash;</div>
+                <div><span class="hr-pill review">Needs Adjudication</span></div>
+              </div>
+
+              <div class="hr-row">
+                <div class="check"></div>
+                <div class="flag-cell flag-off">·</div>
+                <div>Patrice</div>
+                <div class="acct">North Highland Co.<br><span style="color:var(--ui-text-3);font-size:11px">Engineering</span></div>
+                <div class="hr-name-strong">Halvorsen</div>
+                <div>Anders</div>
+                <div class="ssn">***-**-7831</div>
+                <div class="hr-date">May 7, 2026</div>
+                <div>Yes</div>
+                <div><span class="hr-pill ok">Meets Company Standards</span></div>
+              </div>
+
+              <div class="hr-row">
+                <div class="check"></div>
+                <div class="flag-cell flag-off">·</div>
+                <div>T.</div>
+                <div class="acct">North Highland Co. &middot; LLC<br><span style="color:var(--ui-text-3);font-size:11px">Operations</span></div>
+                <div class="hr-name-strong">Jankowska</div>
+                <div>Ola</div>
+                <div class="ssn">***-**-8142</div>
+                <div class="hr-date">May 6, 2026</div>
+                <div>Yes</div>
+                <div><span class="hr-pill ok">Eligible</span></div>
+              </div>
+
+              <div class="hr-row">
+                <div class="check"></div>
+                <div class="flag-cell"><svg style="width:13px;height:13px" class="flag-on"><use href="#i-flag"/></svg></div>
+                <div>R.</div>
+                <div class="acct">North Highland Co.<br><span style="color:var(--ui-text-3);font-size:11px">Engineering</span></div>
+                <div class="hr-name-strong">Mensah</div>
+                <div>Jordan</div>
+                <div class="ssn">***-**-9253</div>
+                <div class="hr-date">May 4, 2026</div>
+                <div style="color:var(--ui-text-3)">&mdash;</div>
+                <div><span class="hr-pill flag">Does Not Meet Company Standards</span></div>
+              </div>
+
+              <div class="hr-tfoot">
+                <div>Showing 1–9 of 412 completed orders</div>
+                <div class="hr-tfoot-pages">
+                  <div class="pg">‹</div>
+                  <div class="pg active">1</div>
+                  <div class="pg">2</div>
+                  <div class="pg">3</div>
+                  <div class="pg">…</div>
+                  <div class="pg">46</div>
+                  <div class="pg">›</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="annotate-row">
+    <div class="annotate">
+      <div class="num">01 / Status taxonomy</div>
+      <h4>Six states, globally consistent.</h4>
+      <p>The old system had 27 status strings across regions. We collapsed them to six clear states &mdash; In&nbsp;progress, Awaiting consent, Needs review, Flagged, Complete, Cancelled &mdash; with a single color language that survives translation.</p>
+    </div>
+    <div class="annotate">
+      <div class="num">02 / Real-time spine</div>
+      <h4>Updated, not refreshed.</h4>
+      <p>Behind the dashboard, a websocket bus pushes status changes within seconds of upstream vendors completing a check. Recruiters stop refreshing; the table just updates.</p>
+    </div>
+    <div class="annotate">
+      <div class="num">03 / Filters &amp; saved views</div>
+      <h4>Built for power users.</h4>
+      <p>Every recruiter has a "Mine, urgent" view. Operations has "Stalled &gt; 5 days." Legal has "Flagged, North America." Filters compose into saved URLs they paste into Slack.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SCENE 3: CANDIDATE REPORT ===================== -->
+<section class="scene scene-rep">
+  <div class="head-row">
+    <div>
+      <div class="scene-label" style="margin-bottom:16px">02 &nbsp;·&nbsp; The Adjudication Surface</div>
+      <h2 class="scene-head">Compliance-dense.<br>Decision-ready.</h2>
+    </div>
+    <div class="right">
+      <div class="scene-label">Candidate Report</div>
+      <p class="scene-sub">A background report is one of the densest documents in HR &mdash; criminal history, education, identity, credit, drug testing, motor-vehicle records. The redesign organizes it so a hiring manager can read it in two minutes, and adjudicators can act in five.</p>
+    </div>
+  </div>
+
+  <div class="rep-stage">
+    <div class="scr">
+      <div class="hr">
+        <div class="hr-rep">
+
+          <!-- reuse side nav -->
+          <aside class="hr-sidenav hr-rep-side">
+            <div class="hr-logo">
+              <img class="hr-logo-img" src="case-screening-assets/hireright-logo.png" alt="HireRight">
+            </div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-bell"/></svg>Alerts</div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-bell"/></svg>Announcement<span class="badge">1</span></div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-chev"/></svg>Compliance Workbench</div>
+            <div class="hr-nav-item">Customers</div>
+            <div class="hr-nav-item">DHS Manager</div>
+            <div class="hr-nav-item">MyCompliance</div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-chev"/></svg>Random Compliance Program</div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-chev"/></svg>Rosters and Monitoring</div>
+            <div class="hr-nav-item">Driver Qualification File</div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-chev"/></svg>Instant Search</div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-chev"/></svg>Entity Screening</div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-chev"/></svg>I-9 Forms</div>
+            <div class="hr-nav-item">My Collection Sites</div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-chev"/></svg>Employment Screening</div>
+            <div class="hr-nav-item">Management Reports</div>
+          </aside>
+
+          <div class="hr-rep-main">
+            <!-- topbar -->
+            <div class="hr-topbar">
+              <div class="hr-search">
+                E.g, Joe, Jo%, ab-1234567cd
+                <svg class="ic"><use href="#i-search"/></svg>
+              </div>
+              <div class="hr-acct">
+                <span class="lbl">Select Account</span>
+                <span class="val">North Highland Co. &middot; Engineering <svg class="ic chev"><use href="#i-chev"/></svg></span>
+              </div>
+              <div class="hr-topbar-right">
+                <div class="who">Allison Johnson, <a>Sign Out</a></div>
+                <div class="geo">Data Location: <b>United States</b></div>
+              </div>
+            </div>
+
+            <!-- app tabs -->
+            <div class="hr-apptabs">
+              <div class="hr-apptab">Screening Manager</div>
+              <div class="hr-apptab">COVID-19 Affecte..</div>
+              <div class="hr-apptab active">Background Report<span class="close">&nbsp;×</span></div>
+            </div>
+
+            <!-- action toolbar -->
+            <div class="hr-page-actions" style="padding:14px 28px;background:#fff;border-bottom:1px solid var(--side-border);justify-content:flex-start;gap:24px">
+              <div class="hr-action"><svg class="ic"><use href="#i-candidates"/></svg>Re-Assign</div>
+              <div class="hr-divider"></div>
+              <div class="hr-action"><svg class="ic"><use href="#i-dl"/></svg>Print/Download</div>
+              <div class="hr-divider"></div>
+              <div class="hr-action"><svg class="ic"><use href="#i-reports"/></svg>Note</div>
+              <div class="hr-divider"></div>
+              <div class="hr-action">Letters <svg class="ic"><use href="#i-chev"/></svg></div>
+              <div class="hr-divider"></div>
+              <div class="hr-action"><svg class="ic"><use href="#i-bell"/></svg>Live Help</div>
+              <div class="hr-divider"></div>
+              <div class="hr-action"><svg class="ic"><use href="#i-plus"/></svg>Extend</div>
+              <div class="hr-action" style="margin-left:auto"><svg class="ic"><use href="#i-settings"/></svg>Refresh</div>
+            </div>
+
+            <!-- report sub-tabs -->
+            <div class="hr-subtabs" style="padding:0 28px">
+              <div class="hr-subtab">Report Summary</div>
+              <div class="hr-subtab active">Report Details</div>
+              <div class="hr-subtab">Special Process</div>
+              <div class="hr-subtab">Candidate Data</div>
+              <div class="hr-subtab">Interactive Map</div>
+              <div class="hr-subtab">History</div>
+              <div class="hr-subtab">Documents</div>
+              <div class="hr-subtab">Applicant Data</div>
+            </div>
+
+            <!-- header -->
+            <div class="hr-rep-header">
+              <div>
+                <div class="id">Request &middot; HA-112221-HK2DU &nbsp;·&nbsp; Standard Plus &middot; 9 checks</div>
+                <h1>Renata Polanski</h1>
+                <div class="who">
+                  <div class="av c2">RP</div>
+                  <div class="meta">
+                    <b>Director of Engineering &nbsp;·&nbsp; req. by S. Okafor</b>
+                    DOB on file &middot; renata.p@northhighland.co &middot; Berlin, DE
+                  </div>
+                </div>
+              </div>
+              <div class="actions">
+                <div class="hr-btn ghost"><svg class="ic"><use href="#i-flag"/></svg>Flag for legal</div>
+                <div class="hr-btn secondary"><svg class="ic"><use href="#i-dl"/></svg>Download PDF</div>
+                <div class="hr-btn primary"><svg class="ic"><use href="#i-check"/></svg>ADJUDICATE</div>
+              </div>
+            </div>
+
+            <!-- summary strip -->
+            <div class="hr-rep-summary">
+              <div class="hr-summary-cell">
+                <div class="lbl">Overall</div>
+                <div class="val">Needs review</div>
+                <div class="sub">2 of 9 checks require action</div>
+              </div>
+              <div class="hr-summary-cell ok">
+                <div class="lbl">Clear</div>
+                <div class="val">7 / 9</div>
+                <div class="sub">incl. identity, education</div>
+              </div>
+              <div class="hr-summary-cell accent">
+                <div class="lbl">Adjudicator</div>
+                <div class="val">You</div>
+                <div class="sub">SLA: 24h &middot; due May&nbsp;18</div>
+              </div>
+              <div class="hr-summary-cell">
+                <div class="lbl">Turnaround</div>
+                <div class="val">3d 14h</div>
+                <div class="sub">vs. 5d 02h package avg.</div>
+              </div>
+            </div>
+
+            <!-- body -->
+            <div class="hr-rep-body">
+
+              <!-- LEFT — checks -->
+              <div class="hr-rep-col">
+
+                <div class="hr-section">
+                  <div class="hr-section-h">
+                    <h3>Identity &amp; right to work</h3>
+                    <span class="hr-pill ok">Clear</span>
+                  </div>
+                  <dl class="hr-kv">
+                    <dt>Legal name</dt><dd>Renata Maria Polanski</dd>
+                    <dt>Document</dt><dd>EU Passport · DE · expires 03/2029</dd>
+                    <dt>Right to work</dt><dd>Confirmed by Schufa-ID match</dd>
+                    <dt>Address history</dt><dd>3 of 3 verified · 7 years</dd>
+                  </dl>
+                </div>
+
+                <div class="hr-section">
+                  <div class="hr-section-h">
+                    <h3>Education &amp; credentials</h3>
+                    <span class="hr-pill ok">Clear</span>
+                  </div>
+                  <div class="hr-check-list">
+                    <div class="hr-check">
+                      <div class="ico ok"><svg class="ic" style="width:10px;height:10px"><use href="#i-check"/></svg></div>
+                      <div class="body">
+                        <div class="ttl">M.Sc. Computer Science · TU Berlin</div>
+                        <div class="meta">Verified directly with institution · 2014</div>
+                      </div>
+                      <div style="font-size:11.5px;color:var(--ui-text-3)">2d 04h</div>
+                    </div>
+                    <div class="hr-check">
+                      <div class="ico ok"><svg class="ic" style="width:10px;height:10px"><use href="#i-check"/></svg></div>
+                      <div class="body">
+                        <div class="ttl">B.Sc. Software Engineering · WUT</div>
+                        <div class="meta">Verified directly with institution · 2011</div>
+                      </div>
+                      <div style="font-size:11.5px;color:var(--ui-text-3)">1d 22h</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="hr-section">
+                  <div class="hr-section-h">
+                    <h3>Employment history (5 yr)</h3>
+                    <span class="hr-pill review">2 to review</span>
+                  </div>
+                  <div class="hr-check-list">
+                    <div class="hr-check">
+                      <div class="ico ok"><svg class="ic" style="width:10px;height:10px"><use href="#i-check"/></svg></div>
+                      <div class="body">
+                        <div class="ttl">Senior Eng. Manager · Klar GmbH</div>
+                        <div class="meta">Mar 2022 – present · matches CV</div>
+                      </div>
+                      <div style="font-size:11.5px;color:var(--ui-text-3)">1d 09h</div>
+                    </div>
+                    <div class="hr-check">
+                      <div class="ico warn"><span>!</span></div>
+                      <div class="body">
+                        <div class="ttl">Eng. Lead · Helios AG</div>
+                        <div class="meta">Title discrepancy: candidate "Eng Lead", employer responded "Senior Eng"</div>
+                      </div>
+                      <div style="font-size:11.5px;color:#A66700;font-weight:600">Review</div>
+                    </div>
+                    <div class="hr-check">
+                      <div class="ico warn"><span>!</span></div>
+                      <div class="body">
+                        <div class="ttl">Eng. Manager · Polara Sp. z o.o.</div>
+                        <div class="meta">Dates: candidate '17–'19, employer confirms '17–'18 (4 mo gap)</div>
+                      </div>
+                      <div style="font-size:11.5px;color:#A66700;font-weight:600">Review</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="hr-section" style="margin-bottom:0">
+                  <div class="hr-section-h">
+                    <h3>Criminal &middot; civil &middot; sanctions</h3>
+                    <span class="hr-pill ok">Clear</span>
+                  </div>
+                  <dl class="hr-kv">
+                    <dt>Country checks</dt><dd>DE · PL · EU sanctions list</dd>
+                    <dt>Findings</dt><dd>None</dd>
+                    <dt>Source</dt><dd>Bundeszentralregister, Schengen SIS II</dd>
+                    <dt>Date pulled</dt><dd>May 16, 09:01 CET</dd>
+                  </dl>
+                </div>
+
+              </div>
+
+              <!-- RIGHT — timeline + ai -->
+              <div class="hr-rep-col" style="background:#F9FAFC">
+
+                <div class="hr-section">
+                  <div class="hr-section-h">
+                    <h3>Activity timeline</h3>
+                    <span style="font-size:11.5px;color:var(--ui-text-3);font-weight:500">Auto-updates</span>
+                  </div>
+                  <div class="hr-timeline">
+                    <div class="hr-time-item">
+                      <div class="hr-time-dot active"></div>
+                      <div class="hr-time-text">Awaiting your adjudication
+                        <small>SLA window opens — assigned to JP Paguirigan</small>
+                      </div>
+                      <div class="hr-time-date">Today<br>08:47</div>
+                    </div>
+                    <div class="hr-time-item">
+                      <div class="hr-time-dot done"></div>
+                      <div class="hr-time-text">Employment verification returned
+                        <small>2 discrepancies flagged for review</small>
+                      </div>
+                      <div class="hr-time-date">May 16<br>06:14</div>
+                    </div>
+                    <div class="hr-time-item">
+                      <div class="hr-time-dot done"></div>
+                      <div class="hr-time-text">Education verifications completed
+                        <small>TU Berlin · WUT Warsaw</small>
+                      </div>
+                      <div class="hr-time-date">May 15<br>17:02</div>
+                    </div>
+                    <div class="hr-time-item">
+                      <div class="hr-time-dot done"></div>
+                      <div class="hr-time-text">Criminal checks initiated
+                        <small>DE Bundeszentralregister · PL KRK</small>
+                      </div>
+                      <div class="hr-time-date">May 14<br>09:30</div>
+                    </div>
+                    <div class="hr-time-item">
+                      <div class="hr-time-dot done"></div>
+                      <div class="hr-time-text">Candidate consent received
+                        <small>e-signed, IP geolocated Berlin DE</small>
+                      </div>
+                      <div class="hr-time-date">May 13<br>11:18</div>
+                    </div>
+                    <div class="hr-time-item">
+                      <div class="hr-time-dot done"></div>
+                      <div class="hr-time-text">Order submitted by S. Okafor
+                        <small>Package: Executive (EX-3) · 14 checks</small>
+                      </div>
+                      <div class="hr-time-date">May 13<br>08:22</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="hr-section" style="margin-bottom:0">
+                  <div class="hr-section-h">
+                    <h3>Adjudicator recommendation</h3>
+                    <span style="font-size:11.5px;color:var(--ui-text-3);font-weight:600;display:inline-flex;align-items:center;gap:6px">
+                      <span style="width:6px;height:6px;border-radius:50%;background:var(--accent)"></span>
+                      Rules engine
+                    </span>
+                  </div>
+                  <div style="background:#fff;border:1px solid var(--ui-border);border-radius:8px;padding:14px 16px;font-size:13px;line-height:1.6;color:var(--ui-text)">
+                    Per <b>Default · Engineering · DE</b> adjudication policy: 2 employment discrepancies fall within the <b>de minimis</b> threshold (title variance, &lt;6 month gap). No criminal or sanctions findings.
+                    <div style="margin-top:10px;display:flex;align-items:center;gap:10px;padding-top:10px;border-top:1px dashed var(--ui-border)">
+                      <span class="hr-pill ok" style="font-size:11px">Recommend: Engage</span>
+                      <span style="font-size:11.5px;color:var(--ui-text-3)">You can override per the FCRA workflow.</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="annotate-row" style="position:relative;z-index:1">
+    <div class="annotate">
+      <div class="num">04 / Hierarchy</div>
+      <h4>Decision first, data underneath.</h4>
+      <p>A red "Needs review" headline pill, the count of clear/flagged checks, then the dense detail. Hiring managers scan; adjudicators read; everyone gets what they need.</p>
+    </div>
+    <div class="annotate">
+      <div class="num">05 / Timeline</div>
+      <h4>Every event, timestamped.</h4>
+      <p>Right-side activity feed shows the order's full life &mdash; consent, vendor calls, returns, escalations. The same audit log that compliance officers used to dig out of database exports.</p>
+    </div>
+    <div class="annotate">
+      <div class="num">06 / Recommendation</div>
+      <h4>Rules transparent, never hidden.</h4>
+      <p>When the rules engine recommends "Engage," it shows its work &mdash; which policy, what thresholds. Adjudicators retain full FCRA-compliant override authority.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SCENE 4: INSIGHTS ===================== -->
+<section class="scene scene-ins">
+  <div class="head-row" style="padding:0;margin-bottom:80px">
+    <div>
+      <div class="scene-label" style="margin-bottom:16px">03 &nbsp;·&nbsp; The Lens on the Program</div>
+      <h2 class="scene-head">Hiring at a glance,<br>compliance under the hood.</h2>
+    </div>
+    <div class="right">
+      <div class="scene-label">HireRight Insights</div>
+      <p class="scene-sub">Insights pulls every order, every adjudication, every vendor SLA into one place &mdash; so HR leaders can spot regional drift, slow vendors, or hiring bottlenecks before they cost a quarter.</p>
+    </div>
+  </div>
+
+  <div class="ins-stage">
+    <div class="scr">
+      <div class="hr">
+        <div class="hr-ins">
+
+          <aside class="hr-sidenav">
+            <div class="hr-logo">
+              <img class="hr-logo-img" src="case-screening-assets/hireright-logo-inverse.png" alt="HireRight">
+            </div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-bell"/></svg>Alerts</div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-bell"/></svg>Announcement<span class="badge">2</span></div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-chev"/></svg>Compliance Workbench</div>
+            <div class="hr-nav-item">Customers</div>
+            <div class="hr-nav-item">DHS Manager</div>
+            <div class="hr-nav-item">MyCompliance</div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-chev"/></svg>Random Compliance Program</div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-chev"/></svg>Rosters and Monitoring</div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-chev"/></svg>Instant Search</div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-chev"/></svg>Entity Screening</div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-chev"/></svg>I-9 Forms</div>
+            <div class="hr-nav-item">My Collection Sites</div>
+            <div class="hr-nav-item"><svg class="ic"><use href="#i-chev"/></svg>Employment Screening</div>
+            <div class="hr-nav-item active">Management Reports</div>
+          </aside>
+
+          <div class="hr-ins-main">
+            <div class="hr-topbar">
+              <div class="hr-search">
+                E.g, Joe, Jo%, ab-1234567cd
+                <svg class="ic"><use href="#i-search"/></svg>
+              </div>
+              <div class="hr-acct">
+                <span class="lbl">Select Account</span>
+                <span class="val">North Highland Co. &middot; All <svg class="ic chev"><use href="#i-chev"/></svg></span>
+              </div>
+              <div class="hr-topbar-right">
+                <div class="who">Allison Johnson, <a>Sign Out</a></div>
+                <div class="geo">Data Location: <b>United States</b></div>
+              </div>
+            </div>
+
+            <!-- app tabs -->
+            <div class="hr-apptabs">
+              <div class="hr-apptab">Screening Manager</div>
+              <div class="hr-apptab">COVID-19 Affecte..</div>
+              <div class="hr-apptab active">Management Reports<span class="close">&nbsp;×</span></div>
+            </div>
+
+            <!-- page header -->
+            <div class="hr-page-header">
+              <h1>Management Reports</h1>
+              <div class="hr-page-actions">
+                <div class="hr-fld" style="min-width:140px">
+                  <label>date range</label>
+                  <div class="ctrl">Last 90 days <svg class="ic chev"><use href="#i-chev"/></svg></div>
+                </div>
+                <div class="hr-fld" style="min-width:120px">
+                  <label>region</label>
+                  <div class="ctrl">All regions <svg class="ic chev"><use href="#i-chev"/></svg></div>
+                </div>
+                <div class="hr-btn primary">EXPORT PDF</div>
+              </div>
+            </div>
+
+            <!-- KPI row -->
+            <div class="hr-kpi-row">
+              <div class="hr-kpi">
+                <div class="lbl">Orders</div>
+                <div class="val">8,412</div>
+                <div class="delta up"><svg class="ic" style="width:10px;height:10px"><use href="#i-arrow-up"/></svg>+12.4% vs prev 90d</div>
+                <svg class="spark" width="100%" height="38" viewBox="0 0 220 38" preserveAspectRatio="none">
+                  <polyline fill="none" stroke="#E11827" stroke-width="2" points="0,28 18,24 36,26 54,20 72,22 90,18 108,15 126,17 144,12 162,14 180,8 198,10 220,4"/>
+                </svg>
+              </div>
+              <div class="hr-kpi">
+                <div class="lbl">Avg. turnaround</div>
+                <div class="val">3.4d</div>
+                <div class="delta up"><svg class="ic" style="width:10px;height:10px"><use href="#i-arrow-dn"/></svg>−18% vs prev 90d</div>
+                <svg class="spark" width="100%" height="38" viewBox="0 0 220 38" preserveAspectRatio="none">
+                  <polyline fill="none" stroke="#16A34A" stroke-width="2" points="0,8 18,14 36,12 54,18 72,15 90,22 108,20 126,24 144,22 162,26 180,28 198,30 220,32"/>
+                </svg>
+              </div>
+              <div class="hr-kpi">
+                <div class="lbl">Clear rate</div>
+                <div class="val">93.1%</div>
+                <div class="delta up"><svg class="ic" style="width:10px;height:10px"><use href="#i-arrow-up"/></svg>+1.2 pp vs prev 90d</div>
+                <svg class="spark" width="100%" height="38" viewBox="0 0 220 38" preserveAspectRatio="none">
+                  <polyline fill="none" stroke="#16A34A" stroke-width="2" points="0,22 18,20 36,21 54,18 72,16 90,18 108,14 126,13 144,15 162,12 180,10 198,11 220,8"/>
+                </svg>
+              </div>
+              <div class="hr-kpi">
+                <div class="lbl">SLA misses</div>
+                <div class="val">14</div>
+                <div class="delta down"><svg class="ic" style="width:10px;height:10px"><use href="#i-arrow-up"/></svg>+3 vs prev 90d</div>
+                <svg class="spark" width="100%" height="38" viewBox="0 0 220 38" preserveAspectRatio="none">
+                  <polyline fill="none" stroke="#DC2626" stroke-width="2" points="0,30 18,28 36,26 54,28 72,24 90,26 108,22 126,18 144,20 162,14 180,16 198,12 220,8"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="hr-charts">
+              <!-- LEFT — Orders over time -->
+              <div class="hr-card">
+                <div class="hr-card-h">
+                  <h4>Orders by region · last 90 days</h4>
+                  <div class="seg"><span>D</span><span class="on">W</span><span>M</span></div>
+                </div>
+                <div class="hr-legend">
+                  <span><i style="background:#1A2A44"></i>North America</span>
+                  <span><i style="background:#E11827"></i>EMEA</span>
+                  <span><i style="background:#2563EB"></i>APAC</span>
+                  <span><i style="background:#16A34A"></i>LATAM</span>
+                </div>
+                <svg viewBox="0 0 700 260" width="100%" height="260" preserveAspectRatio="none" style="margin-top:6px">
+                  <!-- gridlines -->
+                  <g stroke="#EEF1F5" stroke-width="1">
+                    <line x1="0" y1="40" x2="700" y2="40"/>
+                    <line x1="0" y1="100" x2="700" y2="100"/>
+                    <line x1="0" y1="160" x2="700" y2="160"/>
+                    <line x1="0" y1="220" x2="700" y2="220"/>
+                  </g>
+                  <!-- stacked bars at 13 ticks -->
+                  <g>
+                    <!-- generate bars at fixed positions, varying heights -->
+                    <g transform="translate(20 0)">
+                      <rect x="0" y="180" width="34" height="40" fill="#1A2A44"/>
+                      <rect x="0" y="150" width="34" height="30" fill="#E11827"/>
+                      <rect x="0" y="130" width="34" height="20" fill="#2563EB"/>
+                      <rect x="0" y="118" width="34" height="12" fill="#16A34A"/>
+                    </g>
+                    <g transform="translate(70 0)">
+                      <rect x="0" y="170" width="34" height="50" fill="#1A2A44"/>
+                      <rect x="0" y="138" width="34" height="32" fill="#E11827"/>
+                      <rect x="0" y="118" width="34" height="20" fill="#2563EB"/>
+                      <rect x="0" y="104" width="34" height="14" fill="#16A34A"/>
+                    </g>
+                    <g transform="translate(120 0)">
+                      <rect x="0" y="160" width="34" height="60" fill="#1A2A44"/>
+                      <rect x="0" y="128" width="34" height="32" fill="#E11827"/>
+                      <rect x="0" y="110" width="34" height="18" fill="#2563EB"/>
+                      <rect x="0" y="98" width="34" height="12" fill="#16A34A"/>
+                    </g>
+                    <g transform="translate(170 0)">
+                      <rect x="0" y="150" width="34" height="70" fill="#1A2A44"/>
+                      <rect x="0" y="118" width="34" height="32" fill="#E11827"/>
+                      <rect x="0" y="98" width="34" height="20" fill="#2563EB"/>
+                      <rect x="0" y="82" width="34" height="16" fill="#16A34A"/>
+                    </g>
+                    <g transform="translate(220 0)">
+                      <rect x="0" y="158" width="34" height="62" fill="#1A2A44"/>
+                      <rect x="0" y="124" width="34" height="34" fill="#E11827"/>
+                      <rect x="0" y="104" width="34" height="20" fill="#2563EB"/>
+                      <rect x="0" y="90" width="34" height="14" fill="#16A34A"/>
+                    </g>
+                    <g transform="translate(270 0)">
+                      <rect x="0" y="142" width="34" height="78" fill="#1A2A44"/>
+                      <rect x="0" y="106" width="34" height="36" fill="#E11827"/>
+                      <rect x="0" y="84" width="34" height="22" fill="#2563EB"/>
+                      <rect x="0" y="70" width="34" height="14" fill="#16A34A"/>
+                    </g>
+                    <g transform="translate(320 0)">
+                      <rect x="0" y="136" width="34" height="84" fill="#1A2A44"/>
+                      <rect x="0" y="98" width="34" height="38" fill="#E11827"/>
+                      <rect x="0" y="76" width="34" height="22" fill="#2563EB"/>
+                      <rect x="0" y="60" width="34" height="16" fill="#16A34A"/>
+                    </g>
+                    <g transform="translate(370 0)">
+                      <rect x="0" y="148" width="34" height="72" fill="#1A2A44"/>
+                      <rect x="0" y="112" width="34" height="36" fill="#E11827"/>
+                      <rect x="0" y="90" width="34" height="22" fill="#2563EB"/>
+                      <rect x="0" y="76" width="34" height="14" fill="#16A34A"/>
+                    </g>
+                    <g transform="translate(420 0)">
+                      <rect x="0" y="124" width="34" height="96" fill="#1A2A44"/>
+                      <rect x="0" y="86" width="34" height="38" fill="#E11827"/>
+                      <rect x="0" y="64" width="34" height="22" fill="#2563EB"/>
+                      <rect x="0" y="48" width="34" height="16" fill="#16A34A"/>
+                    </g>
+                    <g transform="translate(470 0)">
+                      <rect x="0" y="116" width="34" height="104" fill="#1A2A44"/>
+                      <rect x="0" y="78" width="34" height="38" fill="#E11827"/>
+                      <rect x="0" y="54" width="34" height="24" fill="#2563EB"/>
+                      <rect x="0" y="38" width="34" height="16" fill="#16A34A"/>
+                    </g>
+                    <g transform="translate(520 0)">
+                      <rect x="0" y="108" width="34" height="112" fill="#1A2A44"/>
+                      <rect x="0" y="70" width="34" height="38" fill="#E11827"/>
+                      <rect x="0" y="46" width="34" height="24" fill="#2563EB"/>
+                      <rect x="0" y="30" width="34" height="16" fill="#16A34A"/>
+                    </g>
+                    <g transform="translate(570 0)">
+                      <rect x="0" y="112" width="34" height="108" fill="#1A2A44"/>
+                      <rect x="0" y="74" width="34" height="38" fill="#E11827"/>
+                      <rect x="0" y="48" width="34" height="26" fill="#2563EB"/>
+                      <rect x="0" y="32" width="34" height="16" fill="#16A34A"/>
+                    </g>
+                    <g transform="translate(620 0)">
+                      <rect x="0" y="100" width="34" height="120" fill="#1A2A44"/>
+                      <rect x="0" y="60" width="34" height="40" fill="#E11827"/>
+                      <rect x="0" y="34" width="34" height="26" fill="#2563EB"/>
+                      <rect x="0" y="18" width="34" height="16" fill="#16A34A"/>
+                    </g>
+                  </g>
+                </svg>
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--ui-text-3);margin-top:2px">
+                  <span>Feb 18</span><span>Mar 4</span><span>Mar 18</span><span>Apr 1</span><span>Apr 15</span><span>Apr 29</span><span>May 13</span>
+                </div>
+              </div>
+
+              <!-- RIGHT — Turnaround by package -->
+              <div class="hr-card">
+                <div class="hr-card-h">
+                  <h4>Turnaround by package</h4>
+                  <span style="font-size:11.5px;color:var(--ui-text-3);font-weight:500">Median, business days</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:14px">
+                  <div>
+                    <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:500;color:var(--ui-text);margin-bottom:6px">
+                      <span>Driver (DR-1)</span><span style="font-variant-numeric:tabular-nums;color:var(--ui-text-2)">1.8d</span>
+                    </div>
+                    <div style="height:10px;background:var(--ui-bg);border-radius:999px;overflow:hidden"><div style="width:30%;height:100%;background:#16A34A"></div></div>
+                  </div>
+                  <div>
+                    <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:500;color:var(--ui-text);margin-bottom:6px">
+                      <span>Standard (ST-2)</span><span style="font-variant-numeric:tabular-nums;color:var(--ui-text-2)">2.6d</span>
+                    </div>
+                    <div style="height:10px;background:var(--ui-bg);border-radius:999px;overflow:hidden"><div style="width:43%;height:100%;background:#16A34A"></div></div>
+                  </div>
+                  <div>
+                    <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:500;color:var(--ui-text);margin-bottom:6px">
+                      <span>Standard Plus (SP-7)</span><span style="font-variant-numeric:tabular-nums;color:var(--ui-text-2)">3.4d</span>
+                    </div>
+                    <div style="height:10px;background:var(--ui-bg);border-radius:999px;overflow:hidden"><div style="width:56%;height:100%;background:#E04E27"></div></div>
+                  </div>
+                  <div>
+                    <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:500;color:var(--ui-text);margin-bottom:6px">
+                      <span>International (INT-4)</span><span style="font-variant-numeric:tabular-nums;color:var(--ui-text-2)">5.1d</span>
+                    </div>
+                    <div style="height:10px;background:var(--ui-bg);border-radius:999px;overflow:hidden"><div style="width:84%;height:100%;background:#E04E27"></div></div>
+                  </div>
+                  <div>
+                    <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:500;color:var(--ui-text);margin-bottom:6px">
+                      <span>Executive (EX-3)</span><span style="font-variant-numeric:tabular-nums;color:var(--ui-text-2)">5.9d</span>
+                    </div>
+                    <div style="height:10px;background:var(--ui-bg);border-radius:999px;overflow:hidden"><div style="width:97%;height:100%;background:#DC2626"></div></div>
+                  </div>
+                </div>
+                <div style="margin-top:8px;padding-top:12px;border-top:1px solid var(--ui-border);font-size:12px;color:var(--ui-text-2);line-height:1.45">
+                  <b style="color:var(--ui-text)">Insight.</b> Executive package TAT is up <b style="color:#B32A14">0.8d</b> &mdash; driven by EMEA employment verifications.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ins-callouts">
+    <div class="ins-callout">
+      <div class="lbl">07 / KPI rail</div>
+      <h5>Four numbers, always honest.</h5>
+      <p>Orders, turnaround, clear rate, SLA misses &mdash; ranked by what HR leaders actually report to the board.</p>
+    </div>
+    <div class="ins-callout">
+      <div class="lbl">08 / Regional stack</div>
+      <h5>Where the work happens.</h5>
+      <p>Stacked bars reveal regional volume shifts &mdash; APAC hiring crept up; EMEA spiked in March.</p>
+    </div>
+    <div class="ins-callout">
+      <div class="lbl">09 / Package latency</div>
+      <h5>Show the slow lanes.</h5>
+      <p>Color hardens as packages drift past SLA. Executive +0.8d &mdash; the conversation starts here.</p>
+    </div>
+    <div class="ins-callout">
+      <div class="lbl">10 / Plain-language insight</div>
+      <h5>The chart writes the headline.</h5>
+      <p>Every card ends with one sentence: what this chart actually means for the program this week.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SCENE 5: MOBILE + ORDER ===================== -->
+<section class="scene scene-mob">
+  <div class="head-row" style="padding:0;margin-bottom:80px">
+    <div>
+      <div class="scene-label" style="margin-bottom:16px">04 &nbsp;·&nbsp; The Smaller Surface</div>
+      <h2 class="scene-head">Same product, on the train.</h2>
+    </div>
+    <div class="right">
+      <div class="scene-label">Mobile &amp; Order Flow</div>
+      <p class="scene-sub">A recruiter on the go needs to triage, not order. Mobile collapses to the few moves that matter: see what needs attention, see one candidate, kick off the next screen.</p>
+    </div>
+  </div>
+
+  <div class="mob-stage">
+
+    <!-- MOBILE A: dashboard list -->
+    <div>
+      <div class="mob-frame" style="aspect-ratio:9/16">
+        <div class="hr-mob" style="height:100%">
+          <div class="hr-mob-top">
+            <div class="hr-logo">
+              <img class="hr-logo-img" src="case-screening-assets/hireright-logo.png" alt="HireRight">
+            </div>
+            <div style="font-size:11.5px;text-align:right;line-height:1.25">
+              <div style="color:var(--ui-text);font-weight:600">Allison Johnson</div>
+              <div style="color:var(--info);text-decoration:underline;font-size:10.5px">Sign Out</div>
+            </div>
+          </div>
+          <div class="hr-mob-tabs">
+            <div class="hr-tab active">Action<span class="count">12</span></div>
+            <div class="hr-tab">Open</div>
+            <div class="hr-tab">Done</div>
+          </div>
+          <div class="hr-mob-list">
+
+            <div class="hr-mob-row">
+              <div class="top">
+                <div class="av c2" style="background:#A14B2C">RP</div>
+                <div>
+                  <div class="name">Renata Polanski</div>
+                  <div class="meta">Director of Engineering · DE</div>
+                </div>
+                <span class="hr-pill review" style="margin-left:auto;font-size:10.5px">Needs review</span>
+              </div>
+              <div class="bottom">
+                <div class="pkg">Executive · 91%</div>
+                <div class="hr-progress" style="width:60px"><span style="width:91%"></span></div>
+              </div>
+            </div>
+
+            <div class="hr-mob-row">
+              <div class="top">
+                <div class="av c5" style="background:#0E6E6E">DK</div>
+                <div>
+                  <div class="name">Diego Kowalski</div>
+                  <div class="meta">Senior Engineer · NY</div>
+                </div>
+                <span class="hr-pill flag" style="margin-left:auto;font-size:10.5px">Flagged</span>
+              </div>
+              <div class="bottom">
+                <div class="pkg">Standard Plus · 88%</div>
+                <div class="hr-progress" style="width:60px"><span style="width:88%;background:#DC2626"></span></div>
+              </div>
+            </div>
+
+            <div class="hr-mob-row">
+              <div class="top">
+                <div class="av c4" style="background:#7D3E8C">PB</div>
+                <div>
+                  <div class="name">Priya Balasubramanian</div>
+                  <div class="meta">Eng. Manager · IN</div>
+                </div>
+                <span class="hr-pill progress" style="margin-left:auto;font-size:10.5px">In&nbsp;progress</span>
+              </div>
+              <div class="bottom">
+                <div class="pkg">Standard · 43%</div>
+                <div class="hr-progress" style="width:60px"><span style="width:43%"></span></div>
+              </div>
+            </div>
+
+            <div class="hr-mob-row">
+              <div class="top">
+                <div class="av c7" style="background:#244E89">TO</div>
+                <div>
+                  <div class="name">Tomás Ortega</div>
+                  <div class="meta">Designer · MX</div>
+                </div>
+                <span class="hr-pill pending" style="margin-left:auto;font-size:10.5px">Consent</span>
+              </div>
+              <div class="bottom">
+                <div class="pkg">Standard · 12%</div>
+                <div class="hr-progress" style="width:60px"><span style="width:12%;background:#9AA4B2"></span></div>
+              </div>
+            </div>
+
+            <div class="hr-mob-row">
+              <div class="top">
+                <div class="av c6" style="background:#A8732A">LH</div>
+                <div>
+                  <div class="name">Linnea Halvorsen</div>
+                  <div class="meta">Researcher · NO</div>
+                </div>
+                <span class="hr-pill progress" style="margin-left:auto;font-size:10.5px">In&nbsp;progress</span>
+              </div>
+              <div class="bottom">
+                <div class="pkg">International · 64%</div>
+                <div class="hr-progress" style="width:60px"><span style="width:64%"></span></div>
+              </div>
+            </div>
+
+          </div>
+          <div style="margin-top:auto;padding:14px 18px;background:#fff;border-top:1px solid var(--ui-border);display:flex;justify-content:center">
+            <div class="hr-btn primary" style="font-size:12px;padding:10px 18px">
+              <svg class="ic"><use href="#i-plus"/></svg>New screening
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mob-meta">
+        <div class="code">M01</div>
+        <h5>Triage list</h5>
+        <p>The 12 items needing me, ordered by SLA. Tap a row → full report. Pull to refresh; nothing else.</p>
+      </div>
+    </div>
+
+    <!-- MOBILE B: candidate detail -->
+    <div>
+      <div class="mob-frame" style="aspect-ratio:9/16">
+        <div class="hr-mob" style="height:100%">
+          <div class="hr-mob-top">
+            <div style="font-size:12px;color:var(--ui-text-2);display:flex;align-items:center;gap:6px">
+              <svg class="ic" style="width:14px;height:14px;transform:rotate(90deg)"><use href="#i-chev"/></svg> Action
+            </div>
+            <div style="font-size:12px;font-weight:600;color:var(--ui-text)">RPT-2247-091</div>
+            <svg class="ic" style="width:14px;height:14px;color:var(--ui-text-3)"><use href="#i-dots"/></svg>
+          </div>
+          <div style="background:#fff;padding:18px;border-bottom:1px solid var(--ui-border);display:flex;align-items:center;gap:12px">
+            <div class="av c2" style="background:#A14B2C;width:48px;height:48px;border-radius:50%;color:#fff;font-weight:600;display:grid;place-items:center">RP</div>
+            <div>
+              <div style="font-weight:700;font-size:16px;color:var(--ui-text);letter-spacing:-0.01em">Renata Polanski</div>
+              <div style="font-size:12px;color:var(--ui-text-3);margin-top:2px">Director of Engineering · Berlin DE</div>
+              <div style="margin-top:8px;display:flex;gap:6px">
+                <span class="hr-pill review" style="font-size:10.5px">Needs review</span>
+                <span style="font-size:10.5px;color:var(--ui-text-3);font-weight:500;align-self:center">SLA in 14h</span>
+              </div>
+            </div>
+          </div>
+          <div style="padding:14px 18px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div style="background:#fff;border:1px solid var(--ui-border);border-radius:8px;padding:10px 12px">
+              <div style="font-size:10.5px;text-transform:uppercase;letter-spacing:0.1em;color:var(--ui-text-3);font-weight:600">Clear</div>
+              <div style="font-size:18px;font-weight:700;color:#0F7A37;margin-top:2px;letter-spacing:-0.01em">7 / 9</div>
+            </div>
+            <div style="background:#fff;border:1px solid var(--ui-border);border-radius:8px;padding:10px 12px">
+              <div style="font-size:10.5px;text-transform:uppercase;letter-spacing:0.1em;color:var(--ui-text-3);font-weight:600">TAT</div>
+              <div style="font-size:18px;font-weight:700;color:var(--ui-text);margin-top:2px;letter-spacing:-0.01em">3d 14h</div>
+            </div>
+          </div>
+          <div style="padding:0 18px;display:flex;flex-direction:column;gap:8px">
+            <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:var(--ui-text-3);font-weight:600;margin-top:6px">Checks</div>
+
+            <div class="hr-check" style="padding:10px 12px">
+              <div class="ico ok"><svg class="ic" style="width:10px;height:10px"><use href="#i-check"/></svg></div>
+              <div class="body">
+                <div class="ttl" style="font-size:12.5px">Identity &amp; right to work</div>
+                <div class="meta">EU Passport · verified</div>
+              </div>
+            </div>
+            <div class="hr-check" style="padding:10px 12px">
+              <div class="ico ok"><svg class="ic" style="width:10px;height:10px"><use href="#i-check"/></svg></div>
+              <div class="body">
+                <div class="ttl" style="font-size:12.5px">Education</div>
+                <div class="meta">2 / 2 verified</div>
+              </div>
+            </div>
+            <div class="hr-check" style="padding:10px 12px">
+              <div class="ico warn"><span style="font-size:9px">!</span></div>
+              <div class="body">
+                <div class="ttl" style="font-size:12.5px">Employment</div>
+                <div class="meta">2 discrepancies · review</div>
+              </div>
+            </div>
+            <div class="hr-check" style="padding:10px 12px">
+              <div class="ico ok"><svg class="ic" style="width:10px;height:10px"><use href="#i-check"/></svg></div>
+              <div class="body">
+                <div class="ttl" style="font-size:12.5px">Criminal · civil · sanctions</div>
+                <div class="meta">DE · PL · EU · no findings</div>
+              </div>
+            </div>
+            <div class="hr-check" style="padding:10px 12px">
+              <div class="ico ok"><svg class="ic" style="width:10px;height:10px"><use href="#i-check"/></svg></div>
+              <div class="body">
+                <div class="ttl" style="font-size:12.5px">Drug testing</div>
+                <div class="meta">N/A · package</div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:auto;padding:14px 18px;background:#fff;border-top:1px solid var(--ui-border);display:flex;gap:8px">
+            <div class="hr-btn secondary" style="font-size:12px;padding:10px 14px;flex:1;justify-content:center">View report</div>
+            <div class="hr-btn primary" style="font-size:12px;padding:10px 14px;flex:1;justify-content:center">Adjudicate</div>
+          </div>
+        </div>
+      </div>
+      <div class="mob-meta">
+        <div class="code">M02</div>
+        <h5>Candidate snapshot</h5>
+        <p>The full report compressed to what matters on a phone: status, counts, what to do next.</p>
+      </div>
+    </div>
+
+    <!-- MOBILE C: order flow -->
+    <div>
+      <div class="mob-frame" style="aspect-ratio:9/16">
+        <div class="hr-mob" style="height:100%">
+          <div class="hr-mob-top">
+            <div style="font-size:12px;color:var(--ui-text-2);display:flex;align-items:center;gap:6px">
+              <svg class="ic" style="width:14px;height:14px;transform:rotate(90deg)"><use href="#i-chev"/></svg> Cancel
+            </div>
+            <div style="font-size:12px;font-weight:600;color:var(--ui-text)">New screening</div>
+            <div style="font-size:11px;color:var(--ui-text-3);font-weight:600">2 of 4</div>
+          </div>
+
+          <!-- step progress -->
+          <div style="padding:14px 18px;background:#fff;border-bottom:1px solid var(--ui-border);display:flex;gap:6px">
+            <div style="flex:1;height:4px;border-radius:999px;background:#16A34A"></div>
+            <div style="flex:1;height:4px;border-radius:999px;background:var(--accent)"></div>
+            <div style="flex:1;height:4px;border-radius:999px;background:var(--ui-border)"></div>
+            <div style="flex:1;height:4px;border-radius:999px;background:var(--ui-border)"></div>
+          </div>
+
+          <div style="padding:20px 18px 8px;background:#fff">
+            <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:var(--accent);font-weight:600">Step 2 of 4</div>
+            <div style="font-size:20px;font-weight:700;color:var(--ui-text);margin-top:4px;letter-spacing:-0.01em">Choose a package</div>
+            <div style="font-size:13px;color:var(--ui-text-2);margin-top:6px;line-height:1.5">Packages bundle the right checks for the role &mdash; and apply the right consent forms automatically by region.</div>
+          </div>
+
+          <div style="padding:14px 18px;display:flex;flex-direction:column;gap:10px">
+
+            <div style="background:#fff;border:1px solid var(--ui-border);border-radius:10px;padding:14px;position:relative">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div style="font-size:11.5px;color:var(--ui-text-3);font-family:'JetBrains Mono',monospace;letter-spacing:0.14em">DR-1</div>
+                  <div style="font-size:14.5px;font-weight:700;color:var(--ui-text);margin-top:2px">Driver</div>
+                </div>
+                <div style="font-size:11.5px;color:var(--ui-text-3)">~1.8d TAT</div>
+              </div>
+              <div style="font-size:12px;color:var(--ui-text-2);margin-top:6px;line-height:1.45">6 checks — MVR, identity, criminal, drug, employment, education</div>
+            </div>
+
+            <div style="background:#fff;border:2px solid var(--accent);border-radius:10px;padding:14px;position:relative;box-shadow:0 4px 14px rgba(224,78,39,0.15)">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div style="font-size:11.5px;color:var(--accent);font-family:'JetBrains Mono',monospace;letter-spacing:0.14em;font-weight:600">SP-7 · SELECTED</div>
+                  <div style="font-size:14.5px;font-weight:700;color:var(--ui-text);margin-top:2px">Standard Plus</div>
+                </div>
+                <div style="width:22px;height:22px;border-radius:50%;background:var(--accent);display:grid;place-items:center;color:#fff">
+                  <svg class="ic" style="width:11px;height:11px"><use href="#i-check"/></svg>
+                </div>
+              </div>
+              <div style="font-size:12px;color:var(--ui-text-2);margin-top:6px;line-height:1.45">9 checks — ID, education, employment 7yr, criminal county+federal, sanctions, MVR</div>
+              <div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--ui-border);display:flex;justify-content:space-between;font-size:11.5px">
+                <span style="color:var(--ui-text-3)">Most used for engineering</span>
+                <span style="color:var(--ui-text-2);font-weight:600">~3.4d TAT</span>
+              </div>
+            </div>
+
+            <div style="background:#fff;border:1px solid var(--ui-border);border-radius:10px;padding:14px">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div style="font-size:11.5px;color:var(--ui-text-3);font-family:'JetBrains Mono',monospace;letter-spacing:0.14em">EX-3</div>
+                  <div style="font-size:14.5px;font-weight:700;color:var(--ui-text);margin-top:2px">Executive</div>
+                </div>
+                <div style="font-size:11.5px;color:var(--ui-text-3)">~5.9d TAT</div>
+              </div>
+              <div style="font-size:12px;color:var(--ui-text-2);margin-top:6px;line-height:1.45">14 checks — full Standard Plus + credit, civil, media, global sanctions, references</div>
+            </div>
+
+            <div style="background:#fff;border:1px solid var(--ui-border);border-radius:10px;padding:14px">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div style="font-size:11.5px;color:var(--ui-text-3);font-family:'JetBrains Mono',monospace;letter-spacing:0.14em">INT-4</div>
+                  <div style="font-size:14.5px;font-weight:700;color:var(--ui-text);margin-top:2px">International</div>
+                </div>
+                <div style="font-size:11.5px;color:var(--ui-text-3)">~5.1d TAT</div>
+              </div>
+              <div style="font-size:12px;color:var(--ui-text-2);margin-top:6px;line-height:1.45">11 checks calibrated to candidate country &mdash; GDPR-safe by default</div>
+            </div>
+
+          </div>
+
+          <div style="margin-top:auto;padding:14px 18px;background:#fff;border-top:1px solid var(--ui-border);display:flex;gap:8px;align-items:center">
+            <div class="hr-btn ghost" style="font-size:12px;padding:10px 14px">Back</div>
+            <div class="hr-btn primary" style="font-size:12px;padding:10px 14px;flex:1;justify-content:center">Continue → Consent</div>
+          </div>
+        </div>
+      </div>
+      <div class="mob-meta">
+        <div class="code">M03</div>
+        <h5>Order, step by step</h5>
+        <p>Four steps to a screening: candidate, package, consent, review. Region rules apply themselves; the recruiter just answers.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<section class="scene footer">
+  <div>
+    <h6>Project · 2022&ndash;2023</h6>
+    <div class="name">HireRight &nbsp;·&nbsp; Screening Manager</div>
+  </div>
+  <div class="right">jp / portfolio · 02</div>
+</section>
+
+
+<script>
+  // Desktop: scale the 1920px design to fit the viewport/modal width.
+  // Mobile: leave body unscaled (CSS reflows the narrative) and scale only
+  // the wide product mockups to fit their container — no horizontal scroll.
+  (function () {
+    var WIDE = ['.dash-stage', '.rep-stage', '.ins-stage'];
+    function clearScreen(scr) {
+      scr.style.transform = '';
+      var st = scr.parentElement;
+      if (st) { st.style.height = ''; st.style.overflow = ''; }
+    }
+    function fit() {
+      var w = window.innerWidth;
+      var mobile = w < 768;
+      if (!mobile) {
+        document.body.style.zoom = Math.min(1, w / 1920);
+        WIDE.forEach(function (sel) {
+          document.querySelectorAll(sel + ' .scr').forEach(clearScreen);
+        });
+        return;
+      }
+      document.body.style.zoom = '';
+      WIDE.forEach(function (sel) {
+        document.querySelectorAll(sel).forEach(function (stage) {
+          var scr = stage.querySelector('.scr');
+          if (!scr) return;
+          scr.style.transform = 'none';
+          scr.style.transformOrigin = 'top left';
+          var natW = scr.offsetWidth;
+          var availW = stage.clientWidth;
+          if (!natW || !availW) return;
+          var sc = availW / natW;
+          scr.style.transform = 'scale(' + sc + ')';
+          stage.style.height = (scr.offsetHeight * sc) + 'px';
+          stage.style.overflow = 'hidden';
+        });
+      });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fit);
+    else fit();
+    window.addEventListener('resize', fit);
+    window.addEventListener('load', fit);
+  })();
+</script>
+</body>
+</html>

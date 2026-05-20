@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SCE — sce.com Template System</title>
+<template id="__bundler_thumbnail" data-bg-color="#0B2545">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#0B2545"/>
+    <g transform="translate(600 400)">
+      <path d="M0 -200 L36 -60 L172 -100 L80 0 L172 100 L36 60 L0 200 L-36 60 L-172 100 L-80 0 L-172 -100 L-36 -60 Z" fill="#FDB813"/>
+    </g>
+    <text x="600" y="690" text-anchor="middle" font-family="Inter, sans-serif" font-size="36" font-weight="800" fill="#FDB813" letter-spacing="6">SCE · sce.com</text>
+  </svg>
+</template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --edison-yellow:#FDB813;
+    --edison-yellow-soft:#FFD66B;
+    --edison-navy:#0B2545;
+    --edison-blue:#1D6BB8;
+    --paper:#F4EFE6;
+    --paper-warm:#EAE2D2;
+    --ink:#15171C;
+    --ink-2:#3A3F4A;
+    --mute:#8A8F99;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#fff;color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  body{width:1920px;margin:0 auto;overflow-x:auto}
+
+  .scene{position:relative;width:1920px;overflow:hidden}
+
+  /* Shadows / treatment for flat screens */
+  .scr{
+    display:block;background:#fff;
+    box-shadow:
+      0 60px 100px -30px rgba(11,37,69,0.35),
+      0 30px 50px -20px rgba(0,0,0,0.18),
+      0 0 0 1px rgba(11,37,69,0.06);
+    border-radius:4px;overflow:hidden;
+  }
+  .scr img{display:block;width:100%}
+
+  /* Shared scene headings */
+  .scene-label{
+    font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.3em;
+    color:var(--mute);text-transform:uppercase;
+  }
+  .scene-head{
+    font-family:'Inter',sans-serif;font-size:56px;font-weight:700;
+    line-height:1.05;letter-spacing:-0.025em;color:var(--edison-navy);
+  }
+  .scene-sub{
+    font-family:'Inter',sans-serif;font-size:21px;line-height:1.45;
+    color:var(--ink-2);max-width:720px;
+  }
+
+  /* ===================== SCENE 1: COVER ===================== */
+  .cover{
+    height:1400px;
+    background:
+      radial-gradient(1200px 800px at 80% 20%, rgba(253,184,19,0.18), transparent 60%),
+      radial-gradient(900px 700px at 15% 80%, rgba(11,37,69,0.06), transparent 60%),
+      linear-gradient(180deg, #F6F1E7 0%, #EFE7D6 100%);
+    padding:120px 140px 0;
+  }
+  .cover-meta{
+    display:flex;align-items:center;gap:24px;
+    font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .cover-meta .dot{width:10px;height:10px;border-radius:50%;background:var(--edison-yellow)}
+  .cover-meta span{position:relative}
+  .cover-meta span + span::before{content:"";position:absolute;left:-14px;top:50%;transform:translateY(-50%);width:4px;height:4px;border-radius:50%;background:var(--mute)}
+
+  .cover-title{
+    margin-top:48px;font-family:'Inter',sans-serif;
+    font-weight:800;font-size:200px;line-height:0.92;letter-spacing:-0.04em;color:var(--edison-navy);
+    text-wrap:balance;
+  }
+  .cover-title em{font-style:normal;color:var(--edison-yellow)}
+  .cover-sub{
+    margin-top:48px;max-width:1080px;font-family:'Inter',sans-serif;
+    font-size:32px;line-height:1.35;color:var(--ink-2);font-weight:400;
+  }
+  .cover-tags{margin-top:64px;display:flex;gap:16px;flex-wrap:wrap}
+  .cover-tags span{
+    padding:14px 26px;border:1.5px solid var(--ink);border-radius:999px;
+    font-family:'Inter',sans-serif;font-size:18px;font-weight:500;
+    background:rgba(255,255,255,0.5);backdrop-filter:blur(2px);
+  }
+  .cover-bar{
+    position:absolute;left:0;right:0;bottom:0;height:14px;
+    background:linear-gradient(90deg, var(--edison-navy) 0 22%, var(--edison-yellow) 22% 100%);
+  }
+  .cover-mark{
+    position:absolute;top:120px;right:140px;display:flex;align-items:center;gap:18px;
+    padding:18px 28px;background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(11,37,69,0.10);
+  }
+  .cover-mark .burst{width:56px;height:56px;border-radius:8px;background:var(--edison-yellow);display:grid;place-items:center}
+  .cover-mark .burst svg{width:38px;height:38px}
+  .cover-mark .stack{display:flex;flex-direction:column;line-height:1.1;font-family:'Inter',sans-serif}
+  .cover-mark .stack small{font-size:11px;letter-spacing:0.16em;color:var(--mute);text-transform:uppercase}
+  .cover-mark .stack b{font-size:22px;font-weight:800;color:var(--edison-navy);letter-spacing:0.04em}
+
+  /* ===================== SCENE 2: HOME FEATURE ===================== */
+  .home{
+    padding:160px 0 200px;
+    background:
+      radial-gradient(1100px 700px at 50% 0%, rgba(253,184,19,0.10), transparent 70%),
+      linear-gradient(180deg, #F8F4EB 0%, #EFE7D6 100%);
+    position:relative;
+  }
+  .home-head{
+    display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;
+    padding:0 140px;margin-bottom:80px;
+  }
+  .home-head .right{display:flex;flex-direction:column;align-items:flex-end;gap:14px;text-align:right}
+
+  .home-stage{
+    position:relative;
+    width:1620px;margin:0 auto;
+    display:flex;align-items:flex-start;gap:60px;
+  }
+  .home-stage .desktop{width:1300px;flex:none}
+  .home-stage .mobile-col{flex:1;display:flex;flex-direction:column;gap:24px;padding-top:80px}
+  .home-stage .mobile{width:260px}
+  .home-stage .mobile img{width:100%}
+
+  .home-annotate{
+    margin-top:120px;padding:0 140px;display:grid;grid-template-columns:repeat(3, 1fr);gap:60px;
+  }
+  .home-annotate .item .num{
+    font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.2em;color:var(--edison-yellow);
+    text-transform:uppercase;margin-bottom:14px;font-weight:600;
+  }
+  .home-annotate .item h4{
+    font-family:'Inter',sans-serif;font-size:26px;font-weight:700;
+    line-height:1.15;letter-spacing:-0.01em;color:var(--edison-navy);margin-bottom:14px;
+  }
+  .home-annotate .item p{
+    font-family:'Inter',sans-serif;font-size:17px;line-height:1.55;color:var(--ink-2);
+  }
+
+  /* ===================== SCENE 3: LANDING A FEATURE ===================== */
+  .landing-a{
+    padding:160px 0 200px;
+    background:
+      radial-gradient(800px 600px at 10% 10%, rgba(255,255,255,0.4), transparent 70%),
+      linear-gradient(180deg, #FDB813 0%, #F2A700 100%);
+    position:relative;color:var(--edison-navy);
+  }
+  .landing-a::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      linear-gradient(135deg, transparent 0 49.7%, rgba(11,37,69,0.04) 49.7% 50.3%, transparent 50.3%) 0 0 / 80px 80px,
+      linear-gradient(45deg, transparent 0 49.7%, rgba(11,37,69,0.04) 49.7% 50.3%, transparent 50.3%) 0 0 / 80px 80px;
+    mix-blend-mode:multiply;opacity:0.4;
+  }
+  .landing-a .scene-label{color:rgba(11,37,69,0.65)}
+  .landing-a .scene-head{color:var(--edison-navy)}
+  .landing-a .scene-sub{color:rgba(11,37,69,0.78)}
+
+  .la-head{
+    position:relative;z-index:1;
+    display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;
+    padding:0 140px;margin-bottom:80px;
+  }
+  .la-head .right{display:flex;flex-direction:column;align-items:flex-end;gap:14px;text-align:right}
+
+  .la-stage{
+    position:relative;z-index:1;
+    width:1620px;margin:0 auto;
+    display:flex;align-items:flex-start;gap:60px;
+  }
+  .la-stage .desktop{width:1300px;flex:none}
+  .la-stage .mobile-col{flex:1;display:flex;flex-direction:column;gap:24px;padding-top:80px}
+  .la-stage .mobile{width:260px}
+  .la-stage .mobile img{width:100%}
+
+  /* ===================== SCENE 4: LANDING B + C SIDE BY SIDE ===================== */
+  .pair{
+    padding:160px 140px 200px;
+    background:
+      radial-gradient(1000px 700px at 50% 100%, rgba(253,184,19,0.12), transparent 60%),
+      linear-gradient(180deg, #0B2545 0%, #143864 100%);
+    color:#fff;
+  }
+  .pair .scene-label{color:rgba(253,184,19,0.85)}
+  .pair .scene-head{color:#fff}
+  .pair .scene-sub{color:rgba(255,255,255,0.78)}
+
+  .pair-head{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:80px}
+  .pair-head .right{display:flex;flex-direction:column;align-items:flex-end;gap:14px;text-align:right}
+
+  .pair-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;}
+  .pair-card{display:flex;flex-direction:column;gap:36px}
+  .pair-card .pair-meta{
+    display:flex;align-items:center;justify-content:space-between;
+    border-top:1.5px solid rgba(255,255,255,0.2);padding-top:18px;
+  }
+  .pair-card .pair-meta .code{
+    font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.22em;
+    color:var(--edison-yellow);text-transform:uppercase;font-weight:600;
+  }
+  .pair-card .pair-meta h5{
+    font-family:'Inter',sans-serif;font-size:28px;font-weight:700;letter-spacing:-0.01em;color:#fff;
+  }
+  .pair-card .pair-row{display:flex;gap:32px;align-items:flex-start}
+  .pair-card .pair-row .desktop{flex:1}
+  .pair-card .pair-row .mobile{width:170px;flex:none}
+  .pair-card .pair-row .mobile img{width:100%}
+  .pair-card p{
+    font-family:'Inter',sans-serif;font-size:17px;line-height:1.55;color:rgba(255,255,255,0.72);
+  }
+
+  /* ===================== SCENE 5: DETAILS GRID ===================== */
+  .details{
+    padding:160px 140px 200px;
+    background:
+      radial-gradient(900px 600px at 50% 0%, rgba(11,37,69,0.04), transparent 70%),
+      linear-gradient(180deg, #F8F4EB 0%, #EFE7D6 100%);
+  }
+  .details-head{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:100px}
+  .details-head .right{display:flex;flex-direction:column;align-items:flex-end;gap:14px;text-align:right}
+
+  .details-row{
+    display:grid;grid-template-columns:repeat(3, 1fr);gap:80px 56px;align-items:flex-start;
+    max-width:1500px;margin:0 auto;
+  }
+  .det-card{display:flex;flex-direction:column;gap:24px}
+  .det-card .det-img{
+    position:relative;
+    display:block;
+  }
+  .det-card .det-img .scr{
+    width:100%;height:auto;
+    box-shadow:
+      0 30px 60px -20px rgba(11,37,69,0.30),
+      0 15px 30px -15px rgba(0,0,0,0.18),
+      0 0 0 1px rgba(11,37,69,0.06);
+  }
+  .det-card .det-img .scr img{
+    width:100%;height:auto;display:block;
+  }
+  .det-card .det-img .scr.mobile{
+    position:absolute;
+    right:-12px;bottom:-26px;
+    width:88px;height:auto;
+    max-height:340px;overflow:hidden;
+  }
+  .det-card .det-img .scr.mobile img{
+    width:88px;height:auto;display:block;
+  }
+  .det-card .det-meta{padding-top:22px;border-top:1.5px solid var(--ink)}
+  .det-card .det-meta .code{
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.22em;
+    color:var(--mute);text-transform:uppercase;
+  }
+  .det-card .det-meta h5{
+    font-family:'Inter',sans-serif;font-size:20px;font-weight:700;
+    color:var(--edison-navy);margin:8px 0 8px;letter-spacing:-0.01em;
+  }
+  .det-card .det-meta small{
+    display:block;font-family:'Inter',sans-serif;font-size:14px;line-height:1.45;color:var(--ink-2);
+  }
+
+  /* ===================== SCENE 6: SYSTEM INDEX ===================== */
+  .system{padding:140px 140px 160px;background:#fff}
+  .system-grid{display:grid;grid-template-columns:1fr 1fr;gap:120px;align-items:start;margin-top:60px}
+  .system-left h2{
+    font-family:'Inter',sans-serif;font-size:88px;font-weight:800;line-height:0.95;letter-spacing:-0.03em;color:var(--edison-navy);
+  }
+  .system-left h2 em{font-style:normal;color:var(--edison-yellow)}
+  .system-left p{margin-top:32px;font-family:'Inter',sans-serif;font-size:22px;line-height:1.5;color:var(--ink-2);max-width:600px}
+  .templates{display:grid;grid-template-columns:1fr 1fr;gap:32px 40px}
+  .tmpl{border-top:2px solid var(--ink);padding-top:18px}
+  .tmpl .code{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.22em;color:var(--mute);text-transform:uppercase}
+  .tmpl h5{font-family:'Inter',sans-serif;font-size:24px;color:var(--edison-navy);font-weight:700;margin:8px 0 6px;letter-spacing:-0.01em}
+  .tmpl small{display:block;font-family:'Inter',sans-serif;font-size:15px;color:var(--ink-2);line-height:1.4}
+
+  /* ===================== FOOTER ===================== */
+  .footer{
+    height:240px;background:var(--edison-navy);color:#fff;
+    display:flex;align-items:center;justify-content:space-between;padding:0 140px;
+  }
+  .footer .left{display:flex;align-items:center;gap:24px}
+  .footer .burst{width:64px;height:64px;border-radius:8px;background:var(--edison-yellow);display:grid;place-items:center}
+  .footer .burst svg{width:42px;height:42px}
+  .footer h6{font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.2em;color:var(--edison-yellow);text-transform:uppercase;font-weight:500}
+  .footer .name{font-family:'Inter',sans-serif;font-size:28px;font-weight:700;margin-top:6px}
+  .footer .right{font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.2em;color:rgba(255,255,255,0.6);text-transform:uppercase}
+
+/* ─── MOBILE-NATIVE LAYOUT (< 768px) ─────────────────── */
+@media (max-width: 767px) {
+  html, body { width: 100% !important; overflow-x: hidden !important; }
+  body { width: 100% !important; }
+
+  .scene { width: 100% !important; overflow: visible !important; }
+
+  /* ─── Cover ─── */
+  .cover { height: auto !important; padding: 80px 24px 40px !important; }
+  .cover-meta { font-size: 11px !important; flex-wrap: wrap; gap: 14px !important; }
+  .cover-title { font-size: 64px !important; margin-top: 32px !important; line-height: 1.0 !important; }
+  .cover-sub { font-size: 17px !important; margin-top: 28px !important; line-height: 1.45 !important; }
+  .cover-tags { margin-top: 32px !important; gap: 8px !important; }
+  .cover-tags span { font-size: 11px !important; padding: 8px 14px !important; }
+  .cover-bar { height: 6px !important; }
+  .cover-mark { display: none !important; }
+
+  /* Generic heading / section spacing */
+  .home, .landing-a, .pair, .details, .system { padding: 64px 24px !important; }
+  .scene-head { font-size: 32px !important; line-height: 1.1 !important; }
+  .scene-sub { font-size: 15px !important; line-height: 1.5 !important; max-width: 100% !important; }
+  .scene-label { font-size: 11px !important; }
+
+  /* Headers that were 2-col grids — stack */
+  .home-head, .la-head, .pair-head, .details-head {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+    padding: 0 !important;
+    margin-bottom: 40px !important;
+    text-align: left !important;
+  }
+  .home-head .right, .la-head .right, .pair-head .right, .details-head .right {
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+
+  /* ── Shared "desktop main + mobile badge" pattern ── */
+  /* The desktop image becomes the full-width hero; mobile mockup overlaps in the bottom-right corner */
+  .home-stage, .la-stage {
+    position: relative !important;
+    width: 100% !important;
+    padding: 0 !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    display: block !important;
+  }
+  .home-stage .desktop, .la-stage .desktop {
+    width: 100% !important;
+  }
+  .home-stage .mobile-col, .la-stage .mobile-col {
+    position: absolute !important;
+    right: -8px !important;
+    bottom: -28px !important;
+    padding-top: 0 !important;
+    width: auto !important;
+    flex: none !important;
+    gap: 0 !important;
+  }
+  .home-stage .mobile, .la-stage .mobile {
+    width: 78px !important;
+  }
+  .home-stage .mobile img, .la-stage .mobile img { width: 100% !important; }
+
+  /* Padding under the stage to make room for the badge overhang */
+  .home-stage, .la-stage { margin-bottom: 40px !important; }
+
+  /* ─── Home annotate cards ─── */
+  .home-annotate {
+    grid-template-columns: 1fr !important;
+    padding: 0 !important;
+    margin-top: 64px !important;
+    gap: 32px !important;
+  }
+  .home-annotate .item h4 { font-size: 20px !important; }
+  .home-annotate .item p { font-size: 15px !important; }
+
+  /* ─── Pair (Landing B + C) — same badge pattern ─── */
+  .pair-grid {
+    grid-template-columns: 1fr !important;
+    gap: 56px !important;
+  }
+  .pair-card .pair-row {
+    position: relative !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    align-items: stretch !important;
+  }
+  .pair-card .pair-row .desktop { flex: 1 !important; width: 100% !important; }
+  .pair-card .pair-row .mobile {
+    position: absolute !important;
+    right: -8px !important;
+    bottom: -28px !important;
+    width: 72px !important;
+    flex: none !important;
+  }
+  .pair-card .pair-row .mobile img { width: 100% !important; }
+  .pair-card { margin-bottom: 24px !important; }
+  .pair-card .pair-meta { flex-direction: column !important; gap: 12px !important; align-items: flex-start !important; padding-top: 32px !important; }
+  .pair-card .pair-meta p { text-align: left !important; max-width: 100% !important; }
+
+  /* ─── Details grid (already follows the badge pattern, just stack to 1-col) ─── */
+  .details-row {
+    grid-template-columns: 1fr !important;
+    gap: 64px !important;
+    max-width: 100% !important;
+  }
+
+  /* ─── System index ─── */
+  .system-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
+  .system-left h2 { font-size: 48px !important; }
+  .system-left p { font-size: 17px !important; }
+  .templates { grid-template-columns: 1fr !important; gap: 24px !important; }
+
+  /* ─── Footer ─── */
+  .footer { height: auto !important; padding: 32px 24px !important; flex-direction: column !important; gap: 16px !important; align-items: flex-start !important; }
+  .footer .name { font-size: 20px !important; }
+
+  /* Back nav adjusts for mobile */
+  .jp-back-nav { top: 16px !important; left: 16px !important; font-size: 11px !important; padding: 10px 16px !important; }
+}
+</style>
+</head>
+<body>
+<!-- Back to Portfolio nav (JP) -->
+<style>
+  .jp-back-nav{
+    position:fixed;top:24px;left:24px;z-index:99999;
+    display:inline-flex;align-items:center;gap:10px;
+    padding:12px 20px;
+    background:rgba(11,37,69,0.92);color:#fff;
+    font-family:'Inter',system-ui,sans-serif;font-size:13px;font-weight:600;
+    letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;
+    border-radius:999px;backdrop-filter:blur(8px);
+    box-shadow:0 8px 24px rgba(11,37,69,0.25);
+    transition:background .2s ease, transform .2s ease;
+  }
+  .jp-back-nav:hover{background:#E8312A;transform:translateX(-2px)}
+  .jp-back-nav .arr{display:inline-block;transition:transform .2s ease}
+  .jp-back-nav:hover .arr{transform:translateX(-3px)}
+</style>
+<a class="jp-back-nav" href="index.html#work">
+  <span class="arr">&larr;</span> Back to Portfolio
+</a>
+<script>
+  // Hide the back pill when this page is embedded in an iframe
+  // (the parent modal close handles closing instead).
+  if (window.self !== window.top) {
+    var n = document.querySelector('.jp-back-nav');
+    if (n) n.style.display = 'none';
+  }
+</script>
+
+
+<!-- ============ SCENE 1: COVER ============ -->
+<section class="scene cover">
+  <div class="cover-meta">
+    <span class="dot"></span>
+    <span>Case&nbsp;Study&nbsp;/&nbsp;01</span>
+    <span>2025&nbsp;–&nbsp;2026</span>
+    <span>Lead&nbsp;Product&nbsp;Designer</span>
+  </div>
+
+  <h1 class="cover-title">Powering<br>the new <em>sce.com</em></h1>
+
+  <p class="cover-sub">A modular page-template system for Southern California Edison &mdash; 15&nbsp;million customers, one coherent web experience. Designed to scale from outage alerts to clean-energy storytelling.</p>
+
+  <div class="cover-tags">
+    <span>Design System</span>
+    <span>Responsive Web</span>
+    <span>Content Templates</span>
+    <span>Accessibility WCAG&nbsp;AA</span>
+    <span>Editorial Hierarchy</span>
+  </div>
+
+  <div class="cover-bar"></div>
+</section>
+
+<!-- ============ SCENE 2: HOME ============ -->
+<section class="scene home">
+  <div class="home-head">
+    <div>
+      <div class="scene-label" style="margin-bottom:16px">01 &nbsp;·&nbsp; The Anchor</div>
+      <h2 class="scene-head">A homepage built<br>for crisis &amp; calm.</h2>
+    </div>
+    <div class="right">
+      <div class="scene-label">T01 &nbsp;·&nbsp; Home</div>
+      <p class="scene-sub">Wildfire and outage messaging is always available without blocking the everyday tasks that keep the lights on &mdash; literally. The same four quicklinks anchor every page on the site.</p>
+    </div>
+  </div>
+
+  <div class="home-stage">
+    <div class="scr desktop">
+      <img src="case-sce-assets/T01-home-desktop.jpg" alt="SCE Home — Desktop">
+    </div>
+    <div class="mobile-col">
+      <div class="scr mobile">
+        <img src="case-sce-assets/T01-home-mobile.jpg" alt="SCE Home — Mobile">
+      </div>
+    </div>
+  </div>
+
+  <div class="home-annotate">
+    <div class="item">
+      <div class="num">01 / Hero</div>
+      <h4>Crisis lives above the fold.</h4>
+      <p>The hero swaps between seasonal storytelling and active wildfire/outage alerts &mdash; without ever pushing the four quicklinks below the fold.</p>
+    </div>
+    <div class="item">
+      <div class="num">02 / Quicklinks</div>
+      <h4>Four jobs, one row.</h4>
+      <p>Pay Bill, Outage, Moving, Payment Assistance &mdash; the high-intent actions every customer arrives looking for. Anchored on a yellow rail across every template.</p>
+    </div>
+    <div class="item">
+      <div class="num">03 / Editorial</div>
+      <h4>Newsroom + community.</h4>
+      <p>Below the fold, the home page hands off to editorial: programs, scam alerts, PSPS guidance, and community stories &mdash; surfaced when relevant, quiet when not.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCENE 3: LANDING A — Clean Energy & Efficiency ============ -->
+<section class="scene landing-a">
+  <div class="la-head">
+    <div>
+      <div class="scene-label" style="margin-bottom:16px">02 &nbsp;·&nbsp; The Featured Topic</div>
+      <h2 class="scene-head">When a section needs<br>its own front door.</h2>
+    </div>
+    <div class="right">
+      <div class="scene-label">T02 &nbsp;·&nbsp; Landing A</div>
+      <p class="scene-sub">A photo-led landing that stages programs as equal peers. Six cards, one clear path in &mdash; from EV charging to workforce development. Pair this template with a strong hero photo and the system does the rest.</p>
+    </div>
+  </div>
+
+  <div class="la-stage">
+    <div class="scr desktop">
+      <img src="case-sce-assets/T02-landing-a-desktop.jpg" alt="Clean Energy &amp; Efficiency — Desktop">
+    </div>
+    <div class="mobile-col">
+      <div class="scr mobile">
+        <img src="case-sce-assets/T02-landing-a-mobile.jpg" alt="Clean Energy &amp; Efficiency — Mobile">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCENE 4: LANDING B + C ============ -->
+<section class="scene pair">
+  <div class="pair-head">
+    <div>
+      <div class="scene-label" style="margin-bottom:16px">03 &nbsp;·&nbsp; Two Rhythms</div>
+      <h2 class="scene-head">One system,<br>two cadences.</h2>
+    </div>
+    <div class="right">
+      <div class="scene-label">T03 &amp; T04 &nbsp;·&nbsp; Landings</div>
+      <p class="scene-sub">Landing B leans editorial &mdash; longer-form cards that breathe. Landing C is denser &mdash; a six-up grid for sections with many siblings. Same components, different rhythms.</p>
+    </div>
+  </div>
+
+  <div class="pair-grid">
+    <div class="pair-card">
+      <div class="pair-row">
+        <div class="scr desktop">
+          <img src="case-sce-assets/T03-landing-b-desktop.jpg" alt="Landing B — Desktop">
+        </div>
+        <div class="scr mobile">
+          <img src="case-sce-assets/T03-landing-b-mobile.jpg" alt="Landing B — Mobile">
+        </div>
+      </div>
+      <div class="pair-meta">
+        <div>
+          <div class="code">T03</div>
+          <h5>Landing B &mdash; Editorial</h5>
+        </div>
+        <p style="max-width:260px;text-align:right">Stacked full-bleed cards. Each tile gets room to breathe.</p>
+      </div>
+    </div>
+
+    <div class="pair-card">
+      <div class="pair-row">
+        <div class="scr desktop">
+          <img src="case-sce-assets/T04-landing-c-desktop.jpg" alt="Landing C — Desktop">
+        </div>
+        <div class="scr mobile">
+          <img src="case-sce-assets/T04-landing-c-mobile.jpg" alt="Landing C — Mobile">
+        </div>
+      </div>
+      <div class="pair-meta">
+        <div>
+          <div class="code">T04</div>
+          <h5>Landing C &mdash; Index</h5>
+        </div>
+        <p style="max-width:260px;text-align:right">Six-up grid for parents with many children. Compact &amp; scannable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCENE 5: DETAILS GRID ============ -->
+<section class="scene details">
+  <div class="details-head">
+    <div>
+      <div class="scene-label" style="margin-bottom:16px">04 &nbsp;·&nbsp; Article Engine</div>
+      <h2 class="scene-head">Five layouts for<br>five kinds of content.</h2>
+    </div>
+    <div class="right">
+      <div class="scene-label">T05 &mdash; T09 &nbsp;·&nbsp; Detail Pages</div>
+      <p class="scene-sub">From a single-column long read to a three-column rate comparison, the detail family covers everything below a landing. Editors pick the structure &mdash; the system handles the typography.</p>
+    </div>
+  </div>
+
+  <div class="details-row">
+    <div class="det-card">
+      <div class="det-img">
+        <div class="scr"><img src="case-sce-assets/T05-details-1col-desktop.jpg" alt=""></div>
+        <div class="scr mobile"><img src="case-sce-assets/T05-details-1col-mobile.jpg" alt=""></div>
+      </div>
+      <div class="det-meta">
+        <div class="code">T05</div>
+        <h5>1-Column</h5>
+        <small>Long-form article with hero image &amp; sub-titles.</small>
+      </div>
+    </div>
+    <div class="det-card">
+      <div class="det-img">
+        <div class="scr"><img src="case-sce-assets/T06-details-2col-desktop.jpg" alt=""></div>
+        <div class="scr mobile"><img src="case-sce-assets/T06-details-2col-mobile.jpg" alt=""></div>
+      </div>
+      <div class="det-meta">
+        <div class="code">T06</div>
+        <h5>2-Column</h5>
+        <small>Two parallel topics or a compare-and-contrast view.</small>
+      </div>
+    </div>
+    <div class="det-card">
+      <div class="det-img">
+        <div class="scr"><img src="case-sce-assets/T07-details-3col-desktop.png" alt=""></div>
+        <div class="scr mobile"><img src="case-sce-assets/T07-details-3col-mobile.jpg" alt=""></div>
+      </div>
+      <div class="det-meta">
+        <div class="code">T07</div>
+        <h5>3-Column</h5>
+        <small>Rate plans, tiers, programs side-by-side-by-side.</small>
+      </div>
+    </div>
+    <div class="det-card">
+      <div class="det-img">
+        <div class="scr"><img src="case-sce-assets/T08-details-1over2-desktop.jpg" alt=""></div>
+        <div class="scr mobile"><img src="case-sce-assets/T08-details-1over2-mobile.jpg" alt=""></div>
+      </div>
+      <div class="det-meta">
+        <div class="code">T08</div>
+        <h5>1 over 2</h5>
+        <small>Intro section followed by a split deeper-dive.</small>
+      </div>
+    </div>
+    <div class="det-card">
+      <div class="det-img">
+        <div class="scr"><img src="case-sce-assets/T09-details-sidebar-desktop.jpg" alt=""></div>
+        <div class="scr mobile"><img src="case-sce-assets/T09-details-sidebar-mobile.jpg" alt=""></div>
+      </div>
+      <div class="det-meta">
+        <div class="code">T09</div>
+        <h5>Right Sidebar</h5>
+        <small>Article with persistent CTA or related-link rail.</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<section class="scene footer">
+  <div class="left">
+    <div>
+      <h6>Project · 2026</h6>
+      <div class="name">Southern California Edison &nbsp;·&nbsp; sce.com</div>
+    </div>
+  </div>
+  <div class="right">jp / portfolio · 01</div>
+</section>
+
+
+<script>
+  // Auto-scale the 1920px-wide layout to fit the iframe/viewport width.
+  (function () {
+    function fit() {
+      var targetWidth = 1920;
+      var available = window.innerWidth;
+      // Never zoom below 0.5 — below that, text is unreadable. Mobile gets
+      // horizontal scroll instead.
+      var minScale = 0.5;
+      var scale = Math.min(1, available / targetWidth);
+      scale = Math.max(minScale, scale);
+      // Use zoom — it affects layout (unlike transform), so document height
+      // shrinks proportionally and no extra whitespace appears below.
+      document.body.style.zoom = scale;
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', fit);
+    } else {
+      fit();
+    }
+    window.addEventListener('resize', fit);
+    window.addEventListener('load', fit);
+  })();
+</script>
+</body>
+</html>

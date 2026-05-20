@@ -208,8 +208,8 @@
     opacity: 0; animation: fadeUp .7s .85s forwards;
   }
   .hero-desc {
-    font-size: 16px; line-height: 1.65; font-weight: 300;
-    color: rgba(0,0,0,.5); max-width: 380px;
+    font-size: 16px; line-height: 1.65; font-weight: 400;
+    color: rgba(0,0,0,.78); max-width: 380px;
   }
   .hero-cta {
     display: flex; align-items: center; gap: 14px;
@@ -328,8 +328,8 @@
   .about-heading em { font-style: normal; color: var(--red); }
 
   .about-text {
-    font-size: 17px; line-height: 1.75; font-weight: 300;
-    color: rgba(255,255,255,.6); margin-bottom: 36px;
+    font-size: 17px; line-height: 1.75; font-weight: 400;
+    color: rgba(255,255,255,.88); margin-bottom: 36px;
   }
   .about-stats {
     display: grid; grid-template-columns: repeat(3,1fr);
@@ -409,8 +409,70 @@
     margin-bottom: 22px; color: var(--black);
   }
   .work-desc {
-    font-size: 14px; line-height: 1.75; font-weight: 300;
-    color: rgba(0,0,0,.5); max-width: 500px;
+    font-size: 15px; line-height: 1.75; font-weight: 400;
+    color: rgba(0,0,0,.78); max-width: 540px;
+    margin-bottom: 14px;
+  }
+  .work-desc:last-of-type { margin-bottom: 0; }
+  .work-cta {
+    position: relative;
+    display: inline-flex; align-items: center; gap: 16px;
+    margin-top: 32px; padding: 20px 28px;
+    font-size: 13px; font-weight: 800;
+    letter-spacing: .26em; text-transform: uppercase;
+    color: var(--white); text-decoration: none;
+    background: var(--red);
+    border: 2px solid var(--red);
+    overflow: hidden; isolation: isolate;
+    white-space: nowrap;
+    transition: color .35s ease, border-color .35s ease, transform .25s ease;
+    box-shadow: 0 10px 30px -10px rgba(232,49,42,.55);
+  }
+  /* Sliding black wipe on hover */
+  .work-cta::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background: var(--black);
+    transform: translateX(-101%);
+    transition: transform .4s cubic-bezier(.7,0,.2,1);
+  }
+  .work-cta:hover { border-color: var(--black); transform: translateY(-2px); }
+  .work-cta:hover::before { transform: translateX(0); }
+  .work-cta .arr {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--white); color: var(--red);
+    font-size: 14px; font-weight: 900;
+    transition: transform .35s cubic-bezier(.7,0,.2,1), color .35s ease;
+  }
+  .work-cta:hover .arr { transform: translateX(6px); color: var(--black); }
+
+  /* CTA wrapper — lets two buttons sit side-by-side and wrap on mobile */
+  .work-ctas {
+    display: flex; flex-wrap: wrap; gap: 14px;
+    margin-top: 32px;
+  }
+  .work-ctas .work-cta { margin-top: 0; }
+
+  /* Ghost (secondary) variant */
+  .work-cta--ghost {
+    background: transparent;
+    border: 2px solid var(--black);
+    color: var(--black);
+    box-shadow: none;
+  }
+  .work-cta--ghost::before { background: var(--red); }
+  .work-cta--ghost:hover { border-color: var(--red); color: var(--white); }
+  .work-cta--ghost .arr { background: var(--black); color: var(--white); }
+  .work-cta--ghost:hover .arr { background: var(--white); color: var(--red); }
+  /* Subtle attention pulse — fires once on reveal */
+  @keyframes ctaPulse {
+    0%   { box-shadow: 0 10px 30px -10px rgba(232,49,42,.55), 0 0 0 0 rgba(232,49,42,.5); }
+    70%  { box-shadow: 0 10px 30px -10px rgba(232,49,42,.55), 0 0 0 14px rgba(232,49,42,0); }
+    100% { box-shadow: 0 10px 30px -10px rgba(232,49,42,.55), 0 0 0 0 rgba(232,49,42,0); }
+  }
+  .work-item.in .work-cta {
+    animation: ctaPulse 1.6s ease-out .4s 2;
   }
 
   .work-kpi {
@@ -665,6 +727,58 @@
   }
   @media (max-width: 960px) {
     .lb-hit-prev, .lb-hit-next { display: none; }
+  }
+
+  /* ─── CASE STUDY OVERLAY ─────────────────────────────── */
+  .cs-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.92);
+    z-index: 10001;
+    opacity: 0; pointer-events: none;
+    transition: opacity .35s ease;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .cs-overlay.cs-open { opacity: 1; pointer-events: all; }
+  .cs-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    max-width: 1920px;
+    background: var(--white);
+    overflow: hidden;
+    transform: scale(.96);
+    transition: transform .35s ease;
+    box-shadow: 0 30px 80px rgba(0,0,0,.5);
+  }
+  .cs-overlay.cs-open .cs-inner { transform: scale(1); }
+  .cs-frame {
+    width: 100%; height: 100%;
+    border: 0; display: block;
+    background: #0B2545;
+  }
+  .cs-close {
+    position: fixed;
+    top: 24px; right: 24px;
+    z-index: 10002;
+    width: 48px; height: 48px;
+    display: none;
+    align-items: center; justify-content: center;
+    background: var(--white); color: var(--black);
+    border: none; border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px; line-height: 1;
+    box-shadow: 0 6px 24px rgba(0,0,0,.4);
+    transition: background .2s, color .2s, transform .2s;
+  }
+  .cs-overlay.cs-open ~ .cs-close,
+  .cs-close.cs-visible { display: flex; }
+  .cs-close:hover {
+    background: var(--red); color: var(--white);
+    transform: scale(1.08);
+  }
+  @media (max-width: 800px) {
+    .cs-overlay { padding: 0; }
+    .cs-close { top: 16px; right: 16px; }
   }
 
   /* ─── PHILOSOPHY MARQUEE ─────────────────────────────── */
@@ -1052,6 +1166,25 @@
     .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
   }
 
+  /* ── Hamburger toggle (hidden on desktop) ──────────── */
+  .nav-toggle {
+    display: none;
+    width: 32px; height: 32px;
+    padding: 0; background: transparent; border: none;
+    cursor: pointer; position: relative; z-index: 10005;
+  }
+  .nav-toggle span {
+    position: absolute; left: 4px; right: 4px;
+    height: 2px; background: currentColor;
+    transition: transform .3s ease, opacity .2s ease, top .3s ease;
+  }
+  .nav-toggle span:nth-child(1) { top: 9px; }
+  .nav-toggle span:nth-child(2) { top: 15px; }
+  .nav-toggle span:nth-child(3) { top: 21px; }
+  nav.nav--open .nav-toggle span:nth-child(1) { top: 15px; transform: rotate(45deg); }
+  nav.nav--open .nav-toggle span:nth-child(2) { opacity: 0; }
+  nav.nav--open .nav-toggle span:nth-child(3) { top: 15px; transform: rotate(-45deg); }
+
   /* ── Mobile ─────────────────────────────────────────── */
   @media (max-width: 768px) {
     /* Nav */
@@ -1059,8 +1192,39 @@
       padding: 18px 20px;
       align-items: center;
     }
-    .nav-links { gap: 20px; }
-    .nav-links a { font-size: 9px; letter-spacing: .16em; }
+    .nav-toggle { display: block; color: var(--black); }
+    nav.nav--light .nav-toggle { color: var(--white); }
+    /* When menu open: lift nav above modals + strip filters that would
+       trap fixed-positioned children (backdrop-filter creates a containing
+       block, breaking inset:0 on the menu). */
+    nav.nav--open {
+      z-index: 100000;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      background: transparent !important;
+    }
+    /* Mobile menu — fullscreen frosted overlay when open */
+    .nav-links {
+      position: fixed; inset: 0;
+      margin: 0; padding: 80px 20px 40px; list-style: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center; align-items: center;
+      gap: 28px;
+      background-color: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(28px) saturate(140%);
+      -webkit-backdrop-filter: blur(28px) saturate(140%);
+      opacity: 0; pointer-events: none;
+      overflow-y: auto;
+      transition: opacity .3s ease;
+      z-index: 100001;
+    }
+    nav.nav--open .nav-links { opacity: 1; pointer-events: all; }
+    .nav-links li { list-style: none; }
+    .nav-links a { font-size: 20px; letter-spacing: .12em; color: var(--black) !important; }
+    /* Hamburger sits above the menu so it's always tappable */
+    .nav-toggle { position: relative; z-index: 100002; }
+    body.nav-locked { overflow: hidden; }
 
     /* Hero */
     .hero { padding: 0 20px 64px; min-height: 100svh; }
@@ -1102,7 +1266,7 @@
 
     /* Portfolio */
     .portfolio-wrap { padding: 80px 20px; }
-    .portfolio-grid { grid-template-columns: repeat(2, 1fr); margin-top: 48px; }
+    .portfolio-grid { grid-template-columns: 1fr; margin-top: 48px; }
     .portfolio-info { padding: 18px 20px 22px; }
 
     /* Work */
@@ -1115,6 +1279,12 @@
     .work-num { display: none; }
     .work-kpi { padding: 24px; }
     .kpi-value { font-size: 36px; }
+    /* CTA — tighten so the no-wrap button sits comfortably on a phone */
+    .work-cta {
+      margin-top: 24px; padding: 14px 18px; gap: 12px;
+      font-size: 11px; letter-spacing: .2em;
+    }
+    .work-cta .arr { width: 22px; height: 22px; font-size: 12px; }
 
     /* Process */
     .process-steps {
@@ -1138,10 +1308,6 @@
 
   /* ── Small mobile ────────────────────────────────────── */
   @media (max-width: 480px) {
-    /* Nav — hide links, keep logo */
-    .nav-links { display: none; }
-    nav { justify-content: flex-start; }
-
     /* Tighten hero */
     .hero { padding: 0 16px 56px; }
     .hero-title { font-size: clamp(60px, 16vw, 120px); }
@@ -1189,12 +1355,16 @@
     <svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor" style="vertical-align:middle;margin-right:7px;margin-bottom:1px"><path d="M26,29h-.17C6.18,27.87,3.39,11.29,3,6.23A3,3,0,0,1,5.76,3h5.51a2,2,0,0,1,1.86,1.26L14.65,8a2,2,0,0,1-.44,2.16l-2.13,2.15a9.37,9.37,0,0,0,7.58,7.6l2.17-2.15A2,2,0,0,1,24,17.35l3.77,1.51A2,2,0,0,1,29,20.72V26A3,3,0,0,1,26,29ZM6,5A1,1,0,0,0,5,6v.08C5.46,12,8.41,26,25.94,27A1,1,0,0,0,27,26.06V20.72l-3.77-1.51-2.87,2.85L19.88,22C11.18,20.91,10,12.21,10,12.12l-.06-.48,2.84-2.87L11.28,5Z"/></svg>310.308.7383
   </a>
   <ul class="nav-links">
-    <li><a href="#work">Work</a></li>
-    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#stack">Toolkit</a></li>
+    <li><a href="#work">Case Studies</a></li>
+    <li><a href="#portfolio">Gallery</a></li>
     <li><a href="#process">Process</a></li>
-    <li><a href="#stack">Stack</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- ══════════════════ HERO ══════════════════ -->
@@ -1575,8 +1745,8 @@
   </svg>
 
   <div class="section-inner" id="stackInner">
-    <div class="eyebrow reveal">02 — Stack</div>
-    <h2 class="section-heading reveal d1">What I<br>Use.</h2>
+    <div class="eyebrow reveal">02 — Toolkit</div>
+    <h2 class="section-heading reveal d1">The<br>Stack.</h2>
 
     <div class="stack-grid">
       <div class="stack-cell reveal">
@@ -1681,8 +1851,8 @@
   </svg>
 
   <div class="work-inner" id="workInner">
-    <div class="eyebrow reveal">03 — Selected Work</div>
-    <h2 class="section-heading reveal d1">Case<br>Studies.</h2>
+    <div class="eyebrow reveal">03 — Case Studies</div>
+    <h2 class="section-heading reveal d1">Selected<br>Work.</h2>
 
     <div class="work-list">
 
@@ -1701,6 +1871,29 @@
             layout standards, iconography. One system. One source of truth.
             The kind of foundation every product team actually wants to build on.
           </p>
+          <p class="work-desc">
+            Took it further. Built the design system parent-down from Figma —
+            pixel-faithful components, a live Storybook, real tokens engineers
+            could actually consume. The Figma file and the codebase, finally
+            in sync.
+          </p>
+          <p class="work-desc">
+            Did the same for words. Built the Brand Voice Tool —
+            real-time scoring across six brand dimensions, one-click AI
+            rewrites, the full Brand Copy Playbook baked into the interface.
+            So anyone shipping copy stays on-brand without a reviewer in the loop.
+          </p>
+          <div class="work-ctas">
+            <a class="work-cta" href="case-sce.html" data-case="case-sce.html">
+              Case Study <span class="arr">&rarr;</span>
+            </a>
+            <a class="work-cta work-cta--ghost" href="https://josephpaguirigandesign.github.io/SEC-DesignSystem" target="_blank" rel="noopener">
+              Design System <span class="arr">&rarr;</span>
+            </a>
+            <a class="work-cta work-cta--ghost" href="https://josephpaguirigandesign.github.io/SEC-BrandVoiceTool/" target="_blank" rel="noopener">
+              Brand Voice Tool <span class="arr">&rarr;</span>
+            </a>
+          </div>
         </div>
         <div class="work-kpi-col">
           <div class="work-kpi">
@@ -1728,6 +1921,11 @@
             needs — then straight into wireframes and production. The most
             critical workflow for enterprise HR teams, rebuilt from scratch.
           </p>
+          <div class="work-ctas">
+            <a class="work-cta" href="case-screening.html" data-case="case-screening.html">
+              Case Study <span class="arr">&rarr;</span>
+            </a>
+          </div>
         </div>
         <div class="work-kpi-col">
           <div class="work-kpi">
@@ -1755,6 +1953,11 @@
             User research and usability testing weren't optional — they were
             the job. No stock photo UI here.
           </p>
+          <div class="work-ctas">
+            <a class="work-cta" href="case-relaystrat.html" data-case="case-relaystrat.html">
+              Case Study <span class="arr">&rarr;</span>
+            </a>
+          </div>
         </div>
         <div class="work-kpi-col">
           <div class="work-kpi">
@@ -1824,8 +2027,8 @@
 <!-- ══════════════════ PORTFOLIO ══════════════════ -->
 <div class="portfolio-wrap" id="portfolio">
   <div class="section-inner">
-    <div class="eyebrow reveal">04 — Design Portfolio</div>
-    <h2 class="section-heading reveal d1">Work.</h2>
+    <div class="eyebrow reveal">04 — Gallery</div>
+    <h2 class="section-heading reveal d1">Selects.</h2>
 
     <div class="portfolio-grid">
 
@@ -2031,6 +2234,14 @@
 <!-- Fixed close button — always visible while lightbox is open -->
 <button class="lb-close-fixed" id="lb-close-fixed" aria-label="Close">✕</button>
 
+<!-- ══════════════════ CASE STUDY OVERLAY ══════════════════ -->
+<div class="cs-overlay" id="cs-overlay" role="dialog" aria-modal="true" aria-label="Case study">
+  <div class="cs-inner">
+    <iframe class="cs-frame" id="cs-frame" src="about:blank" title="Case study" loading="lazy"></iframe>
+  </div>
+</div>
+<button class="cs-close" id="cs-close" aria-label="Close case study">✕</button>
+
 <!-- ══════════════════ PROCESS ══════════════════ -->
 <div class="process-wrap" id="process">
 
@@ -2089,7 +2300,7 @@
 
   <div class="process-inner" id="processInner">
     <div class="eyebrow reveal">05 — Process</div>
-    <h2 class="section-heading reveal d1">How It<br>Gets Done.</h2>
+    <h2 class="section-heading reveal d1">From Brief<br>to Ship.</h2>
 
     <div class="process-steps">
       <div class="process-step reveal">
@@ -2413,6 +2624,64 @@ try {
     const dx = e.changedTouches[0].clientX - touchStartX;
     if (Math.abs(dx) > 50) dx < 0 ? showCard(currentIndex + 1) : showCard(currentIndex - 1);
   }, { passive: true });
+})();
+
+/* ────────────────────────────────────────────
+   MOBILE NAV TOGGLE
+──────────────────────────────────────────── */
+(function () {
+  const navEl = document.querySelector('nav');
+  const toggle = document.getElementById('navToggle');
+  if (!navEl || !toggle) return;
+  function setOpen(open) {
+    navEl.classList.toggle('nav--open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.body.classList.toggle('nav-locked', open);
+  }
+  toggle.addEventListener('click', () => setOpen(!navEl.classList.contains('nav--open')));
+  navEl.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => setOpen(false));
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && navEl.classList.contains('nav--open')) setOpen(false);
+  });
+})();
+
+/* ────────────────────────────────────────────
+   CASE STUDY OVERLAY
+──────────────────────────────────────────── */
+(function () {
+  const overlay  = document.getElementById('cs-overlay');
+  const frame    = document.getElementById('cs-frame');
+  const closeBtn = document.getElementById('cs-close');
+  if (!overlay || !frame) return;
+
+  function openCS(url) {
+    frame.src = url;
+    overlay.classList.add('cs-open');
+    document.body.style.overflow = 'hidden';
+    if (closeBtn) closeBtn.classList.add('cs-visible');
+  }
+  function closeCS() {
+    overlay.classList.remove('cs-open');
+    document.body.style.overflow = '';
+    if (closeBtn) closeBtn.classList.remove('cs-visible');
+    setTimeout(() => { frame.src = 'about:blank'; }, 400);
+  }
+
+  document.querySelectorAll('.work-cta[data-case]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      openCS(a.getAttribute('data-case'));
+    });
+  });
+  if (closeBtn) closeBtn.addEventListener('click', closeCS);
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) closeCS();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && overlay.classList.contains('cs-open')) closeCS();
+  });
 })();
 
 /* ──────────────────────────────────────────────

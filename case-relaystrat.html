@@ -1,0 +1,1426 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relay Strat — Space Force Ops Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --space-black:#070A12;
+    --space-deep:#0C1424;
+    --space-navy:#152340;
+    --orange:#FF8A1E;       /* Section 31 / Relay Strat orange */
+    --orange-soft:#FFB36A;
+    --cyan:#3FE9FF;
+    --magenta:#FF3DAA;
+    --paper:#E9E4D6;
+    --mute:#5B6577;
+    --rule:rgba(255,255,255,0.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{
+    background:var(--space-black);color:#E8ECF5;
+    font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;
+  }
+  body{width:1920px;margin:0 auto;overflow-x:hidden}
+  .scene{position:relative;width:1920px;overflow:hidden}
+
+  /* ===================== SCENE 1: COVER ===================== */
+  .cover{
+    min-height:1500px;
+    background:
+      radial-gradient(900px 600px at 15% 25%, rgba(255,138,30,0.16), transparent 55%),
+      radial-gradient(1100px 800px at 85% 80%, rgba(255,61,170,0.12), transparent 55%),
+      radial-gradient(1400px 900px at 50% 110%, rgba(63,233,255,0.10), transparent 60%),
+      linear-gradient(180deg, #070A12 0%, #0B1226 100%);
+    padding:120px 140px 100px;position:relative;
+  }
+  /* starfield */
+  .cover::before, .cover::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1px 1px at 35% 72%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 55% 30%, rgba(255,255,255,0.85), transparent),
+      radial-gradient(1px 1px at 78% 62%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 88% 22%, rgba(255,255,255,0.75), transparent),
+      radial-gradient(1.5px 1.5px at 22% 90%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1px 1px at 65% 12%, rgba(255,255,255,0.55), transparent),
+      radial-gradient(1px 1px at 8% 60%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1.5px 1.5px at 48% 88%, rgba(255,255,255,0.65), transparent),
+      radial-gradient(1px 1px at 92% 50%, rgba(255,255,255,0.85), transparent);
+  }
+  .cover::after{
+    background-image:
+      radial-gradient(1px 1px at 28% 40%, rgba(63,233,255,0.55), transparent),
+      radial-gradient(1px 1px at 70% 78%, rgba(255,138,30,0.5), transparent),
+      radial-gradient(1px 1px at 18% 75%, rgba(255,61,170,0.55), transparent),
+      radial-gradient(1px 1px at 82% 32%, rgba(63,233,255,0.45), transparent);
+  }
+  .cover-inner{position:relative;z-index:2}
+
+  .cover-meta{
+    display:flex;align-items:center;gap:24px;
+    font-family:'JetBrains Mono',monospace;font-size:16px;letter-spacing:0.16em;text-transform:uppercase;
+    color:rgba(255,255,255,0.55);
+  }
+  .cover-meta .dot{width:10px;height:10px;border-radius:50%;background:var(--orange)}
+  .cover-meta span{position:relative}
+  .cover-meta span + span::before{content:"";position:absolute;left:-14px;top:50%;transform:translateY(-50%);width:4px;height:4px;background:rgba(255,255,255,0.3)}
+
+  .classification-bar{
+    display:inline-flex;align-items:center;gap:14px;
+    margin-top:36px;padding:10px 22px;
+    background:rgba(255,138,30,0.08);border:1px solid rgba(255,138,30,0.35);
+    font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.22em;
+    color:var(--orange);font-weight:600;
+  }
+  .classification-bar::before, .classification-bar::after{
+    content:"";display:block;width:24px;height:1px;background:var(--orange);
+  }
+
+  .cover-title{
+    margin-top:36px;font-family:'Inter',sans-serif;
+    font-weight:800;font-size:200px;line-height:0.9;letter-spacing:-0.045em;color:#fff;
+    text-wrap:balance;
+  }
+  .cover-title em{
+    font-style:normal;
+    background:linear-gradient(135deg, var(--orange) 0%, #FFCC55 60%, var(--magenta) 110%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+
+  .cover-sub{
+    margin-top:48px;max-width:1100px;font-family:'Inter',sans-serif;
+    font-size:30px;line-height:1.35;color:rgba(255,255,255,0.78);font-weight:400;
+  }
+  .cover-sub b{color:#fff;font-weight:600}
+
+  .cover-tags{margin-top:64px;display:flex;gap:14px;flex-wrap:wrap}
+  .cover-tags span{
+    padding:12px 24px;border:1px solid rgba(255,255,255,0.18);
+    font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;
+    color:#fff;text-transform:uppercase;letter-spacing:0.14em;
+    background:rgba(255,255,255,0.03);backdrop-filter:blur(4px);
+  }
+
+  .cover-bar{
+    position:absolute;left:0;right:0;bottom:0;height:8px;
+    background:linear-gradient(90deg, var(--orange) 0 18%, var(--magenta) 18% 36%, var(--cyan) 36% 54%, transparent 54% 100%);
+  }
+
+  /* S31 badge top right */
+  .s31-badge{
+    position:absolute;top:120px;right:140px;z-index:3;
+    display:flex;align-items:center;gap:14px;
+    padding:14px 22px;
+    background:rgba(0,0,0,0.45);border:1px solid rgba(255,138,30,0.4);
+    backdrop-filter:blur(6px);
+  }
+  .s31-badge .mark{
+    width:42px;height:42px;display:grid;place-items:center;
+    font-family:'JetBrains Mono',monospace;font-weight:800;font-size:18px;
+    color:#fff;background:var(--orange);
+    clip-path:polygon(0 0, 100% 0, 100% 70%, 70% 100%, 0 100%);
+  }
+  .s31-badge .stack{display:flex;flex-direction:column;line-height:1.1;font-family:'JetBrains Mono',monospace}
+  .s31-badge .stack small{font-size:10.5px;letter-spacing:0.22em;color:rgba(255,255,255,0.45);text-transform:uppercase}
+  .s31-badge .stack b{font-size:14px;font-weight:600;color:#fff;letter-spacing:0.16em;margin-top:2px;text-transform:uppercase}
+
+  /* ===================== SCENE 2: ETHOS BAND ===================== */
+  .ethos{
+    padding:140px 140px;
+    background:
+      radial-gradient(1100px 600px at 30% 50%, rgba(255,138,30,0.07), transparent 60%),
+      linear-gradient(180deg, #0B1226 0%, #0C1424 100%);
+    border-top:1px solid var(--rule);
+    border-bottom:1px solid var(--rule);
+  }
+  .ethos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:48px}
+  .ethos-card{
+    border-top:2px solid var(--orange);padding-top:22px;
+  }
+  .ethos-card .num{
+    font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.22em;
+    color:var(--orange);text-transform:uppercase;font-weight:600;margin-bottom:18px;
+  }
+  .ethos-card h3{
+    font-family:'Inter',sans-serif;font-size:30px;font-weight:700;
+    line-height:1.1;letter-spacing:-0.015em;color:#fff;margin-bottom:16px;
+  }
+  .ethos-card p{
+    font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;color:rgba(255,255,255,0.65);
+  }
+
+  /* ===================== SCENE 3: THE WORK (composition image) ===================== */
+  .work{
+    padding:160px 0 200px;
+    background:
+      radial-gradient(900px 700px at 50% 0%, rgba(63,233,255,0.06), transparent 60%),
+      linear-gradient(180deg, #0C1424 0%, #070A12 100%);
+  }
+  .work-head{
+    text-align:center;max-width:1100px;margin:0 auto 100px;padding:0 140px;
+  }
+  .work-head .scene-label{
+    font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.3em;
+    color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:18px;
+  }
+  .work-head h2{
+    font-family:'Inter',sans-serif;font-size:64px;font-weight:700;
+    line-height:1.05;letter-spacing:-0.025em;color:#fff;text-wrap:balance;
+  }
+  .work-head h2 em{font-style:normal;color:var(--orange)}
+  .work-head p{
+    font-family:'Inter',sans-serif;font-size:21px;line-height:1.45;
+    color:rgba(255,255,255,0.62);margin-top:28px;max-width:840px;margin-left:auto;margin-right:auto;
+  }
+  .work-stage{
+    width:1600px;margin:0 auto;position:relative;
+  }
+  .work-stage img{
+    display:block;width:100%;height:auto;
+    border:1px solid rgba(255,255,255,0.08);
+  }
+  /* faint horizontal section markers along the left edge */
+  .work-stage .marker{
+    position:absolute;left:-90px;
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.2em;
+    color:rgba(255,138,30,0.65);text-transform:uppercase;font-weight:600;
+    display:flex;align-items:center;gap:14px;width:90px;
+  }
+  .work-stage .marker::after{content:"";display:block;width:30px;height:1px;background:rgba(255,138,30,0.4)}
+
+  /* ===================== SCENE 4: APPROACH ===================== */
+  .approach{
+    padding:160px 140px 200px;
+    background:
+      radial-gradient(900px 600px at 80% 30%, rgba(255,138,30,0.05), transparent 60%),
+      linear-gradient(180deg, #070A12 0%, #0B1226 100%);
+    border-top:1px solid var(--rule);
+  }
+  .approach-head{
+    display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:100px;
+  }
+  .approach-head .scene-label{
+    font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.3em;
+    color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:16px;
+  }
+  .approach-head h2{
+    font-family:'Inter',sans-serif;font-size:56px;font-weight:700;
+    line-height:1.05;letter-spacing:-0.025em;color:#fff;
+  }
+  .approach-head h2 em{font-style:normal;color:var(--orange)}
+  .approach-head p{
+    font-family:'Inter',sans-serif;font-size:21px;line-height:1.45;
+    color:rgba(255,255,255,0.65);max-width:560px;text-align:right;margin-left:auto;
+  }
+
+  .approach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:60px}
+  .approach-card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+    border:1px solid rgba(255,255,255,0.08);padding:40px 36px 36px;position:relative;
+  }
+  .approach-card .step{
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.22em;
+    color:var(--orange);text-transform:uppercase;font-weight:600;
+    display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;
+  }
+  .approach-card .step::before{
+    content:"";display:block;width:14px;height:14px;background:var(--orange);
+    clip-path:polygon(0 0, 100% 0, 100% 60%, 60% 100%, 0 100%);
+  }
+  .approach-card h4{
+    font-family:'Inter',sans-serif;font-size:26px;font-weight:700;
+    line-height:1.15;letter-spacing:-0.015em;color:#fff;margin-bottom:16px;
+  }
+  .approach-card p{
+    font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;color:rgba(255,255,255,0.68);
+  }
+  .approach-card .quote{
+    margin-top:24px;padding-top:20px;border-top:1px dashed rgba(255,255,255,0.12);
+    font-family:'Inter',sans-serif;font-size:14px;font-style:italic;line-height:1.5;
+    color:rgba(255,138,30,0.85);
+  }
+  .approach-card .quote::before{content:"\201C ";color:var(--orange);font-style:normal}
+  .approach-card .quote::after{content:" \201D";color:var(--orange);font-style:normal}
+
+  /* ===================== SCENE 4B: RESEARCH ===================== */
+  .research{
+    padding:160px 140px 180px;
+    background:
+      radial-gradient(900px 600px at 15% 30%, rgba(63,233,255,0.06), transparent 60%),
+      linear-gradient(180deg, #0B1226 0%, #0C1424 100%);
+    border-top:1px solid var(--rule);
+  }
+  .res-head{
+    display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:90px;
+  }
+  .res-head .scene-label{
+    font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.3em;
+    color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:16px;
+  }
+  .res-head h2{
+    font-family:'Inter',sans-serif;font-size:56px;font-weight:700;
+    line-height:1.05;letter-spacing:-0.025em;color:#fff;
+  }
+  .res-head h2 em{font-style:normal;color:var(--orange)}
+  .res-head p{
+    font-family:'Inter',sans-serif;font-size:21px;line-height:1.45;
+    color:rgba(255,255,255,0.65);max-width:540px;text-align:right;margin-left:auto;
+  }
+
+  /* journey map */
+  .journey{
+    background:linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+    border:1px solid rgba(255,255,255,0.1);padding:48px 56px;margin-bottom:80px;
+  }
+  .journey-h{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:36px;
+  }
+  .journey-h h3{
+    font-family:'Inter',sans-serif;font-size:24px;font-weight:700;color:#fff;letter-spacing:-0.01em;
+  }
+  .journey-h .legend{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;
+    color:rgba(255,255,255,0.45);text-transform:uppercase;display:flex;gap:24px;
+  }
+  .journey-h .legend span{display:inline-flex;align-items:center;gap:8px}
+  .journey-h .legend i{width:10px;height:10px;display:block}
+  .journey-h .legend .pain{background:var(--magenta)}
+  .journey-h .legend .opp{background:var(--orange)}
+  .journey-h .legend .ok{background:var(--cyan)}
+
+  .journey-row{display:grid;grid-template-columns:repeat(5,1fr);gap:0}
+  .j-step{padding:0 24px;border-right:1px dashed rgba(255,255,255,0.08);position:relative}
+  .j-step:last-child{border-right:none}
+  .j-step .stage{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;
+    color:var(--orange);text-transform:uppercase;font-weight:600;margin-bottom:14px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .j-step .stage::before{content:"";display:block;width:10px;height:10px;background:var(--orange);
+    clip-path:polygon(0 0, 100% 0, 100% 60%, 60% 100%, 0 100%);}
+  .j-step h5{
+    font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:#fff;
+    letter-spacing:-0.01em;margin-bottom:18px;line-height:1.2;
+  }
+  .j-step .moment{
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.05em;
+    color:rgba(255,255,255,0.5);margin-bottom:8px;line-height:1.5;
+    padding-left:14px;position:relative;
+  }
+  .j-step .moment::before{
+    content:"";position:absolute;left:0;top:7px;width:6px;height:6px;
+  }
+  .j-step .moment.pain::before{background:var(--magenta)}
+  .j-step .moment.opp::before{background:var(--orange)}
+  .j-step .moment.ok::before{background:var(--cyan)}
+
+  /* operator quotes */
+  .quotes-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:32px;
+  }
+  .qcard{
+    background:linear-gradient(180deg, rgba(255,138,30,0.04) 0%, rgba(255,255,255,0.01) 100%);
+    border:1px solid rgba(255,138,30,0.18);padding:36px 32px 32px;position:relative;
+  }
+  .qcard::before{
+    content:"\201C";position:absolute;top:-12px;left:24px;
+    font-family:'Inter',serif;font-weight:800;font-size:84px;line-height:1;color:var(--orange);
+  }
+  .qcard blockquote{
+    font-family:'Inter',sans-serif;font-size:19px;line-height:1.45;color:#fff;
+    font-weight:500;letter-spacing:-0.005em;margin-bottom:24px;margin-top:14px;
+  }
+  .qcard .attr{
+    display:flex;align-items:center;gap:12px;padding-top:18px;
+    border-top:1px solid rgba(255,255,255,0.1);
+  }
+  .qcard .ring{
+    width:38px;height:38px;border:1.5px solid var(--orange);
+    display:grid;place-items:center;flex:none;
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+    color:var(--orange);letter-spacing:0.04em;
+  }
+  .qcard .attr .who{font-family:'Inter',sans-serif;font-size:14px;color:#fff;font-weight:600;line-height:1.25}
+  .qcard .attr .who small{display:block;color:rgba(255,255,255,0.5);font-weight:500;font-size:12px;letter-spacing:0.04em;margin-top:2px}
+
+  /* ===================== SCENE 4C: WIREFRAMES ===================== */
+  .wires{
+    padding:160px 140px 200px;
+    background:
+      radial-gradient(900px 600px at 80% 70%, rgba(255,138,30,0.06), transparent 60%),
+      linear-gradient(180deg, #0C1424 0%, #070A12 100%);
+    border-top:1px solid var(--rule);position:relative;
+  }
+  /* blueprint grid behind */
+  .wires::before{
+    content:"";position:absolute;inset:0;pointer-events:none;opacity:0.5;
+    background-image:
+      linear-gradient(rgba(63,233,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(63,233,255,0.05) 1px, transparent 1px);
+    background-size:40px 40px;
+  }
+  .wires > *{position:relative;z-index:1}
+  .wires-head{
+    display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:80px;
+  }
+  .wires-head .scene-label{
+    font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.3em;
+    color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:16px;
+  }
+  .wires-head h2{
+    font-family:'Inter',sans-serif;font-size:56px;font-weight:700;
+    line-height:1.05;letter-spacing:-0.025em;color:#fff;
+  }
+  .wires-head h2 em{font-style:normal;color:var(--orange)}
+  .wires-head p{
+    font-family:'Inter',sans-serif;font-size:21px;line-height:1.45;
+    color:rgba(255,255,255,0.65);max-width:540px;text-align:right;margin-left:auto;
+  }
+
+  /* whiteboard sketches row */
+  .sketches-row{
+    display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px;margin-bottom:48px;
+  }
+  .sketch{
+    background:#0E1730;border:1px solid rgba(255,138,30,0.25);padding:24px 26px 22px;
+    position:relative;
+  }
+  .sketch::before{
+    /* tape corner */
+    content:"";position:absolute;top:-10px;left:-10px;width:60px;height:20px;
+    background:rgba(255,138,30,0.5);transform:rotate(-12deg);
+  }
+  .sketch .label{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;
+    color:var(--orange);text-transform:uppercase;font-weight:600;margin-bottom:6px;
+    display:flex;justify-content:space-between;
+  }
+  .sketch .label .ts{color:rgba(255,255,255,0.4)}
+  .sketch .ttl{
+    font-family:'Inter',sans-serif;font-size:18px;font-weight:700;color:#fff;
+    letter-spacing:-0.005em;margin-bottom:18px;line-height:1.3;
+  }
+  .sketch .canvas{
+    background:rgba(0,0,0,0.3);border:1px dashed rgba(255,255,255,0.15);
+    aspect-ratio:4/3;display:block;
+  }
+  .sketch .ann{
+    margin-top:14px;font-family:'Inter',sans-serif;font-style:italic;
+    font-size:13px;line-height:1.5;color:rgba(255,255,255,0.65);
+    padding-top:10px;border-top:1px dashed rgba(255,255,255,0.08);
+  }
+
+  /* hi-fi wireframe (single big card) */
+  .wire-bigcard{
+    background:#0A1326;border:1px solid rgba(63,233,255,0.2);padding:36px 40px 40px;
+    position:relative;
+  }
+  .wire-bigcard .head{
+    display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px;
+    padding-bottom:18px;border-bottom:1px solid rgba(63,233,255,0.15);
+  }
+  .wire-bigcard .head h3{
+    font-family:'Inter',sans-serif;font-size:24px;font-weight:700;color:#fff;letter-spacing:-0.01em;
+  }
+  .wire-bigcard .head .meta{
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;
+    color:rgba(63,233,255,0.85);text-transform:uppercase;
+  }
+  .wire-frame{
+    width:100%;display:block;
+    background:transparent;
+  }
+  .wire-callouts{
+    margin-top:28px;display:grid;grid-template-columns:repeat(4,1fr);gap:32px;
+  }
+  .wire-callout{
+    border-top:1.5px solid rgba(63,233,255,0.4);padding-top:16px;
+  }
+  .wire-callout .n{
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.22em;
+    color:var(--cyan);text-transform:uppercase;font-weight:600;margin-bottom:10px;
+  }
+  .wire-callout h6{font-family:'Inter',sans-serif;font-size:16px;font-weight:700;color:#fff;letter-spacing:-0.005em;margin-bottom:6px}
+  .wire-callout p{font-family:'Inter',sans-serif;font-size:14px;line-height:1.5;color:rgba(255,255,255,0.6)}
+
+  /* ===================== SCENE 4D: USABILITY TESTING ===================== */
+  .testing{
+    padding:160px 140px 200px;
+    background:
+      radial-gradient(900px 600px at 50% 100%, rgba(255,61,170,0.08), transparent 60%),
+      linear-gradient(180deg, #070A12 0%, #0B1226 100%);
+    border-top:1px solid var(--rule);
+  }
+  .testing-head{
+    display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:80px;
+  }
+  .testing-head .scene-label{
+    font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.3em;
+    color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:16px;
+  }
+  .testing-head h2{
+    font-family:'Inter',sans-serif;font-size:56px;font-weight:700;
+    line-height:1.05;letter-spacing:-0.025em;color:#fff;
+  }
+  .testing-head h2 em{font-style:normal;color:var(--orange)}
+  .testing-head p{
+    font-family:'Inter',sans-serif;font-size:21px;line-height:1.45;
+    color:rgba(255,255,255,0.65);max-width:540px;text-align:right;margin-left:auto;
+  }
+
+  /* findings table */
+  .findings{
+    background:linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+    border:1px solid rgba(255,255,255,0.1);margin-bottom:80px;
+  }
+  .find-thead{
+    display:grid;grid-template-columns:48px 1.6fr 0.8fr 0.7fr 2.6fr;
+    padding:18px 36px;border-bottom:1.5px solid rgba(255,255,255,0.12);
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;
+    color:rgba(255,255,255,0.5);text-transform:uppercase;font-weight:600;
+  }
+  .find-row{
+    display:grid;grid-template-columns:48px 1.6fr 0.8fr 0.7fr 2.6fr;
+    padding:24px 36px;border-bottom:1px solid rgba(255,255,255,0.06);
+    align-items:flex-start;
+  }
+  .find-row:last-child{border-bottom:none}
+  .find-row .id{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--orange);font-weight:600;letter-spacing:0.05em}
+  .find-row .finding{font-family:'Inter',sans-serif;font-size:15px;line-height:1.5;color:#fff;font-weight:500;letter-spacing:-0.005em;padding-right:24px}
+  .find-row .finding small{display:block;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.45);font-weight:500;letter-spacing:0.05em;margin-top:6px}
+  .find-row .sev{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;
+    text-transform:uppercase;font-weight:700;display:inline-block;padding:5px 12px;
+    border:1px solid currentColor;
+  }
+  .find-row .sev.crit{color:var(--magenta)}
+  .find-row .sev.hi{color:var(--orange)}
+  .find-row .sev.med{color:var(--cyan)}
+  .find-row .conf{font-family:'JetBrains Mono',monospace;font-size:13px;color:#fff;font-weight:600;font-variant-numeric:tabular-nums}
+  .find-row .resp{font-family:'Inter',sans-serif;font-size:14.5px;line-height:1.5;color:rgba(255,255,255,0.72)}
+  .find-row .resp b{color:#fff;font-weight:600}
+
+  /* iteration before/after */
+  .iter-grid{display:grid;grid-template-columns:1fr 60px 1fr;gap:0;align-items:stretch;margin-bottom:60px}
+  .iter{
+    background:#0E1730;border:1px solid rgba(255,255,255,0.1);padding:32px 32px 28px;display:flex;flex-direction:column;
+  }
+  .iter.after{border-color:rgba(255,138,30,0.4)}
+  .iter .stamp{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;
+    color:rgba(255,255,255,0.55);text-transform:uppercase;font-weight:600;margin-bottom:16px;
+  }
+  .iter.after .stamp{color:var(--orange)}
+  .iter .stamp i{width:10px;height:10px;background:currentColor;clip-path:polygon(0 0, 100% 0, 100% 60%, 60% 100%, 0 100%)}
+  .iter h4{font-family:'Inter',sans-serif;font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.01em;margin-bottom:8px}
+  .iter .vsub{font-family:'Inter',sans-serif;font-size:14.5px;color:rgba(255,255,255,0.6);margin-bottom:22px;line-height:1.5}
+  .iter .stage{
+    flex:1;background:rgba(0,0,0,0.25);border:1px dashed rgba(255,255,255,0.12);
+    min-height:280px;display:block;
+  }
+  .iter .feedback{
+    margin-top:18px;font-family:'Inter',sans-serif;font-style:italic;
+    font-size:14px;line-height:1.5;color:rgba(255,255,255,0.7);
+    padding-top:14px;border-top:1px dashed rgba(255,255,255,0.1);
+  }
+  .iter-arrow{
+    display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;
+    color:var(--orange);text-transform:uppercase;font-weight:700;
+    writing-mode:horizontal-tb;
+  }
+  .iter-arrow svg{width:48px;height:48px;color:var(--orange)}
+
+  /* ===================== SCENE 5: BY THE NUMBERS ===================== */
+  .stats{
+    padding:160px 140px;
+    background:
+      radial-gradient(800px 500px at 20% 50%, rgba(63,233,255,0.08), transparent 60%),
+      linear-gradient(180deg, #0B1226 0%, #0C1424 100%);
+    border-top:1px solid var(--rule);
+    border-bottom:1px solid var(--rule);
+  }
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+  .stat{padding:0 36px;border-left:1px solid rgba(255,255,255,0.12)}
+  .stat:first-child{padding-left:0;border-left:none}
+  .stat .lbl{
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.22em;
+    color:var(--orange);text-transform:uppercase;font-weight:600;margin-bottom:18px;
+  }
+  .stat .val{
+    font-family:'Inter',sans-serif;font-size:88px;font-weight:800;
+    line-height:0.95;letter-spacing:-0.04em;color:#fff;
+  }
+  .stat .val em{font-style:normal;color:var(--orange);font-size:48px;font-weight:700;letter-spacing:-0.02em;margin-left:4px}
+  .stat .sub{
+    margin-top:12px;font-family:'Inter',sans-serif;font-size:15px;line-height:1.5;
+    color:rgba(255,255,255,0.6);max-width:240px;
+  }
+
+  /* ===================== FOOTER ===================== */
+  .footer{
+    height:240px;background:#070A12;color:#fff;
+    display:flex;align-items:center;justify-content:space-between;padding:0 140px;
+    border-top:1px solid var(--rule);position:relative;
+  }
+  .footer::before{
+    content:"";position:absolute;left:0;right:0;top:0;height:2px;
+    background:linear-gradient(90deg, var(--orange) 0 18%, var(--magenta) 18% 36%, var(--cyan) 36% 54%, transparent 54% 100%);
+  }
+  .footer h6{
+    font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.22em;
+    color:var(--orange);text-transform:uppercase;font-weight:600;
+  }
+  .footer .name{
+    font-family:'Inter',sans-serif;font-size:28px;font-weight:700;margin-top:6px;color:#fff;
+  }
+  .footer .right{
+    font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.22em;
+    color:rgba(255,255,255,0.5);text-transform:uppercase;
+  }
+
+  /* JP: Helvetica for the wireframe + iteration mockups — more readable */
+  .wires, .wires *,
+  .iter, .iter * {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  }
+
+/* ─── MOBILE-NATIVE LAYOUT (< 768px) ─────────────────── */
+@media (max-width: 767px) {
+  html, body { width: 100% !important; overflow-x: hidden !important; }
+  .scene { width: 100% !important; overflow: visible !important; }
+
+  /* Cover */
+  .cover { min-height: 0 !important; padding: 80px 22px 48px !important; }
+  .cover-meta { font-size: 11px !important; flex-wrap: wrap; gap: 14px !important; }
+  .cover-title { font-size: 50px !important; margin-top: 24px !important; line-height: 0.96 !important; }
+  .cover-sub { font-size: 16px !important; margin-top: 24px !important; max-width: 100% !important; }
+  .cover-tags { margin-top: 28px !important; gap: 8px !important; }
+  .cover-tags span { font-size: 10px !important; padding: 8px 12px !important; }
+  .cover-bar { height: 5px !important; }
+  .s31-badge { display: none !important; }
+
+  /* Generic section padding + headings */
+  .ethos, .approach, .research, .wires, .testing, .stats { padding: 56px 22px !important; }
+  .res-head h2, .wires-head h2, .testing-head h2, .approach-head h2 { font-size: 30px !important; }
+  .res-head p, .wires-head p, .testing-head p, .approach-head p { font-size: 15px !important; }
+
+  /* Two-column section heads -> stack, left-align the right paragraph */
+  .res-head, .wires-head, .testing-head, .approach-head {
+    grid-template-columns: 1fr !important; gap: 20px !important; margin-bottom: 40px !important;
+  }
+  .res-head p, .wires-head p, .testing-head p {
+    text-align: left !important; max-width: 100% !important; margin-left: 0 !important;
+  }
+
+  /* Ethos */
+  .ethos-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+  .ethos-card h3 { font-size: 24px !important; }
+
+  /* Approach */
+  .approach-grid { grid-template-columns: 1fr !important; gap: 36px !important; }
+
+  /* Research — journey map + quotes */
+  .journey { padding: 28px 20px !important; margin-bottom: 56px !important; }
+  .journey-h { flex-direction: column !important; align-items: flex-start !important; gap: 14px !important; }
+  .journey-h .legend { flex-wrap: wrap; gap: 12px !important; }
+  .journey-row { grid-template-columns: 1fr !important; gap: 28px !important; }
+  .j-step { padding: 0 0 24px 0 !important; border-right: none !important; border-bottom: 1px dashed rgba(255,255,255,0.08) !important; }
+  .j-step:last-child { border-bottom: none !important; }
+  .quotes-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
+  .qcard blockquote { font-size: 17px !important; }
+
+  /* Wireframes */
+  .sketches-row { grid-template-columns: 1fr !important; gap: 24px !important; }
+  .wire-bigcard { padding: 24px 20px 28px !important; }
+  .wire-bigcard .head { flex-direction: column !important; align-items: flex-start !important; gap: 8px !important; }
+  .wire-callouts { grid-template-columns: 1fr !important; gap: 24px !important; }
+
+  /* Testing — findings table becomes stacked cards */
+  .find-thead { display: none !important; }
+  .find-row {
+    grid-template-columns: 1fr !important; gap: 8px !important;
+    padding: 20px 20px !important;
+  }
+  .find-row .finding { padding-right: 0 !important; }
+  .find-row .sev { justify-self: start; }
+
+  /* Iteration before/after -> stacked, arrow points down */
+  .iter-grid { grid-template-columns: 1fr !important; gap: 0 !important; }
+  .iter .stage { min-height: 200px !important; }
+  .iter-arrow { padding: 20px 0 !important; }
+  .iter-arrow svg { transform: rotate(90deg); }
+
+  /* Stats */
+  .stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 0 !important; }
+  .stat { padding: 24px 16px !important; border-left: 1px solid rgba(255,255,255,0.12) !important; }
+  .stat:nth-child(odd) { border-left: none !important; }
+
+  /* Footer */
+  .footer { height: auto !important; padding: 32px 22px !important; flex-direction: column !important; gap: 16px !important; align-items: flex-start !important; }
+  .footer .name { font-size: 20px !important; }
+
+  /* Back nav */
+  .jp-back-nav { top: 16px !important; left: 16px !important; font-size: 11px !important; padding: 10px 16px !important; }
+}
+</style>
+</head>
+<body>
+<!-- Back to Portfolio nav (JP) -->
+<style>
+  .jp-back-nav{
+    position:fixed;top:24px;left:24px;z-index:99999;
+    display:inline-flex;align-items:center;gap:10px;padding:12px 20px;
+    background:rgba(12,20,36,0.92);color:#fff;
+    font-family:'Inter',system-ui,sans-serif;font-size:13px;font-weight:600;
+    letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;
+    border-radius:999px;backdrop-filter:blur(8px);border:1px solid rgba(255,138,30,0.35);
+    box-shadow:0 8px 24px rgba(0,0,0,0.35);
+    transition:background .2s ease, transform .2s ease;
+  }
+  .jp-back-nav:hover{background:#FF8A1E;color:#070A12;transform:translateX(-2px)}
+  .jp-back-nav .arr{display:inline-block;transition:transform .2s ease}
+  .jp-back-nav:hover .arr{transform:translateX(-3px)}
+</style>
+<a class="jp-back-nav" href="index.html#work">
+  <span class="arr">&larr;</span> Back to Portfolio
+</a>
+<script>
+  if (window.self !== window.top) {
+    var n = document.querySelector('.jp-back-nav');
+    if (n) n.style.display = 'none';
+  }
+</script>
+
+
+<!-- ===================== SCENE 1: COVER ===================== -->
+<section class="scene cover">
+  <div class="s31-badge">
+    <div class="mark">31</div>
+    <div class="stack">
+      <small>USSF Section</small>
+      <b>S31&nbsp;/&nbsp;Relay Strat</b>
+    </div>
+  </div>
+
+  <div class="cover-inner">
+    <div class="cover-meta">
+      <span class="dot"></span>
+      <span>Case&nbsp;Study&nbsp;/&nbsp;03</span>
+      <span>2020&nbsp;&ndash;&nbsp;2022</span>
+      <span>Senior&nbsp;Product&nbsp;Designer</span>
+    </div>
+
+    <div class="classification-bar">UNCLASSIFIED&nbsp;//&nbsp;Approved for Portfolio Release</div>
+
+    <h1 class="cover-title">Real tools<br>for real <em>missions.</em></h1>
+
+    <p class="cover-sub">Software for the <b>Space&nbsp;Tasking&nbsp;Cycle</b>, designed in partnership with U.S.&nbsp;Space&nbsp;Force operators and strategists. User research and usability testing weren't optional &mdash; they were the job. No stock photo UI here.</p>
+
+    <div class="cover-tags">
+      <span>DoD&nbsp;/&nbsp;Space Force</span>
+      <span>Mission Software</span>
+      <span>Operator Research</span>
+      <span>Classified Workflows</span>
+      <span>Section&nbsp;31</span>
+    </div>
+  </div>
+
+  <div class="cover-bar"></div>
+</section>
+
+<!-- ===================== SCENE 2: ETHOS BAND ===================== -->
+<section class="scene ethos">
+  <div class="ethos-grid">
+    <div class="ethos-card">
+      <div class="num">Ethos · 01</div>
+      <h3>Operators first.</h3>
+      <p>Every screen co-designed with the people who'd use it on a console. Weekly hands-on usability tests, not a single throwaway persona.</p>
+    </div>
+    <div class="ethos-card">
+      <div class="num">Ethos · 02</div>
+      <h3>Mission scale.</h3>
+      <p>From a single sensor MX entry to a multi-payload launch schedule, the same component system holds together. Designed to scale with the cycle.</p>
+    </div>
+    <div class="ethos-card">
+      <div class="num">Ethos · 03</div>
+      <h3>Classification-aware.</h3>
+      <p>Markings, paragraph portion marks, releasability rails. The interface treats classification as a first-class data type &mdash; not an afterthought.</p>
+    </div>
+    <div class="ethos-card">
+      <div class="num">Ethos · 04</div>
+      <h3>Built to ship.</h3>
+      <p>Shipping software to active operators on real timelines. No stock-photo UI, no theoretical workflows &mdash; only patterns that survive a watch shift.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SCENE 4: APPROACH ===================== -->
+<section class="scene approach">
+  <div class="approach-head">
+    <div>
+      <div class="scene-label">01 &nbsp;·&nbsp; The Approach</div>
+      <h2>Field<br>over <em>theory.</em></h2>
+    </div>
+    <p>This wasn't enterprise software with a side of compliance. It was compliance-first software where every interaction was tested against a console operator's reality &mdash; and rejected if it didn't survive it.</p>
+  </div>
+
+  <div class="approach-grid">
+    <div class="approach-card">
+      <div class="step">Phase 01 · Ride-along</div>
+      <h4>Sit at the console first.</h4>
+      <p>Before sketching a single screen, we shadowed strategists writing SODs by hand and operators receiving them. We mapped the artifact's full lifecycle &mdash; draft, review, publish, distribute, revise &mdash; with the people who lived it.</p>
+      <div class="quote">If you haven't seen the watch floor at 0300, you can't design for it.</div>
+    </div>
+    <div class="approach-card">
+      <div class="step">Phase 02 · Co-design</div>
+      <h4>Whiteboards &gt; mockups.</h4>
+      <p>Weekly sessions with Space Force operators and strategists. We didn't bring polished comps to validate &mdash; we brought rough flows to break. The orange&nbsp;rail, classification markings, and section nav all came out of those rooms.</p>
+      <div class="quote">First time I've seen a designer change the workflow mid-meeting.</div>
+    </div>
+    <div class="approach-card">
+      <div class="step">Phase 03 · Survive a shift</div>
+      <h4>Tested where it ships.</h4>
+      <p>Usability testing wasn't a lab moderated study. It was operators running a real SOD draft through Relay Strat on a real console, on a real day. If a pattern didn't survive a shift, it didn't ship.</p>
+      <div class="quote">Saved me an hour on the first draft. Didn't have to ask anyone how to do anything.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SCENE 4B: RESEARCH ===================== -->
+<section class="scene research">
+  <div class="res-head">
+    <div>
+      <div class="scene-label">02 &nbsp;·&nbsp; The Research</div>
+      <h2>Before the<br>first <em>pixel.</em></h2>
+    </div>
+    <p>Strategists were drafting SODs in Word docs, marking up classification by hand, and emailing PDFs for review. We mapped the full lifecycle of the artifact &mdash; from blank cursor to published &amp; distributed at echelon &mdash; with the people who lived it.</p>
+  </div>
+
+  <!-- Journey map -->
+  <div class="journey">
+    <div class="journey-h">
+      <h3>SOD lifecycle &mdash; current state, summer 2020</h3>
+      <div class="legend">
+        <span><i class="pain"></i>Pain point</span>
+        <span><i class="opp"></i>Opportunity</span>
+        <span><i class="ok"></i>Works today</span>
+      </div>
+    </div>
+
+    <div class="journey-row">
+      <div class="j-step">
+        <div class="stage">01 · Draft</div>
+        <h5>Strategist starts the SOD</h5>
+        <div class="moment ok">Word template, sections roughly known</div>
+        <div class="moment pain">Classification marks typed manually per &para;</div>
+        <div class="moment pain">No way to see which sections are stale</div>
+        <div class="moment opp">Sections are templated &mdash; could be authored</div>
+      </div>
+      <div class="j-step">
+        <div class="stage">02 · Review</div>
+        <h5>Section leads review</h5>
+        <div class="moment pain">PDF emailed; comments come back fragmented</div>
+        <div class="moment pain">Track-changes across 12+ reviewers</div>
+        <div class="moment pain">No visibility into who's still pending</div>
+        <div class="moment opp">Per-section ownership + locks</div>
+      </div>
+      <div class="j-step">
+        <div class="stage">03 · Lock &amp; Approve</div>
+        <h5>CFSCC leadership signs</h5>
+        <div class="moment pain">No formal "lock" &mdash; ambiguous when final</div>
+        <div class="moment opp">Approval state needs to be unambiguous</div>
+        <div class="moment ok">Existing chain-of-command is clear</div>
+      </div>
+      <div class="j-step">
+        <div class="stage">04 · Publish</div>
+        <h5>Document released</h5>
+        <div class="moment pain">Releasability checked manually, error-prone</div>
+        <div class="moment pain">Manual REL TO marking on every &para;</div>
+        <div class="moment opp">Releasability rules can be data, not prose</div>
+      </div>
+      <div class="j-step">
+        <div class="stage">05 · Distribute</div>
+        <h5>Echelon receives SOD</h5>
+        <div class="moment pain">Tasked units find their bit by hand</div>
+        <div class="moment pain">No way to ask a question back upstream</div>
+        <div class="moment opp">Filter by tasked unit &mdash; surface "yours"</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Operator quotes -->
+  <div class="quotes-grid">
+    <div class="qcard">
+      <blockquote>I spend more time worrying about the markings being right than the content being right. That's backwards.</blockquote>
+      <div class="attr">
+        <div class="ring">SL</div>
+        <div class="who">Strategist · CFSCC<small>14 yrs · USAF</small></div>
+      </div>
+    </div>
+    <div class="qcard">
+      <blockquote>Tell me what's mine. I don't need the whole SOD &mdash; I need the four paragraphs that task my unit.</blockquote>
+      <div class="attr">
+        <div class="ring">OP</div>
+        <div class="who">Operator · USSPACECOM<small>Watch floor lead</small></div>
+      </div>
+    </div>
+    <div class="qcard">
+      <blockquote>If the lock isn't obvious, somebody's editing a SOD that's already gone out. That's how mistakes ship.</blockquote>
+      <div class="attr">
+        <div class="ring">RV</div>
+        <div class="who">Reviewer · CFSCC J3<small>Squadron commander</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SCENE 4C: WIREFRAMES ===================== -->
+<section class="scene wires">
+  <div class="wires-head">
+    <div>
+      <div class="scene-label">03 &nbsp;·&nbsp; The Wireframes</div>
+      <h2>Whiteboard<br>to <em>shipped.</em></h2>
+    </div>
+    <p>Three rough sketches set the spine of the product &mdash; an editable section tree, classification chips inline with content, and a per-paragraph review state. The hi-fi wireframe locked the layout. Every UI element you see in the final composition traces back to a marker on these boards.</p>
+  </div>
+
+  <!-- Whiteboard sketches row -->
+  <div class="sketches-row">
+    <!-- SKETCH 1: section tree + body -->
+    <div class="sketch">
+      <div class="label"><span>Sketch · 01</span><span class="ts">07&nbsp;Aug&nbsp;2020</span></div>
+      <div class="ttl">Section tree as the spine</div>
+      <svg class="canvas" viewBox="0 0 600 450" preserveAspectRatio="xMidYMid meet">
+        <!-- ambient grid -->
+        <defs>
+          <pattern id="grid1" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/></pattern>
+        </defs>
+        <rect width="600" height="450" fill="url(#grid1)"/>
+        <!-- left tree -->
+        <rect x="20" y="40" width="160" height="380" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.5"/>
+        <line x1="20" y1="68" x2="180" y2="68" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+        <text x="32" y="58" font-family="JetBrains Mono" font-size="10" fill="rgba(255,255,255,0.65)" letter-spacing="1">SECTIONS</text>
+        <!-- tree items -->
+        <g font-family="Inter" font-size="11" fill="rgba(255,255,255,0.75)">
+          <text x="32" y="88">▾ Situation</text>
+          <text x="48" y="106" fill="rgba(255,255,255,0.55)">USPACECOM</text>
+          <text x="48" y="122" fill="rgba(255,138,30,0.85)" font-weight="600">USAFRICOM ●</text>
+          <text x="48" y="138" fill="rgba(255,255,255,0.55)">USINDOPACOM</text>
+          <text x="48" y="154" fill="rgba(255,255,255,0.55)">USEUCOM</text>
+          <text x="48" y="170" fill="rgba(255,255,255,0.55)">USCENTCOM</text>
+          <text x="32" y="194">▾ Mission</text>
+          <text x="48" y="212" fill="rgba(255,255,255,0.55)">Mission</text>
+          <text x="32" y="236">▾ Execution</text>
+          <text x="48" y="254" fill="rgba(255,255,255,0.55)">Commander's Intent</text>
+          <text x="48" y="270" fill="rgba(255,255,255,0.55)">Concept of Ops</text>
+          <text x="48" y="286" fill="rgba(255,138,30,0.85)" font-weight="600">Focused Priorities ●</text>
+          <text x="48" y="302" fill="rgba(255,255,255,0.55)">Prioritized Ops Obj.</text>
+          <text x="32" y="326">▸ Admin &amp; Logistics</text>
+          <text x="32" y="350">▸ Command &amp; Control</text>
+          <text x="32" y="380" fill="rgba(63,233,255,0.9)" font-weight="600">+ Add section</text>
+        </g>
+
+        <!-- right body -->
+        <rect x="200" y="40" width="380" height="380" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.5"/>
+        <!-- header strip -->
+        <rect x="200" y="40" width="380" height="44" fill="rgba(255,138,30,0.1)" stroke="rgba(255,138,30,0.45)" stroke-width="1"/>
+        <text x="216" y="62" font-family="JetBrains Mono" font-size="9" fill="rgba(255,138,30,0.85)" letter-spacing="1">(U) SOD 21-07 · DRAFT</text>
+        <text x="216" y="76" font-family="Inter" font-size="11" fill="#fff" font-weight="600">USAFRICOM</text>
+        <!-- body lines -->
+        <g stroke="rgba(255,255,255,0.35)" stroke-width="1">
+          <line x1="216" y1="108" x2="560" y2="108"/>
+          <line x1="216" y1="124" x2="560" y2="124"/>
+          <line x1="216" y1="140" x2="500" y2="140"/>
+          <line x1="216" y1="176" x2="560" y2="176"/>
+          <line x1="216" y1="192" x2="560" y2="192"/>
+          <line x1="216" y1="208" x2="520" y2="208"/>
+        </g>
+        <text x="216" y="100" font-family="JetBrains Mono" font-size="9" fill="rgba(63,233,255,0.7)" letter-spacing="0.5">(S//REL FVEY)</text>
+        <text x="216" y="168" font-family="JetBrains Mono" font-size="9" fill="rgba(63,233,255,0.7)" letter-spacing="0.5">(U)</text>
+        <!-- inline table sketch -->
+        <rect x="216" y="240" width="344" height="120" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.3)" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="226" y="258" font-family="JetBrains Mono" font-size="9" fill="rgba(255,255,255,0.45)">[table]</text>
+        <g stroke="rgba(255,255,255,0.25)" stroke-width="1">
+          <line x1="216" y1="278" x2="560" y2="278"/>
+          <line x1="216" y1="302" x2="560" y2="302"/>
+          <line x1="216" y1="326" x2="560" y2="326"/>
+          <line x1="216" y1="350" x2="560" y2="350"/>
+        </g>
+        <!-- handwriting note -->
+        <text x="248" y="402" font-family="Inter" font-size="10" font-style="italic" fill="rgba(255,138,30,0.85)">spine = ToC + draft state + ownership</text>
+        <path d="M232 398 L242 386" stroke="rgba(255,138,30,0.85)" stroke-width="1.5" fill="none" marker-end="url(#arrow1)"/>
+        <defs>
+          <marker id="arrow1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="rgba(255,138,30,0.85)"/></marker>
+        </defs>
+      </svg>
+      <div class="ann">Sticky note from this session became the left rail in production: section tree, dirty-state indicators, "+ Add section."</div>
+    </div>
+
+    <!-- SKETCH 2: classification chips -->
+    <div class="sketch">
+      <div class="label"><span>Sketch · 02</span><span class="ts">14&nbsp;Aug</span></div>
+      <div class="ttl">Classification as data</div>
+      <svg class="canvas" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
+        <defs><pattern id="grid2" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/></pattern></defs>
+        <rect width="400" height="300" fill="url(#grid2)"/>
+
+        <!-- paragraph block 1 -->
+        <rect x="20" y="30" width="60" height="22" fill="none" stroke="rgba(63,233,255,0.7)" stroke-width="1.5" rx="2"/>
+        <text x="50" y="46" font-family="JetBrains Mono" font-size="9" fill="rgba(63,233,255,0.9)" text-anchor="middle" letter-spacing="1">(U)</text>
+        <g stroke="rgba(255,255,255,0.4)" stroke-width="1">
+          <line x1="92" y1="38" x2="380" y2="38"/>
+          <line x1="92" y1="50" x2="360" y2="50"/>
+        </g>
+
+        <!-- paragraph block 2 -->
+        <rect x="20" y="76" width="120" height="22" fill="none" stroke="rgba(255,138,30,0.8)" stroke-width="1.5" rx="2"/>
+        <text x="80" y="92" font-family="JetBrains Mono" font-size="9" fill="rgba(255,138,30,0.95)" text-anchor="middle" letter-spacing="1">(S//REL FVEY)</text>
+        <g stroke="rgba(255,255,255,0.4)" stroke-width="1">
+          <line x1="152" y1="84" x2="380" y2="84"/>
+          <line x1="152" y1="96" x2="370" y2="96"/>
+          <line x1="20" y1="116" x2="380" y2="116"/>
+        </g>
+
+        <!-- paragraph block 3 -->
+        <rect x="20" y="140" width="100" height="22" fill="none" stroke="rgba(255,61,170,0.8)" stroke-width="1.5" rx="2"/>
+        <text x="70" y="156" font-family="JetBrains Mono" font-size="9" fill="rgba(255,61,170,0.95)" text-anchor="middle" letter-spacing="1">(S//NF)</text>
+        <g stroke="rgba(255,255,255,0.4)" stroke-width="1">
+          <line x1="132" y1="148" x2="380" y2="148"/>
+          <line x1="132" y1="160" x2="350" y2="160"/>
+        </g>
+
+        <!-- arrows + notes -->
+        <path d="M150 200 L150 175" stroke="rgba(255,138,30,0.85)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
+        <defs><marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="rgba(255,138,30,0.85)"/></marker></defs>
+        <text x="78" y="220" font-family="Inter" font-size="10" font-style="italic" fill="rgba(255,138,30,0.85)">chip = portion mark + rules</text>
+        <text x="100" y="234" font-family="Inter" font-size="10" font-style="italic" fill="rgba(255,138,30,0.85)">drives REL TO downstream</text>
+
+        <!-- bottom warning -->
+        <line x1="20" y1="260" x2="380" y2="260" stroke="rgba(255,255,255,0.2)" stroke-dasharray="3,3"/>
+        <text x="200" y="280" font-family="JetBrains Mono" font-size="10" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="1">NEVER PLAIN TEXT</text>
+      </svg>
+      <div class="ann">Killed the hand-typed (S//REL FVEY) string everywhere. Chip carries the mark, the rules, and the export behavior.</div>
+    </div>
+
+    <!-- SKETCH 3: review state -->
+    <div class="sketch">
+      <div class="label"><span>Sketch · 03</span><span class="ts">21&nbsp;Aug</span></div>
+      <div class="ttl">Per-paragraph review</div>
+      <svg class="canvas" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
+        <defs><pattern id="grid3" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/></pattern></defs>
+        <rect width="400" height="300" fill="url(#grid3)"/>
+
+        <!-- 3 paragraphs each with status dot + review state -->
+        <!-- p1 reviewed -->
+        <circle cx="32" cy="40" r="6" fill="rgba(63,233,255,0.85)"/>
+        <g stroke="rgba(255,255,255,0.4)" stroke-width="1">
+          <line x1="56" y1="34" x2="360" y2="34"/>
+          <line x1="56" y1="46" x2="340" y2="46"/>
+        </g>
+        <text x="380" y="40" font-family="JetBrains Mono" font-size="8" fill="rgba(63,233,255,0.9)" text-anchor="end" letter-spacing="1">✓ APPROVED · Bartlett</text>
+
+        <!-- p2 in review -->
+        <circle cx="32" cy="84" r="6" fill="rgba(255,138,30,0.85)"/>
+        <g stroke="rgba(255,255,255,0.4)" stroke-width="1">
+          <line x1="56" y1="78" x2="360" y2="78"/>
+          <line x1="56" y1="90" x2="350" y2="90"/>
+          <line x1="56" y1="102" x2="330" y2="102"/>
+        </g>
+        <text x="380" y="84" font-family="JetBrains Mono" font-size="8" fill="rgba(255,138,30,0.95)" text-anchor="end" letter-spacing="1">● IN REVIEW · 2 cmts</text>
+
+        <!-- p3 unsubmitted -->
+        <circle cx="32" cy="140" r="6" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+        <g stroke="rgba(255,255,255,0.4)" stroke-width="1">
+          <line x1="56" y1="134" x2="360" y2="134"/>
+          <line x1="56" y1="146" x2="320" y2="146"/>
+        </g>
+        <text x="380" y="140" font-family="JetBrains Mono" font-size="8" fill="rgba(255,255,255,0.5)" text-anchor="end" letter-spacing="1">○ NOT SUBMITTED</text>
+
+        <!-- p4 needs work -->
+        <circle cx="32" cy="184" r="6" fill="rgba(255,61,170,0.85)"/>
+        <g stroke="rgba(255,255,255,0.4)" stroke-width="1">
+          <line x1="56" y1="178" x2="360" y2="178"/>
+          <line x1="56" y1="190" x2="345" y2="190"/>
+        </g>
+        <text x="380" y="184" font-family="JetBrains Mono" font-size="8" fill="rgba(255,61,170,0.95)" text-anchor="end" letter-spacing="1">⚠ CHANGES REQ · J3</text>
+
+        <!-- legend / handwritten -->
+        <text x="32" y="240" font-family="Inter" font-size="10" font-style="italic" fill="rgba(255,138,30,0.85)">dot color = state</text>
+        <text x="32" y="256" font-family="Inter" font-size="10" font-style="italic" fill="rgba(255,138,30,0.85)">right rail = who, when</text>
+        <text x="32" y="272" font-family="Inter" font-size="10" font-style="italic" fill="rgba(255,138,30,0.85)">scroll = ALL the work, not just yours</text>
+        <text x="32" y="288" font-family="Inter" font-size="10" font-style="italic" fill="rgba(63,233,255,0.85)">→ filter by tasked unit</text>
+      </svg>
+      <div class="ann">Each &para; carries its own review state. Strategist sees the doc; reviewer sees their queue.</div>
+    </div>
+  </div>
+
+  <!-- Hi-fi wireframe -->
+  <div class="wire-bigcard">
+    <div class="head">
+      <h3>Mid-fi wireframe &mdash; SOD authoring view</h3>
+      <div class="meta">v0.4 · Reviewed w/ CFSCC · 04 Sep 2020</div>
+    </div>
+
+    <svg class="wire-frame" viewBox="0 0 1440 720" preserveAspectRatio="xMidYMid meet">
+      <!-- background -->
+      <rect width="1440" height="720" fill="rgba(255,255,255,0.02)" stroke="rgba(63,233,255,0.25)" stroke-width="1.5"/>
+
+      <!-- TOP CHROME: tabs + status -->
+      <rect x="0" y="0" width="1440" height="56" fill="rgba(63,233,255,0.05)" stroke="rgba(63,233,255,0.15)"/>
+      <text x="24" y="34" font-family="JetBrains Mono" font-size="14" fill="rgba(63,233,255,0.95)" font-weight="700" letter-spacing="2">S31 · RELAY STRAT</text>
+      <text x="200" y="34" font-family="JetBrains Mono" font-size="11" fill="rgba(255,255,255,0.55)" letter-spacing="1">v1.1.1</text>
+
+      <!-- doc state tabs -->
+      <g font-family="JetBrains Mono" font-size="11" letter-spacing="2">
+        <text x="540" y="34" fill="rgba(255,138,30,0.95)" font-weight="700">DRAFT</text>
+        <line x1="528" y1="42" x2="588" y2="42" stroke="rgba(255,138,30,0.95)" stroke-width="2"/>
+        <text x="624" y="34" fill="rgba(255,255,255,0.5)">PREVIEW</text>
+        <text x="716" y="34" fill="rgba(255,255,255,0.5)">PUBLISHED</text>
+      </g>
+
+      <!-- right side: meter + user -->
+      <text x="1080" y="34" font-family="JetBrains Mono" font-size="10" fill="rgba(255,255,255,0.55)" letter-spacing="1">COMPLETED ASSIGNMENTS</text>
+      <rect x="1248" y="24" width="80" height="12" fill="none" stroke="rgba(255,255,255,0.3)"/>
+      <rect x="1248" y="24" width="73" height="12" fill="rgba(63,233,255,0.5)"/>
+      <text x="1336" y="34" font-family="JetBrains Mono" font-size="10" fill="rgba(255,255,255,0.75)" letter-spacing="1">92/102</text>
+      <text x="1392" y="34" font-family="JetBrains Mono" font-size="11" fill="rgba(255,255,255,0.6)" letter-spacing="1">LOGOUT</text>
+
+      <!-- LEFT NAV -->
+      <rect x="0" y="56" width="220" height="664" fill="rgba(0,0,0,0.25)" stroke="rgba(63,233,255,0.15)"/>
+      <g font-family="Inter" font-size="11">
+        <text x="20" y="96" fill="rgba(255,138,30,0.9)" font-weight="700" letter-spacing="2">SITUATION</text>
+        <rect x="0" y="80" width="3" height="24" fill="rgba(255,138,30,0.9)"/>
+        <text x="36" y="120" fill="rgba(255,255,255,0.85)" font-weight="600">Situation</text>
+        <text x="36" y="140" fill="rgba(255,255,255,0.55)">Operational Environment</text>
+        <text x="36" y="160" fill="rgba(255,255,255,0.55)">USPACECOM</text>
+        <text x="36" y="180" fill="rgba(255,255,255,0.55)">USAFRICOM</text>
+        <text x="36" y="200" fill="rgba(255,255,255,0.55)">USINDOPACOM</text>
+        <text x="36" y="220" fill="rgba(255,255,255,0.55)">USEUCOM</text>
+        <text x="36" y="240" fill="rgba(255,255,255,0.55)">USCENTCOM</text>
+        <text x="36" y="262" fill="rgba(63,233,255,0.85)" font-weight="600">+ Add Section</text>
+
+        <text x="20" y="294" fill="rgba(255,255,255,0.5)" font-weight="700" letter-spacing="2">MISSION</text>
+        <text x="36" y="316" fill="rgba(255,255,255,0.55)">Mission</text>
+        <text x="36" y="338" fill="rgba(63,233,255,0.85)" font-weight="600">+ Add Section</text>
+
+        <text x="20" y="370" fill="rgba(255,255,255,0.5)" font-weight="700" letter-spacing="2">EXECUTION</text>
+        <text x="36" y="392" fill="rgba(255,255,255,0.55)">Commander's Intent</text>
+        <text x="36" y="412" fill="rgba(255,255,255,0.55)">Concept of Operations</text>
+        <text x="36" y="432" fill="rgba(255,255,255,0.55)">Focused Priorities</text>
+        <text x="36" y="452" fill="rgba(255,255,255,0.55)">Prioritized Op. Objectives</text>
+        <text x="36" y="474" fill="rgba(63,233,255,0.85)" font-weight="600">+ Add Section</text>
+
+        <text x="20" y="506" fill="rgba(255,255,255,0.5)" font-weight="700" letter-spacing="2">ADMINISTRATION &amp; LOGISTICS</text>
+        <text x="36" y="528" fill="rgba(63,233,255,0.85)" font-weight="600">+ Add Section</text>
+
+        <text x="20" y="560" fill="rgba(255,255,255,0.5)" font-weight="700" letter-spacing="2">COMMAND AND CONTROL</text>
+        <text x="36" y="582" fill="rgba(255,255,255,0.55)">Command</text>
+        <text x="36" y="602" fill="rgba(255,255,255,0.55)">Signal</text>
+        <text x="36" y="624" fill="rgba(63,233,255,0.85)" font-weight="600">+ Add Section</text>
+      </g>
+
+      <!-- MAIN: header bar -->
+      <rect x="240" y="80" width="1180" height="80" fill="rgba(63,233,255,0.04)" stroke="rgba(63,233,255,0.2)"/>
+      <text x="264" y="106" font-family="JetBrains Mono" font-size="11" fill="rgba(255,255,255,0.5)" letter-spacing="1.5">(U//REL TO USA, FVEY)</text>
+      <text x="264" y="134" font-family="Inter" font-size="22" fill="#fff" font-weight="700" letter-spacing="-0.5">CFSCC Space Operations Directive (SOD) 21-07</text>
+      <text x="640" y="134" font-family="JetBrains Mono" font-size="11" fill="rgba(255,138,30,0.95)" font-weight="700" letter-spacing="2">DRAFT</text>
+      <rect x="635" y="120" width="56" height="20" fill="none" stroke="rgba(255,138,30,0.6)" stroke-width="1"/>
+      <text x="264" y="152" font-family="Inter" font-size="11" fill="rgba(255,255,255,0.55)">Execution guidance for 01 Jan 2021 - 31 Mar 2021</text>
+      <text x="1100" y="152" font-family="Inter" font-size="10" fill="rgba(255,255,255,0.5)">Last edited by [user name] on XX/XX/XX XX:XX</text>
+      <!-- Lock & Review button -->
+      <rect x="1290" y="100" width="118" height="38" fill="rgba(63,233,255,0.85)"/>
+      <text x="1349" y="124" font-family="Inter" font-size="11" fill="#0B1226" text-anchor="middle" font-weight="700" letter-spacing="1.5">LOCK &amp; REVIEW</text>
+
+      <!-- BODY area -->
+      <!-- D-2 section -->
+      <rect x="240" y="184" width="1180" height="48" fill="rgba(63,233,255,0.06)" stroke="rgba(63,233,255,0.15)"/>
+      <text x="270" y="214" font-family="Inter" font-size="13" fill="rgba(255,255,255,0.85)" font-weight="600">▸ (U) D-2: Significant Sensor MX Schedule</text>
+      <circle cx="1380" cy="208" r="8" fill="rgba(255,138,30,0.6)"/>
+      <circle cx="1396" cy="208" r="8" fill="none" stroke="rgba(255,255,255,0.3)"/>
+
+      <!-- D-3 section: expanded -->
+      <rect x="240" y="244" width="1180" height="320" fill="rgba(255,255,255,0.02)" stroke="rgba(63,233,255,0.2)"/>
+      <text x="270" y="274" font-family="Inter" font-size="13" fill="rgba(255,255,255,0.85)" font-weight="600">▾ (U) D-3: Mega-Constellation + Multi-Payload Launch Schedule</text>
+      <text x="1260" y="274" font-family="Inter" font-size="11" font-style="italic" fill="rgba(255,138,30,0.9)">In Progress · Bartlett, R</text>
+
+      <!-- table inside -->
+      <rect x="270" y="294" width="1120" height="32" fill="rgba(63,233,255,0.08)" stroke="rgba(63,233,255,0.15)"/>
+      <g font-family="Inter" font-size="11" fill="rgba(255,255,255,0.7)" font-weight="600">
+        <text x="290" y="314">Launch Name</text>
+        <text x="490" y="314">SLV Type</text>
+        <text x="660" y="314">Payload</text>
+        <text x="830" y="314">Launch Date</text>
+        <text x="1020" y="314">Launch Location</text>
+      </g>
+      <!-- 4 rows -->
+      <g font-family="Inter" font-size="11" fill="rgba(255,255,255,0.6)">
+        <line x1="270" y1="326" x2="1390" y2="326" stroke="rgba(255,255,255,0.08)"/>
+        <text x="290" y="346">Starlink</text><text x="490" y="346">Falcon-9</text><text x="660" y="346">22</text><text x="830" y="346">29 Mar 2021</text><text x="1020" y="346">SLC-4E, Vandenberg SFB, California</text>
+        <line x1="270" y1="356" x2="1390" y2="356" stroke="rgba(255,255,255,0.06)"/>
+        <text x="290" y="376">Nauka</text><text x="490" y="376">Proton</text><text x="660" y="376">1</text><text x="830" y="376">15 Apr 2021</text><text x="1020" y="376">Baikonur Cosmodrome, Kazakhstan</text>
+        <line x1="270" y1="386" x2="1390" y2="386" stroke="rgba(255,255,255,0.06)"/>
+        <text x="290" y="406">Star One D2</text><text x="490" y="406">Ariane-5</text><text x="660" y="406">15</text><text x="830" y="406">22 Apr 2021</text><text x="1020" y="406">ELA-3, Kourou, French Guiana</text>
+        <line x1="270" y1="416" x2="1390" y2="416" stroke="rgba(255,255,255,0.06)"/>
+        <text x="290" y="436">Starlink</text><text x="490" y="436">Falcon-Heavy</text><text x="660" y="436">90</text><text x="830" y="436">01 Oct 2021</text><text x="1020" y="436">SLC-41, Cape Canaveral AFS, Florida</text>
+      </g>
+      <text x="270" y="478" font-family="Inter" font-size="11" fill="rgba(63,233,255,0.85)" font-weight="600">+ Add Element</text>
+
+      <!-- callout markers on the wire -->
+      <g font-family="JetBrains Mono" font-size="11" font-weight="700">
+        <!-- 01 -->
+        <circle cx="100" cy="186" r="14" fill="rgba(63,233,255,0.9)"/><text x="100" y="190" fill="#0B1226" text-anchor="middle">01</text>
+        <!-- 02 -->
+        <circle cx="640" cy="128" r="14" fill="rgba(63,233,255,0.9)"/><text x="640" y="132" fill="#0B1226" text-anchor="middle">02</text>
+        <!-- 03 -->
+        <circle cx="270" cy="290" r="14" fill="rgba(63,233,255,0.9)"/><text x="270" y="294" fill="#0B1226" text-anchor="middle">03</text>
+        <!-- 04 -->
+        <circle cx="1349" cy="119" r="14" fill="rgba(63,233,255,0.9)"/><text x="1349" y="123" fill="#0B1226" text-anchor="middle">04</text>
+      </g>
+
+      <!-- bottom section preview -->
+      <rect x="240" y="584" width="1180" height="48" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.08)"/>
+      <text x="270" y="614" font-family="Inter" font-size="13" fill="rgba(255,255,255,0.55)" font-weight="600">▸ (U) D-4: Counterspace ISR Plan</text>
+      <rect x="240" y="644" width="1180" height="48" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.08)"/>
+      <text x="270" y="674" font-family="Inter" font-size="13" fill="rgba(255,255,255,0.55)" font-weight="600">▸ (U) D-5: Communication Architecture</text>
+    </svg>
+
+    <div class="wire-callouts">
+      <div class="wire-callout">
+        <div class="n">Callout · 01</div>
+        <h6>Section tree, always anchored.</h6>
+        <p>Left rail mirrors SOD doctrine. Section state surfaced as colored dots so authors find their unfinished work.</p>
+      </div>
+      <div class="wire-callout">
+        <div class="n">Callout · 02</div>
+        <h6>Doc state, three pills.</h6>
+        <p>Draft · Preview · Published replace ambiguous "Final v3 (revised) FINAL.docx" filenames. State is system, not folklore.</p>
+      </div>
+      <div class="wire-callout">
+        <div class="n">Callout · 03</div>
+        <h6>Tables, not paragraphs.</h6>
+        <p>Schedules &amp; rosters that strategists used to type into paragraphs became structured data &mdash; sortable, filterable, exportable.</p>
+      </div>
+      <div class="wire-callout">
+        <div class="n">Callout · 04</div>
+        <h6>Lock + Review as one move.</h6>
+        <p>Single CTA collapses two anxious steps. Locking implies review-ready; review-ready implies locked. No half-states.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SCENE 4D: USABILITY TESTING ===================== -->
+<section class="scene testing">
+  <div class="testing-head">
+    <div>
+      <div class="scene-label">04 &nbsp;·&nbsp; The Testing</div>
+      <h2>If it didn't survive<br>a <em>shift,</em> it didn't ship.</h2>
+    </div>
+    <p>Eight rounds of moderated tests on the watch floor and over secure VTC. Each round produced a findings log scored for severity and confidence, and a redesign pass that shipped to the next round &mdash; no patterns went forward unless operators confirmed them.</p>
+  </div>
+
+  <!-- Findings table -->
+  <div class="findings">
+    <div class="find-thead">
+      <div>ID</div>
+      <div>Finding</div>
+      <div>Severity</div>
+      <div>Conf.</div>
+      <div>Response &amp; ship</div>
+    </div>
+
+    <div class="find-row">
+      <div class="id">F-014</div>
+      <div class="finding">Operators couldn't distinguish "draft saved" from "submitted for review." Six of eight clicked Save and walked away.
+        <small>R2 · 8 participants · CFSCC J3, J5</small>
+      </div>
+      <div><span class="sev crit">Critical</span></div>
+      <div class="conf">7/8</div>
+      <div class="resp"><b>Killed the Save button entirely.</b> Autosave on every blur; "Lock &amp; Review" is now the only deliberate state change. Re-tested R3: 8/8 correct.</div>
+    </div>
+
+    <div class="find-row">
+      <div class="id">F-022</div>
+      <div class="finding">Hand-typed (S//REL FVEY) markings drifted from paragraph rules in 4 of 12 sampled SODs. Editorial-only audit caught two; two shipped.
+        <small>R3 · audit of 12 historical SODs</small>
+      </div>
+      <div><span class="sev crit">Critical</span></div>
+      <div class="conf">12/12</div>
+      <div class="resp"><b>Classification became a chip data type.</b> The portion mark, REL TO, and export behavior travel together. Operators can't type their way into a mismarked document.</div>
+    </div>
+
+    <div class="find-row">
+      <div class="id">F-031</div>
+      <div class="finding">Reviewers waded through full SODs to find their two paragraphs. Average time-to-comment: 14 min on R2.
+        <small>R3 · 6 reviewers timed</small>
+      </div>
+      <div><span class="sev hi">High</span></div>
+      <div class="conf">6/6</div>
+      <div class="resp"><b>Added per-section ownership + per-paragraph review queue.</b> Time-to-comment dropped to <b>3.5 min</b> on R4. Confirmed on R5 &amp; R6.</div>
+    </div>
+
+    <div class="find-row">
+      <div class="id">F-047</div>
+      <div class="finding">Tasked units couldn't filter the published SOD to "my section." Three of four scrolled the entire doc.
+        <small>R5 · 4 operators · USSPACECOM watch</small>
+      </div>
+      <div><span class="sev hi">High</span></div>
+      <div class="conf">3/4</div>
+      <div class="resp"><b>Added the right-rail filter:</b> Tasked Units, Op Objectives, Intel Requirements. Operators land on their slice without reading the whole document.</div>
+    </div>
+
+    <div class="find-row">
+      <div class="id">F-058</div>
+      <div class="finding">Activity feed scrolled with the document body &mdash; comments were "lost" when reviewers paged down.
+        <small>R6 · 5 reviewers</small>
+      </div>
+      <div><span class="sev med">Med</span></div>
+      <div class="conf">5/5</div>
+      <div class="resp"><b>Floated the Activity / Collaborators panel</b> with sticky tabs. Comments and presence persist as the doc scrolls.</div>
+    </div>
+
+    <div class="find-row">
+      <div class="id">F-066</div>
+      <div class="finding">"DOWNLOAD" was the most-clicked button in Published view &mdash; operators preferred the offline PDF over the live doc.
+        <small>R7 · click-tracking · 22 operators</small>
+      </div>
+      <div><span class="sev med">Med</span></div>
+      <div class="conf">19/22</div>
+      <div class="resp"><b>Promoted DOWNLOAD to a primary CTA</b> in Published state. Added per-section anchor links so the PDF is no longer a workaround &mdash; it's a first-class output.</div>
+    </div>
+  </div>
+
+  <!-- Iteration before/after -->
+  <div class="iter-grid">
+    <!-- BEFORE -->
+    <div class="iter">
+      <div class="stamp"><i></i>Round 2 · failed</div>
+      <h4>Save · Submit · Approve</h4>
+      <div class="vsub">Three buttons. Operators didn't know which committed the SOD, and a "submitted" draft could still be silently edited.</div>
+      <svg class="stage" viewBox="0 0 400 280" preserveAspectRatio="xMidYMid meet">
+        <rect width="400" height="280" fill="rgba(255,255,255,0.02)"/>
+        <!-- document chrome -->
+        <rect x="20" y="20" width="360" height="30" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.18)"/>
+        <text x="34" y="40" font-family="Inter" font-size="11" fill="rgba(255,255,255,0.75)" font-weight="600">SOD 21-07</text>
+        <!-- body -->
+        <rect x="20" y="58" width="360" height="120" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.12)"/>
+        <g stroke="rgba(255,255,255,0.18)" stroke-width="1">
+          <line x1="36" y1="80" x2="364" y2="80"/>
+          <line x1="36" y1="96" x2="350" y2="96"/>
+          <line x1="36" y1="112" x2="364" y2="112"/>
+          <line x1="36" y1="128" x2="340" y2="128"/>
+          <line x1="36" y1="144" x2="364" y2="144"/>
+          <line x1="36" y1="160" x2="320" y2="160"/>
+        </g>
+        <!-- three buttons -->
+        <rect x="20" y="200" width="100" height="36" fill="none" stroke="rgba(255,255,255,0.4)"/>
+        <text x="70" y="223" font-family="Inter" font-size="11" fill="rgba(255,255,255,0.75)" text-anchor="middle" font-weight="600" letter-spacing="1">SAVE</text>
+        <rect x="132" y="200" width="100" height="36" fill="none" stroke="rgba(255,138,30,0.7)"/>
+        <text x="182" y="223" font-family="Inter" font-size="11" fill="rgba(255,138,30,0.9)" text-anchor="middle" font-weight="600" letter-spacing="1">SUBMIT</text>
+        <rect x="244" y="200" width="100" height="36" fill="rgba(63,233,255,0.5)" stroke="rgba(63,233,255,0.7)"/>
+        <text x="294" y="223" font-family="Inter" font-size="11" fill="#0B1226" text-anchor="middle" font-weight="700" letter-spacing="1">APPROVE</text>
+        <!-- confusion marks -->
+        <text x="200" y="260" font-family="Inter" font-size="11" font-style="italic" fill="rgba(255,61,170,0.95)" text-anchor="middle">"which one actually sent it?"</text>
+      </svg>
+      <div class="feedback">"I clicked Save. It looked like it sent. It hadn't." &mdash; CFSCC strategist, R2</div>
+    </div>
+
+    <!-- arrow -->
+    <div class="iter-arrow">
+      <svg viewBox="0 0 48 48"><path d="M8 24 L40 24 M30 14 L40 24 L30 34" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+
+    <!-- AFTER -->
+    <div class="iter after">
+      <div class="stamp"><i></i>Round 4 · shipped</div>
+      <h4>Autosave + Lock &amp; Review</h4>
+      <div class="vsub">One deliberate action. Locking is the same act as opening for review &mdash; ambiguity gone, and operators can't accidentally edit a doc that's already out.</div>
+      <svg class="stage" viewBox="0 0 400 280" preserveAspectRatio="xMidYMid meet">
+        <rect width="400" height="280" fill="rgba(255,255,255,0.02)"/>
+        <!-- document chrome with autosave -->
+        <rect x="20" y="20" width="360" height="30" fill="rgba(255,255,255,0.04)" stroke="rgba(63,233,255,0.4)"/>
+        <text x="34" y="40" font-family="Inter" font-size="11" fill="rgba(255,255,255,0.75)" font-weight="600">SOD 21-07</text>
+        <circle cx="270" cy="35" r="3" fill="rgba(63,233,255,0.85)"/>
+        <text x="280" y="40" font-family="JetBrains Mono" font-size="9" fill="rgba(63,233,255,0.85)" letter-spacing="1">SAVED 12s ago</text>
+        <!-- body -->
+        <rect x="20" y="58" width="360" height="120" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.12)"/>
+        <g stroke="rgba(255,255,255,0.18)" stroke-width="1">
+          <line x1="36" y1="80" x2="364" y2="80"/>
+          <line x1="36" y1="96" x2="350" y2="96"/>
+          <line x1="36" y1="112" x2="364" y2="112"/>
+          <line x1="36" y1="128" x2="340" y2="128"/>
+          <line x1="36" y1="144" x2="364" y2="144"/>
+          <line x1="36" y1="160" x2="320" y2="160"/>
+        </g>
+        <!-- single CTA -->
+        <rect x="220" y="200" width="160" height="44" fill="rgba(63,233,255,0.85)"/>
+        <text x="300" y="227" font-family="Inter" font-size="12" fill="#0B1226" text-anchor="middle" font-weight="700" letter-spacing="1.5">LOCK &amp; REVIEW</text>
+        <text x="100" y="223" font-family="JetBrains Mono" font-size="9" fill="rgba(255,255,255,0.5)" letter-spacing="1">DRAFT · 92/102 ASSIGNMENTS</text>
+        <!-- confidence mark -->
+        <text x="200" y="265" font-family="Inter" font-size="11" font-style="italic" fill="rgba(63,233,255,0.9)" text-anchor="middle">8/8 correct on R4</text>
+      </svg>
+      <div class="feedback">"I know exactly what state the doc is in. Either I'm editing, or it's out." &mdash; CFSCC strategist, R4</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SCENE 5: BY THE NUMBERS ===================== -->
+<section class="scene stats">
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="lbl">Operators</div>
+      <div class="val">42<em>+</em></div>
+      <div class="sub">Space Force operators &amp; strategists involved in research and co-design.</div>
+    </div>
+    <div class="stat">
+      <div class="lbl">Sessions</div>
+      <div class="val">88</div>
+      <div class="sub">Usability tests run on the watch floor &mdash; not in a lab.</div>
+    </div>
+    <div class="stat">
+      <div class="lbl">Templates</div>
+      <div class="val">12</div>
+      <div class="sub">SOD section types systemized into reusable authoring components.</div>
+    </div>
+    <div class="stat">
+      <div class="lbl">Status</div>
+      <div class="val" style="font-size:48px;letter-spacing:-0.02em">Shipped</div>
+      <div class="sub">In active use across the CFSCC mission set since 2022.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<section class="scene footer">
+  <div>
+    <h6>Project · 2020&ndash;2022</h6>
+    <div class="name">United States Space Force &nbsp;·&nbsp; Section&nbsp;31 &nbsp;·&nbsp; Relay&nbsp;Strat</div>
+  </div>
+  <div class="right">jp / portfolio · 03</div>
+</section>
+
+
+<script>
+  (function () {
+    function fit() {
+      var w = window.innerWidth;
+      if (w < 768) { document.body.style.zoom = ''; return; }
+      document.body.style.zoom = Math.min(1, w / 1920);
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fit);
+    else fit();
+    window.addEventListener('resize', fit);
+    window.addEventListener('load', fit);
+  })();
+</script>
+</body>
+</html>
