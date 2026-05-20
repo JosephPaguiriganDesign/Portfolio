@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HireRight Screening Manager — Case Study</title>
+<title>HireRight Screening Manager, Case Study</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -207,7 +207,7 @@
   }
   .hr-apptab .close{margin-left:8px;color:var(--ui-text-3);font-weight:400}
 
-  /* filter row — dropdown style like real product */
+  /* filter row, dropdown style like real product */
   .hr-filters{
     padding:16px 28px 12px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;
     background:#fff;
@@ -224,7 +224,7 @@
   .hr-fld.action a{color:var(--info);font-size:13px;text-decoration:underline;font-weight:500}
   .hr-refreshed{margin-left:auto;align-self:flex-end;font-size:11.5px;color:var(--ui-text-3);font-weight:500;padding-bottom:6px}
   .hr-refreshed b{color:var(--ui-text);font-weight:600}
-  /* tab row (sub) — Invitations / Not Submitted / In Progress / etc. */
+  /* tab row (sub), Invitations / Not Submitted / In Progress / etc. */
   .hr-subtabs{
     background:#fff;padding:6px 28px 0;border-bottom:1px solid var(--ui-border);
     display:flex;gap:28px;align-items:center;
@@ -238,7 +238,7 @@
   }
   .hr-subtab .ic{width:12px;height:12px;color:var(--ui-text-3);margin-left:auto}
 
-  /* table — matches real product structure */
+  /* table, matches real product structure */
   .hr-table{
     background:#fff;
     margin:0 28px;
@@ -642,6 +642,18 @@
   .cover-mark .burst .hr-logo-img { height: 34px; }
   .hr-mob-top .hr-logo .hr-logo-img { height: 30px; }
 
+/* JP problem/outcome scenes - mobile reflow */
+@media (max-width: 767px) {
+  .jp-sec { padding: 56px 22px !important; }
+  .jp-h { font-size: 30px !important; }
+  .jp-sub { font-size: 15px !important; }
+  .jp-stats { grid-template-columns: 1fr 1fr !important; }
+  .jp-stat { padding: 24px 14px 0 !important; border-left: 1px solid rgba(0,0,0,0.12) !important; }
+  .jp-stat:nth-child(odd) { border-left: none !important; padding-left: 0 !important; }
+  .jp-stat-n { font-size: 48px !important; }
+  .jp-close { font-size: 16px !important; margin-top: 40px !important; }
+}
+
 /* ─── MOBILE-NATIVE LAYOUT (< 768px) ─────────────────── */
 @media (max-width: 767px) {
   html, body { width: 100% !important; overflow-x: hidden !important; }
@@ -670,7 +682,7 @@
   }
   .head-row .right { align-items: flex-start !important; text-align: left !important; }
 
-  /* Wide product screens — full-bleed container; JS scales the .scr to fit */
+  /* Wide product screens, full-bleed container; JS scales the .scr to fit */
   .dash-stage, .rep-stage, .ins-stage {
     width: 100% !important; margin: 0 !important;
   }
@@ -683,7 +695,7 @@
   .annotate p { font-size: 15px !important; }
   .ins-callouts { grid-template-columns: 1fr !important; gap: 28px !important; margin-top: 48px !important; }
 
-  /* Mobile scene — stack the phone frames, cap width */
+  /* Mobile scene, stack the phone frames, cap width */
   .mob-stage { grid-template-columns: 1fr !important; gap: 48px !important; }
   .mob-frame { max-width: 320px !important; margin: 0 auto !important; }
   .mob-meta { max-width: 320px !important; margin-left: auto !important; margin-right: auto !important; }
@@ -759,7 +771,7 @@
 
   <h1 class="cover-title">Screening,<br>at the speed<br>of <em>hiring.</em></h1>
 
-  <p class="cover-sub">Reimagining <b>HireRight Screening Manager</b> &mdash; a global background-check platform used by 40,000+ organizations &mdash; into a real-time command center for HR teams.</p>
+  <p class="cover-sub">Reimagining <b>HireRight Screening Manager</b>, a global background-check platform used by 40,000+ organizations, into a real-time command center for HR teams.</p>
 
   <div class="cover-tags">
     <span>Enterprise SaaS</span>
@@ -772,6 +784,17 @@
   <div class="cover-bar"></div>
 </section>
 
+<!-- ===================== SCENE: THE PROBLEM (JP) ===================== -->
+<section class="scene jp-sec" style="width:1920px;background:linear-gradient(180deg,#1A2A44 0%,#0F1B2E 100%);padding:160px 140px;color:#fff;">
+  <div style="max-width:1280px;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.3em;text-transform:uppercase;color:#F26C75;margin-bottom:24px;font-weight:600;">The Problem</div>
+    <h2 class="jp-h" style="font-family:'Inter',sans-serif;font-size:62px;font-weight:700;line-height:1.05;letter-spacing:-0.025em;color:#fff;margin-bottom:36px;">The most critical workflow in HR,<br>buried in its own complexity.</h2>
+    <p class="jp-sub" style="font-family:'Inter',sans-serif;font-size:24px;line-height:1.5;color:rgba(255,255,255,0.78);max-width:980px;font-weight:400;">
+      HireRight screens candidates for 40,000+ organizations. But the tool recruiters lived in had grown into a maze. Order statuses overlapped and meant different things to different people. Candidate reports were so dense no one could scan them. The experience drifted from region to region. The work was mission-critical, and the interface was working against it.
+    </p>
+  </div>
+</section>
+
 <!-- ===================== SCENE 2: DASHBOARD ===================== -->
 <section class="scene scene-dash">
   <div class="head-row">
@@ -781,7 +804,7 @@
     </div>
     <div class="right">
       <div class="scene-label">Orders Dashboard</div>
-      <p class="scene-sub">Recruiters live here. A real-time list of every background check in flight &mdash; filterable, sortable, exportable &mdash; with status pills that mean the same thing whether you're hiring in Dallas or Düsseldorf.</p>
+      <p class="scene-sub">Recruiters live here. A real-time list of every background check in flight, filterable, sortable, exportable, with status pills that mean the same thing whether you're hiring in Dallas or Düsseldorf.</p>
     </div>
   </div>
 
@@ -938,14 +961,14 @@
                 <div>Marcus</div>
                 <div class="ssn">***-**-3712</div>
                 <div class="hr-date">May 14, 2026</div>
-                <div style="color:var(--ui-text-3)">&mdash;</div>
+                <div style="color:var(--ui-text-3)">, </div>
                 <div><span class="hr-pill flag">Does Not Meet Company Standards</span></div>
               </div>
 
               <div class="hr-row">
                 <div class="check"></div>
                 <div class="flag-cell flag-off">·</div>
-                <div style="color:var(--ui-text-3)">&mdash;</div>
+                <div style="color:var(--ui-text-3)">, </div>
                 <div class="acct">North Highland Co. &middot; LLC<br><span style="color:var(--ui-text-3);font-size:11px">Operations</span></div>
                 <div class="hr-name-strong">Chen</div>
                 <div>Renee</div>
@@ -977,7 +1000,7 @@
                 <div>Sebasti&aacute;n</div>
                 <div class="ssn">***-**-6720</div>
                 <div class="hr-date">May 9, 2026</div>
-                <div style="color:var(--ui-text-3)">&mdash;</div>
+                <div style="color:var(--ui-text-3)">, </div>
                 <div><span class="hr-pill review">Needs Adjudication</span></div>
               </div>
 
@@ -1016,7 +1039,7 @@
                 <div>Jordan</div>
                 <div class="ssn">***-**-9253</div>
                 <div class="hr-date">May 4, 2026</div>
-                <div style="color:var(--ui-text-3)">&mdash;</div>
+                <div style="color:var(--ui-text-3)">, </div>
                 <div><span class="hr-pill flag">Does Not Meet Company Standards</span></div>
               </div>
 
@@ -1044,7 +1067,7 @@
     <div class="annotate">
       <div class="num">01 / Status taxonomy</div>
       <h4>Six states, globally consistent.</h4>
-      <p>The old system had 27 status strings across regions. We collapsed them to six clear states &mdash; In&nbsp;progress, Awaiting consent, Needs review, Flagged, Complete, Cancelled &mdash; with a single color language that survives translation.</p>
+      <p>The old system had 27 status strings across regions. We collapsed them to six clear states, In&nbsp;progress, Awaiting consent, Needs review, Flagged, Complete, Cancelled, with a single color language that survives translation.</p>
     </div>
     <div class="annotate">
       <div class="num">02 / Real-time spine</div>
@@ -1068,7 +1091,7 @@
     </div>
     <div class="right">
       <div class="scene-label">Candidate Report</div>
-      <p class="scene-sub">A background report is one of the densest documents in HR &mdash; criminal history, education, identity, credit, drug testing, motor-vehicle records. The redesign organizes it so a hiring manager can read it in two minutes, and adjudicators can act in five.</p>
+      <p class="scene-sub">A background report is one of the densest documents in HR, criminal history, education, identity, credit, drug testing, motor-vehicle records. The redesign organizes it so a hiring manager can read it in two minutes, and adjudicators can act in five.</p>
     </div>
   </div>
 
@@ -1198,7 +1221,7 @@
             <!-- body -->
             <div class="hr-rep-body">
 
-              <!-- LEFT — checks -->
+              <!-- LEFT, checks -->
               <div class="hr-rep-col">
 
                 <div class="hr-section">
@@ -1287,7 +1310,7 @@
 
               </div>
 
-              <!-- RIGHT — timeline + ai -->
+              <!-- RIGHT, timeline + ai -->
               <div class="hr-rep-col" style="background:#F9FAFC">
 
                 <div class="hr-section">
@@ -1299,7 +1322,7 @@
                     <div class="hr-time-item">
                       <div class="hr-time-dot active"></div>
                       <div class="hr-time-text">Awaiting your adjudication
-                        <small>SLA window opens — assigned to JP Paguirigan</small>
+                        <small>SLA window opens, assigned to JP Paguirigan</small>
                       </div>
                       <div class="hr-time-date">Today<br>08:47</div>
                     </div>
@@ -1376,12 +1399,12 @@
     <div class="annotate">
       <div class="num">05 / Timeline</div>
       <h4>Every event, timestamped.</h4>
-      <p>Right-side activity feed shows the order's full life &mdash; consent, vendor calls, returns, escalations. The same audit log that compliance officers used to dig out of database exports.</p>
+      <p>Right-side activity feed shows the order's full life, consent, vendor calls, returns, escalations. The same audit log that compliance officers used to dig out of database exports.</p>
     </div>
     <div class="annotate">
       <div class="num">06 / Recommendation</div>
       <h4>Rules transparent, never hidden.</h4>
-      <p>When the rules engine recommends "Engage," it shows its work &mdash; which policy, what thresholds. Adjudicators retain full FCRA-compliant override authority.</p>
+      <p>When the rules engine recommends "Engage," it shows its work, which policy, what thresholds. Adjudicators retain full FCRA-compliant override authority.</p>
     </div>
   </div>
 </section>
@@ -1395,7 +1418,7 @@
     </div>
     <div class="right">
       <div class="scene-label">HireRight Insights</div>
-      <p class="scene-sub">Insights pulls every order, every adjudication, every vendor SLA into one place &mdash; so HR leaders can spot regional drift, slow vendors, or hiring bottlenecks before they cost a quarter.</p>
+      <p class="scene-sub">Insights pulls every order, every adjudication, every vendor SLA into one place, so HR leaders can spot regional drift, slow vendors, or hiring bottlenecks before they cost a quarter.</p>
     </div>
   </div>
 
@@ -1406,7 +1429,7 @@
 
           <aside class="hr-sidenav">
             <div class="hr-logo">
-              <img class="hr-logo-img" src="case-screening-assets/hireright-logo-inverse.png" alt="HireRight">
+              <img class="hr-logo-img" src="case-screening-assets/hireright-logo.png" alt="HireRight">
             </div>
             <div class="hr-nav-item"><svg class="ic"><use href="#i-bell"/></svg>Alerts</div>
             <div class="hr-nav-item"><svg class="ic"><use href="#i-bell"/></svg>Announcement<span class="badge">2</span></div>
@@ -1501,7 +1524,7 @@
 
             <!-- Charts -->
             <div class="hr-charts">
-              <!-- LEFT — Orders over time -->
+              <!-- LEFT, Orders over time -->
               <div class="hr-card">
                 <div class="hr-card-h">
                   <h4>Orders by region · last 90 days</h4>
@@ -1609,7 +1632,7 @@
                 </div>
               </div>
 
-              <!-- RIGHT — Turnaround by package -->
+              <!-- RIGHT, Turnaround by package -->
               <div class="hr-card">
                 <div class="hr-card-h">
                   <h4>Turnaround by package</h4>
@@ -1648,7 +1671,7 @@
                   </div>
                 </div>
                 <div style="margin-top:8px;padding-top:12px;border-top:1px solid var(--ui-border);font-size:12px;color:var(--ui-text-2);line-height:1.45">
-                  <b style="color:var(--ui-text)">Insight.</b> Executive package TAT is up <b style="color:#B32A14">0.8d</b> &mdash; driven by EMEA employment verifications.
+                  <b style="color:var(--ui-text)">Insight.</b> Executive package TAT is up <b style="color:#B32A14">0.8d</b>, driven by EMEA employment verifications.
                 </div>
               </div>
             </div>
@@ -1663,17 +1686,17 @@
     <div class="ins-callout">
       <div class="lbl">07 / KPI rail</div>
       <h5>Four numbers, always honest.</h5>
-      <p>Orders, turnaround, clear rate, SLA misses &mdash; ranked by what HR leaders actually report to the board.</p>
+      <p>Orders, turnaround, clear rate, SLA misses, ranked by what HR leaders actually report to the board.</p>
     </div>
     <div class="ins-callout">
       <div class="lbl">08 / Regional stack</div>
       <h5>Where the work happens.</h5>
-      <p>Stacked bars reveal regional volume shifts &mdash; APAC hiring crept up; EMEA spiked in March.</p>
+      <p>Stacked bars reveal regional volume shifts, APAC hiring crept up; EMEA spiked in March.</p>
     </div>
     <div class="ins-callout">
       <div class="lbl">09 / Package latency</div>
       <h5>Show the slow lanes.</h5>
-      <p>Color hardens as packages drift past SLA. Executive +0.8d &mdash; the conversation starts here.</p>
+      <p>Color hardens as packages drift past SLA. Executive +0.8d, the conversation starts here.</p>
     </div>
     <div class="ins-callout">
       <div class="lbl">10 / Plain-language insight</div>
@@ -1915,7 +1938,7 @@
           <div style="padding:20px 18px 8px;background:#fff">
             <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:var(--accent);font-weight:600">Step 2 of 4</div>
             <div style="font-size:20px;font-weight:700;color:var(--ui-text);margin-top:4px;letter-spacing:-0.01em">Choose a package</div>
-            <div style="font-size:13px;color:var(--ui-text-2);margin-top:6px;line-height:1.5">Packages bundle the right checks for the role &mdash; and apply the right consent forms automatically by region.</div>
+            <div style="font-size:13px;color:var(--ui-text-2);margin-top:6px;line-height:1.5">Packages bundle the right checks for the role, and apply the right consent forms automatically by region.</div>
           </div>
 
           <div style="padding:14px 18px;display:flex;flex-direction:column;gap:10px">
@@ -1928,7 +1951,7 @@
                 </div>
                 <div style="font-size:11.5px;color:var(--ui-text-3)">~1.8d TAT</div>
               </div>
-              <div style="font-size:12px;color:var(--ui-text-2);margin-top:6px;line-height:1.45">6 checks — MVR, identity, criminal, drug, employment, education</div>
+              <div style="font-size:12px;color:var(--ui-text-2);margin-top:6px;line-height:1.45">6 checks: MVR, identity, criminal, drug, employment, education</div>
             </div>
 
             <div style="background:#fff;border:2px solid var(--accent);border-radius:10px;padding:14px;position:relative;box-shadow:0 4px 14px rgba(224,78,39,0.15)">
@@ -1941,7 +1964,7 @@
                   <svg class="ic" style="width:11px;height:11px"><use href="#i-check"/></svg>
                 </div>
               </div>
-              <div style="font-size:12px;color:var(--ui-text-2);margin-top:6px;line-height:1.45">9 checks — ID, education, employment 7yr, criminal county+federal, sanctions, MVR</div>
+              <div style="font-size:12px;color:var(--ui-text-2);margin-top:6px;line-height:1.45">9 checks: ID, education, employment 7yr, criminal county+federal, sanctions, MVR</div>
               <div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--ui-border);display:flex;justify-content:space-between;font-size:11.5px">
                 <span style="color:var(--ui-text-3)">Most used for engineering</span>
                 <span style="color:var(--ui-text-2);font-weight:600">~3.4d TAT</span>
@@ -1956,7 +1979,7 @@
                 </div>
                 <div style="font-size:11.5px;color:var(--ui-text-3)">~5.9d TAT</div>
               </div>
-              <div style="font-size:12px;color:var(--ui-text-2);margin-top:6px;line-height:1.45">14 checks — full Standard Plus + credit, civil, media, global sanctions, references</div>
+              <div style="font-size:12px;color:var(--ui-text-2);margin-top:6px;line-height:1.45">14 checks: full Standard Plus + credit, civil, media, global sanctions, references</div>
             </div>
 
             <div style="background:#fff;border:1px solid var(--ui-border);border-radius:10px;padding:14px">
@@ -1967,7 +1990,7 @@
                 </div>
                 <div style="font-size:11.5px;color:var(--ui-text-3)">~5.1d TAT</div>
               </div>
-              <div style="font-size:12px;color:var(--ui-text-2);margin-top:6px;line-height:1.45">11 checks calibrated to candidate country &mdash; GDPR-safe by default</div>
+              <div style="font-size:12px;color:var(--ui-text-2);margin-top:6px;line-height:1.45">11 checks calibrated to candidate country, GDPR-safe by default</div>
             </div>
 
           </div>
@@ -1988,6 +2011,37 @@
   </div>
 </section>
 
+<!-- ===================== SCENE: THE OUTCOME (JP) ===================== -->
+<section class="scene jp-sec" style="width:1920px;background:linear-gradient(180deg,#F8F4EB 0%,#EFE7D6 100%);padding:160px 140px;">
+  <div style="font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.3em;text-transform:uppercase;color:#8A8F99;margin-bottom:24px;font-weight:600;">The Outcome</div>
+  <h2 class="jp-h" style="font-family:'Inter',sans-serif;font-size:60px;font-weight:700;line-height:1.05;letter-spacing:-0.025em;color:#1A2A44;margin-bottom:80px;max-width:1100px;">A command center recruiters can actually run.</h2>
+  <div class="jp-stats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:2px solid #1A2A44;">
+    <div class="jp-stat" style="padding:36px 36px 0 0;">
+      <div class="jp-stat-n" style="font-family:'Inter',sans-serif;font-size:76px;font-weight:800;letter-spacing:-0.04em;color:#1A2A44;line-height:1;">6</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#C0271A;margin:18px 0 8px;font-weight:600;">Clear states</div>
+      <div style="font-family:'Inter',sans-serif;font-size:15px;line-height:1.5;color:#3A3F4A;">Collapsed a tangle of overlapping statuses into six that read the same everywhere.</div>
+    </div>
+    <div class="jp-stat" style="padding:36px 36px 0;border-left:1px solid rgba(26,42,68,0.15);">
+      <div class="jp-stat-n" style="font-family:'Inter',sans-serif;font-size:76px;font-weight:800;letter-spacing:-0.04em;color:#1A2A44;line-height:1;">~30%</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#C0271A;margin:18px 0 8px;font-weight:600;">Faster review</div>
+      <div style="font-family:'Inter',sans-serif;font-size:15px;line-height:1.5;color:#3A3F4A;">Adjudication review time, cut by making the densest reports scannable.</div>
+    </div>
+    <div class="jp-stat" style="padding:36px 36px 0;border-left:1px solid rgba(26,42,68,0.15);">
+      <div class="jp-stat-n" style="font-family:'Inter',sans-serif;font-size:76px;font-weight:800;letter-spacing:-0.04em;color:#1A2A44;line-height:1;">40K+</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#C0271A;margin:18px 0 8px;font-weight:600;">Organizations</div>
+      <div style="font-family:'Inter',sans-serif;font-size:15px;line-height:1.5;color:#3A3F4A;">The scale this workflow runs at, every check, every region.</div>
+    </div>
+    <div class="jp-stat" style="padding:36px 0 0 36px;border-left:1px solid rgba(26,42,68,0.15);">
+      <div class="jp-stat-n" style="font-family:'Inter',sans-serif;font-size:76px;font-weight:800;letter-spacing:-0.04em;color:#1A2A44;line-height:1;">Lead</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#C0271A;margin:18px 0 8px;font-weight:600;">Role</div>
+      <div style="font-family:'Inter',sans-serif;font-size:15px;line-height:1.5;color:#3A3F4A;">Lead Product Designer, research through production, driving a team of three.</div>
+    </div>
+  </div>
+  <p class="jp-close" style="font-family:'Inter',sans-serif;font-size:22px;line-height:1.5;color:#3A3F4A;max-width:900px;margin-top:72px;">
+    Statuses that mean the same thing in Dallas or Düsseldorf. Reports a recruiter can scan in seconds. The most critical workflow in HR, rebuilt to get out of its own way.
+  </p>
+</section>
+
 <!-- ===================== FOOTER ===================== -->
 <section class="scene footer">
   <div>
@@ -2001,7 +2055,7 @@
 <script>
   // Desktop: scale the 1920px design to fit the viewport/modal width.
   // Mobile: leave body unscaled (CSS reflows the narrative) and scale only
-  // the wide product mockups to fit their container — no horizontal scroll.
+  // the wide product mockups to fit their container, no horizontal scroll.
   (function () {
     var WIDE = ['.dash-stage', '.rep-stage', '.ins-stage'];
     function clearScreen(scr) {

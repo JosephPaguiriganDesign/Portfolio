@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SCE — sce.com Template System</title>
+<title>SCE, sce.com Template System</title>
 <template id="__bundler_thumbnail" data-bg-color="#0B2545">
   <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
     <rect width="1200" height="800" fill="#0B2545"/>
@@ -295,6 +295,18 @@
   .footer .name{font-family:'Inter',sans-serif;font-size:28px;font-weight:700;margin-top:6px}
   .footer .right{font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.2em;color:rgba(255,255,255,0.6);text-transform:uppercase}
 
+/* JP problem/outcome scenes - mobile reflow */
+@media (max-width: 767px) {
+  .jp-sec { padding: 56px 22px !important; }
+  .jp-h { font-size: 30px !important; }
+  .jp-sub { font-size: 15px !important; }
+  .jp-stats { grid-template-columns: 1fr 1fr !important; }
+  .jp-stat { padding: 24px 14px 0 !important; border-left: 1px solid rgba(11,37,69,0.15) !important; }
+  .jp-stat:nth-child(odd) { border-left: none !important; padding-left: 0 !important; }
+  .jp-stat-n { font-size: 48px !important; }
+  .jp-close { font-size: 16px !important; margin-top: 40px !important; }
+}
+
 /* ─── MOBILE-NATIVE LAYOUT (< 768px) ─────────────────── */
 @media (max-width: 767px) {
   html, body { width: 100% !important; overflow-x: hidden !important; }
@@ -318,7 +330,7 @@
   .scene-sub { font-size: 15px !important; line-height: 1.5 !important; max-width: 100% !important; }
   .scene-label { font-size: 11px !important; }
 
-  /* Headers that were 2-col grids — stack */
+  /* Headers that were 2-col grids, stack */
   .home-head, .la-head, .pair-head, .details-head {
     grid-template-columns: 1fr !important;
     gap: 24px !important;
@@ -371,7 +383,7 @@
   .home-annotate .item h4 { font-size: 20px !important; }
   .home-annotate .item p { font-size: 15px !important; }
 
-  /* ─── Pair (Landing B + C) — same badge pattern ─── */
+  /* ─── Pair (Landing B + C), same badge pattern ─── */
   .pair-grid {
     grid-template-columns: 1fr !important;
     gap: 56px !important;
@@ -435,7 +447,7 @@
   .jp-back-nav .arr{display:inline-block;transition:transform .2s ease}
   .jp-back-nav:hover .arr{transform:translateX(-3px)}
 </style>
-<a class="jp-back-nav" href="index.html#work">
+<a class="jp-back-nav" href="joseph-paguirigan-portfolio.html#work">
   <span class="arr">&larr;</span> Back to Portfolio
 </a>
 <script>
@@ -459,7 +471,7 @@
 
   <h1 class="cover-title">Powering<br>the new <em>sce.com</em></h1>
 
-  <p class="cover-sub">A modular page-template system for Southern California Edison &mdash; 15&nbsp;million customers, one coherent web experience. Designed to scale from outage alerts to clean-energy storytelling.</p>
+  <p class="cover-sub">A modular page-template system for Southern California Edison, 15&nbsp;million customers, one coherent web experience. Designed to scale from outage alerts to clean-energy storytelling.</p>
 
   <div class="cover-tags">
     <span>Design System</span>
@@ -472,6 +484,17 @@
   <div class="cover-bar"></div>
 </section>
 
+<!-- ============ SCENE: THE PROBLEM (JP) ============ -->
+<section class="scene jp-sec" style="width:1920px;background:linear-gradient(180deg,#0B2545 0%,#0F2A52 100%);padding:160px 140px;color:#fff;">
+  <div style="max-width:1280px;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.3em;text-transform:uppercase;color:#FDB813;margin-bottom:24px;font-weight:600;">The Problem</div>
+    <h2 class="jp-h" style="font-family:'Inter',sans-serif;font-size:62px;font-weight:700;line-height:1.05;letter-spacing:-0.025em;color:#fff;margin-bottom:36px;">One brand. Hundreds of pages.<br>No system.</h2>
+    <p class="jp-sub" style="font-family:'Inter',sans-serif;font-size:24px;line-height:1.5;color:rgba(255,255,255,0.78);max-width:980px;font-weight:400;">
+      SCE.com serves 15 million customers, from wildfire alerts to rate plans. But every team built pages their own way. Components were rebuilt from scratch, layouts drifted, and the brand looked different depending on where you landed. Shipping anything meant reinventing the basics first.
+    </p>
+  </div>
+</section>
+
 <!-- ============ SCENE 2: HOME ============ -->
 <section class="scene home">
   <div class="home-head">
@@ -481,17 +504,17 @@
     </div>
     <div class="right">
       <div class="scene-label">T01 &nbsp;·&nbsp; Home</div>
-      <p class="scene-sub">Wildfire and outage messaging is always available without blocking the everyday tasks that keep the lights on &mdash; literally. The same four quicklinks anchor every page on the site.</p>
+      <p class="scene-sub">Wildfire and outage messaging is always available without blocking the everyday tasks that keep the lights on, literally. The same four quicklinks anchor every page on the site.</p>
     </div>
   </div>
 
   <div class="home-stage">
     <div class="scr desktop">
-      <img src="case-sce-assets/T01-home-desktop.jpg" alt="SCE Home — Desktop">
+      <img src="case-sce-assets/T01-home-desktop.jpg" alt="SCE Home, Desktop">
     </div>
     <div class="mobile-col">
       <div class="scr mobile">
-        <img src="case-sce-assets/T01-home-mobile.jpg" alt="SCE Home — Mobile">
+        <img src="case-sce-assets/T01-home-mobile.jpg" alt="SCE Home, Mobile">
       </div>
     </div>
   </div>
@@ -500,22 +523,22 @@
     <div class="item">
       <div class="num">01 / Hero</div>
       <h4>Crisis lives above the fold.</h4>
-      <p>The hero swaps between seasonal storytelling and active wildfire/outage alerts &mdash; without ever pushing the four quicklinks below the fold.</p>
+      <p>The hero swaps between seasonal storytelling and active wildfire/outage alerts, without ever pushing the four quicklinks below the fold.</p>
     </div>
     <div class="item">
       <div class="num">02 / Quicklinks</div>
       <h4>Four jobs, one row.</h4>
-      <p>Pay Bill, Outage, Moving, Payment Assistance &mdash; the high-intent actions every customer arrives looking for. Anchored on a yellow rail across every template.</p>
+      <p>Pay Bill, Outage, Moving, Payment Assistance, the high-intent actions every customer arrives looking for. Anchored on a yellow rail across every template.</p>
     </div>
     <div class="item">
       <div class="num">03 / Editorial</div>
       <h4>Newsroom + community.</h4>
-      <p>Below the fold, the home page hands off to editorial: programs, scam alerts, PSPS guidance, and community stories &mdash; surfaced when relevant, quiet when not.</p>
+      <p>Below the fold, the home page hands off to editorial: programs, scam alerts, PSPS guidance, and community stories, surfaced when relevant, quiet when not.</p>
     </div>
   </div>
 </section>
 
-<!-- ============ SCENE 3: LANDING A — Clean Energy & Efficiency ============ -->
+<!-- ============ SCENE 3: LANDING A, Clean Energy & Efficiency ============ -->
 <section class="scene landing-a">
   <div class="la-head">
     <div>
@@ -524,17 +547,17 @@
     </div>
     <div class="right">
       <div class="scene-label">T02 &nbsp;·&nbsp; Landing A</div>
-      <p class="scene-sub">A photo-led landing that stages programs as equal peers. Six cards, one clear path in &mdash; from EV charging to workforce development. Pair this template with a strong hero photo and the system does the rest.</p>
+      <p class="scene-sub">A photo-led landing that stages programs as equal peers. Six cards, one clear path in, from EV charging to workforce development. Pair this template with a strong hero photo and the system does the rest.</p>
     </div>
   </div>
 
   <div class="la-stage">
     <div class="scr desktop">
-      <img src="case-sce-assets/T02-landing-a-desktop.jpg" alt="Clean Energy &amp; Efficiency — Desktop">
+      <img src="case-sce-assets/T02-landing-a-desktop.jpg" alt="Clean Energy &amp; Efficiency, Desktop">
     </div>
     <div class="mobile-col">
       <div class="scr mobile">
-        <img src="case-sce-assets/T02-landing-a-mobile.jpg" alt="Clean Energy &amp; Efficiency — Mobile">
+        <img src="case-sce-assets/T02-landing-a-mobile.jpg" alt="Clean Energy &amp; Efficiency, Mobile">
       </div>
     </div>
   </div>
@@ -549,7 +572,7 @@
     </div>
     <div class="right">
       <div class="scene-label">T03 &amp; T04 &nbsp;·&nbsp; Landings</div>
-      <p class="scene-sub">Landing B leans editorial &mdash; longer-form cards that breathe. Landing C is denser &mdash; a six-up grid for sections with many siblings. Same components, different rhythms.</p>
+      <p class="scene-sub">Landing B leans editorial, longer-form cards that breathe. Landing C is denser, a six-up grid for sections with many siblings. Same components, different rhythms.</p>
     </div>
   </div>
 
@@ -557,16 +580,16 @@
     <div class="pair-card">
       <div class="pair-row">
         <div class="scr desktop">
-          <img src="case-sce-assets/T03-landing-b-desktop.jpg" alt="Landing B — Desktop">
+          <img src="case-sce-assets/T03-landing-b-desktop.jpg" alt="Landing B, Desktop">
         </div>
         <div class="scr mobile">
-          <img src="case-sce-assets/T03-landing-b-mobile.jpg" alt="Landing B — Mobile">
+          <img src="case-sce-assets/T03-landing-b-mobile.jpg" alt="Landing B, Mobile">
         </div>
       </div>
       <div class="pair-meta">
         <div>
           <div class="code">T03</div>
-          <h5>Landing B &mdash; Editorial</h5>
+          <h5>Landing B, Editorial</h5>
         </div>
         <p style="max-width:260px;text-align:right">Stacked full-bleed cards. Each tile gets room to breathe.</p>
       </div>
@@ -575,16 +598,16 @@
     <div class="pair-card">
       <div class="pair-row">
         <div class="scr desktop">
-          <img src="case-sce-assets/T04-landing-c-desktop.jpg" alt="Landing C — Desktop">
+          <img src="case-sce-assets/T04-landing-c-desktop.jpg" alt="Landing C, Desktop">
         </div>
         <div class="scr mobile">
-          <img src="case-sce-assets/T04-landing-c-mobile.jpg" alt="Landing C — Mobile">
+          <img src="case-sce-assets/T04-landing-c-mobile.jpg" alt="Landing C, Mobile">
         </div>
       </div>
       <div class="pair-meta">
         <div>
           <div class="code">T04</div>
-          <h5>Landing C &mdash; Index</h5>
+          <h5>Landing C, Index</h5>
         </div>
         <p style="max-width:260px;text-align:right">Six-up grid for parents with many children. Compact &amp; scannable.</p>
       </div>
@@ -600,8 +623,8 @@
       <h2 class="scene-head">Five layouts for<br>five kinds of content.</h2>
     </div>
     <div class="right">
-      <div class="scene-label">T05 &mdash; T09 &nbsp;·&nbsp; Detail Pages</div>
-      <p class="scene-sub">From a single-column long read to a three-column rate comparison, the detail family covers everything below a landing. Editors pick the structure &mdash; the system handles the typography.</p>
+      <div class="scene-label">T05 to T09 &nbsp;·&nbsp; Detail Pages</div>
+      <p class="scene-sub">From a single-column long read to a three-column rate comparison, the detail family covers everything below a landing. Editors pick the structure, the system handles the typography.</p>
     </div>
   </div>
 
@@ -664,6 +687,37 @@
   </div>
 </section>
 
+<!-- ============ SCENE: THE OUTCOME (JP) ============ -->
+<section class="scene jp-sec" style="width:1920px;background:linear-gradient(180deg,#F7F4ED 0%,#EFE7D6 100%);padding:160px 140px;">
+  <div style="font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.3em;text-transform:uppercase;color:#8A8F99;margin-bottom:24px;font-weight:600;">The Outcome</div>
+  <h2 class="jp-h" style="font-family:'Inter',sans-serif;font-size:60px;font-weight:700;line-height:1.05;letter-spacing:-0.025em;color:#0B2545;margin-bottom:80px;max-width:1100px;">One system the whole site runs on.</h2>
+  <div class="jp-stats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:2px solid #0B2545;">
+    <div class="jp-stat" style="padding:36px 36px 0 0;">
+      <div class="jp-stat-n" style="font-family:'Inter',sans-serif;font-size:76px;font-weight:800;letter-spacing:-0.04em;color:#0B2545;line-height:1;">9</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#B5860B;margin:18px 0 8px;font-weight:600;">Page templates</div>
+      <div style="font-family:'Inter',sans-serif;font-size:15px;line-height:1.5;color:#3A3F4A;">One system covering the full site, from home to detail page.</div>
+    </div>
+    <div class="jp-stat" style="padding:36px 36px 0;border-left:1px solid rgba(11,37,69,0.15);">
+      <div class="jp-stat-n" style="font-family:'Inter',sans-serif;font-size:76px;font-weight:800;letter-spacing:-0.04em;color:#0B2545;line-height:1;">1</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#B5860B;margin:18px 0 8px;font-weight:600;">Component library</div>
+      <div style="font-family:'Inter',sans-serif;font-size:15px;line-height:1.5;color:#3A3F4A;">Replaced dozens of one-off components rebuilt team by team.</div>
+    </div>
+    <div class="jp-stat" style="padding:36px 36px 0;border-left:1px solid rgba(11,37,69,0.15);">
+      <div class="jp-stat-n" style="font-family:'Inter',sans-serif;font-size:76px;font-weight:800;letter-spacing:-0.04em;color:#0B2545;line-height:1;">3</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#B5860B;margin:18px 0 8px;font-weight:600;">Tools shipped</div>
+      <div style="font-family:'Inter',sans-serif;font-size:15px;line-height:1.5;color:#3A3F4A;">Template system, live Storybook, and the Brand Voice Tool. All in production.</div>
+    </div>
+    <div class="jp-stat" style="padding:36px 0 0 36px;border-left:1px solid rgba(11,37,69,0.15);">
+      <div class="jp-stat-n" style="font-family:'Inter',sans-serif;font-size:76px;font-weight:800;letter-spacing:-0.04em;color:#0B2545;line-height:1;">~40%</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#B5860B;margin:18px 0 8px;font-weight:600;">Less rework</div>
+      <div style="font-family:'Inter',sans-serif;font-size:15px;line-height:1.5;color:#3A3F4A;">Cut the design-to-dev back-and-forth by building the system devs pull from.</div>
+    </div>
+  </div>
+  <p class="jp-close" style="font-family:'Inter',sans-serif;font-size:22px;line-height:1.5;color:#3A3F4A;max-width:900px;margin-top:72px;">
+    The Figma file and the codebase finally agree. New pages now ship from the system instead of from scratch.
+  </p>
+</section>
+
 <!-- ============ FOOTER ============ -->
 <section class="scene footer">
   <div class="left">
@@ -682,12 +736,12 @@
     function fit() {
       var targetWidth = 1920;
       var available = window.innerWidth;
-      // Never zoom below 0.5 — below that, text is unreadable. Mobile gets
+      // Never zoom below 0.5, below that, text is unreadable. Mobile gets
       // horizontal scroll instead.
       var minScale = 0.5;
       var scale = Math.min(1, available / targetWidth);
       scale = Math.max(minScale, scale);
-      // Use zoom — it affects layout (unlike transform), so document height
+      // Use zoom, it affects layout (unlike transform), so document height
       // shrinks proportionally and no extra whitespace appears below.
       document.body.style.zoom = scale;
     }

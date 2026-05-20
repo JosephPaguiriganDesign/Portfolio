@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Joseph Paguirigan — Design Engineer</title>
+<title>Joseph Paguirigan, Design Engineer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -76,13 +76,13 @@
     display: flex; justify-content: space-between; align-items: center;
     padding: 28px 56px;
     transition: color .35s ease, background .35s ease;
-    /* Solid fallback — shown when backdrop-filter is unsupported */
+    /* Solid fallback - shown when backdrop-filter is unsupported */
     background: rgba(255,255,255,.92);
   }
   nav.nav--light { background: rgba(0,0,0,.88); }
   nav.nav--dark  { background: rgba(255,255,255,.92); }
 
-  /* Frosted glass — only when the browser actually supports it */
+  /* Frosted glass - only when the browser actually supports it */
   @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
     nav {
       backdrop-filter: blur(18px);
@@ -92,10 +92,10 @@
     nav.nav--light { background: rgba(0,0,0,.32); }
     nav.nav--dark  { background: rgba(255,255,255,.40); }
   }
-  /* Dark nav — default (over white/light sections) */
+  /* Dark nav - default (over white/light sections) */
   nav.nav--dark .nav-logo,
   nav.nav--dark .nav-links a { color: var(--black); }
-  /* Light nav — over dark/red sections */
+  /* Light nav - over dark/red sections */
   nav.nav--light .nav-logo,
   nav.nav--light .nav-links a { color: var(--white); }
   .nav-logo {
@@ -131,7 +131,7 @@
   }
   .hero-grid span { border-right: 1px solid rgba(0,0,0,.04); }
 
-  /* large ghost text — layered chromatic offset (Yo La Tengo effect) */
+  /* large ghost text - layered chromatic offset (Yo La Tengo effect) */
   .hero-ghost {
     position: absolute;
     top: 50%; left: 50%;
@@ -279,7 +279,7 @@
     background: var(--black); color: var(--white);
     padding: 130px 56px;
     position: relative; overflow: hidden;
-    /* subtle dot-matrix grid — "machine" texture */
+    /* subtle dot-matrix grid - "machine" texture */
     background-image:
       radial-gradient(circle, rgba(255,255,255,.07) 1px, transparent 1px);
     background-size: 28px 28px;
@@ -294,7 +294,7 @@
     pointer-events: none; z-index: 0;
   }
 
-  /* Hero SVG layer animations — opacity only so parallax transform is unaffected */
+  /* Hero SVG layer animations - opacity only so parallax transform is unaffected */
   #heroDeep { animation: heroDeepBreathe 14s ease-in-out infinite; }
   #heroMid  { animation: heroMidBreathe  9s  ease-in-out infinite 2.5s; }
   #heroNear { animation: heroNearBlink   7s  ease-in-out infinite 1s; }
@@ -447,7 +447,7 @@
   }
   .work-cta:hover .arr { transform: translateX(6px); color: var(--black); }
 
-  /* CTA wrapper — lets two buttons sit side-by-side and wrap on mobile */
+  /* CTA wrapper - lets two buttons sit side-by-side and wrap on mobile */
   .work-ctas {
     display: flex; flex-wrap: wrap; gap: 14px;
     margin-top: 32px;
@@ -465,7 +465,7 @@
   .work-cta--ghost:hover { border-color: var(--red); color: var(--white); }
   .work-cta--ghost .arr { background: var(--black); color: var(--white); }
   .work-cta--ghost:hover .arr { background: var(--white); color: var(--red); }
-  /* Subtle attention pulse — fires once on reveal */
+  /* Subtle attention pulse - fires once on reveal */
   @keyframes ctaPulse {
     0%   { box-shadow: 0 10px 30px -10px rgba(232,49,42,.55), 0 0 0 0 rgba(232,49,42,.5); }
     70%  { box-shadow: 0 10px 30px -10px rgba(232,49,42,.55), 0 0 0 14px rgba(232,49,42,0); }
@@ -664,7 +664,7 @@
   }
   .lb-close:hover { color: var(--white); }
 
-  /* Fixed close X — always visible, never scrolls away */
+  /* Fixed close X - always visible, never scrolls away */
   .lb-close-fixed {
     position: fixed;
     top: 76px; right: 24px;
@@ -761,6 +761,22 @@
   .cs-overlay.cs-video-mode .cs-frame { display: none; }
   .cs-overlay.cs-video-mode .cs-video { display: block; }
   .cs-overlay.cs-video-mode .cs-inner { background: #000; }
+  .cs-caption { display: none; }
+  .cs-overlay.cs-video-mode .cs-caption {
+    display: block;
+    position: absolute; left: 0; right: 0; top: 0;
+    padding: 22px 28px;
+    background: linear-gradient(180deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,0) 100%);
+    pointer-events: none;
+  }
+  .cs-caption .cs-cap-title {
+    font-size: 13px; font-weight: 800; letter-spacing: .22em;
+    text-transform: uppercase; color: var(--white); margin-bottom: 6px;
+  }
+  .cs-caption .cs-cap-sub {
+    font-size: 13px; font-weight: 400; line-height: 1.5;
+    color: rgba(255,255,255,.7); max-width: 760px;
+  }
   .cs-close {
     position: fixed;
     top: 24px; right: 24px;
@@ -819,7 +835,7 @@
     white-space: nowrap; pointer-events: none; line-height: 1;
     /* Base: visible-but-ghosted white on red */
     color: rgba(255,255,255,.08);
-    /* Chromatic layers — white up-left, dark down-right */
+    /* Chromatic layers - white up-left, dark down-right */
     text-shadow:
       14px  12px 0 rgba(255,255,255,.09),
       -10px -8px  0 rgba(0,0,0,.07),
@@ -911,12 +927,12 @@
   /* transform-box so scale() pivots from each element's own centre */
   .about-node { transform-box: fill-box; transform-origin: center; }
 
-  /* Node breathing — white hidden layer nodes */
+  /* Node breathing - white hidden layer nodes */
   @keyframes nodeBreath {
     0%,100% { opacity:.28; transform:scale(1); }
     50%      { opacity:.7;  transform:scale(1.6); }
   }
-  /* Node breathing — red input/output nodes */
+  /* Node breathing - red input/output nodes */
   @keyframes nodeBreathRed {
     0%,100% { opacity:.45; transform:scale(1); }
     50%      { opacity:1;   transform:scale(1.8); }
@@ -970,7 +986,7 @@
   #stackMid  { animation: sectionBreathe 11s ease-in-out infinite 2s; }
   #stackNear { animation: sectionDim     7s  ease-in-out infinite 1s; }
 
-  /* ── Stack — Venn circles staggered breathe ── */
+  /* ── Stack - Venn circles staggered breathe ── */
   @keyframes vennCirclePulse {
     0%,100% { opacity: .7; }
     50%      { opacity: 1; }
@@ -979,7 +995,7 @@
   .stackVenn.v2 { animation-delay: 2.5s; }
   .stackVenn.v3 { animation-delay: 5s; }
 
-  /* ── Stack — YOU dot + ripple ── */
+  /* ── Stack - YOU dot + ripple ── */
   @keyframes youDotPulse {
     0%,100% { opacity: .55; transform: scale(1); }
     50%      { opacity: 1;   transform: scale(1.8); }
@@ -1001,14 +1017,14 @@
   #workMid  { animation: sectionBreathe 10s ease-in-out infinite 3s; }
   #workNear { animation: sectionBreathe  8s ease-in-out infinite 1.5s; }
 
-  /* ── Work — CTA button pulse ── */
+  /* ── Work - CTA button pulse ── */
   @keyframes workBtnPulse {
     0%,100% { opacity: .1; }
     50%      { opacity: .22; }
   }
   #workCtaBtn { animation: workBtnPulse 3.5s ease-in-out infinite; }
 
-  /* ── Work — metric line opacity throb ── */
+  /* ── Work - metric line opacity throb ── */
   @keyframes workLinePulse {
     0%,100% { opacity: .18; }
     50%      { opacity: .4; }
@@ -1016,7 +1032,7 @@
   #workMetricLine { animation: workLinePulse 5s ease-in-out infinite; }
   #workMetricArea { animation: workLinePulse 5s ease-in-out infinite; }
 
-  /* ── Work — data point staggered pulse ── */
+  /* ── Work - data point staggered pulse ── */
   @keyframes workDotPulse {
     0%,100% { opacity: .35; transform: scale(1); }
     50%      { opacity: .9;  transform: scale(1.8); }
@@ -1034,14 +1050,14 @@
   #processMid  { animation: sectionBreathe 10s ease-in-out infinite .5s; }
   #processNear { animation: sectionBreathe  8s ease-in-out infinite 2s; }
 
-  /* ── Process — ITERATE arc flowing dashes ── */
+  /* ── Process - ITERATE arc flowing dashes ── */
   @keyframes processArcDash {
     from { stroke-dashoffset: 0; }
     to   { stroke-dashoffset: -96; }
   }
   #processArc { animation: processArcDash 4s linear infinite; }
 
-  /* ── Process — step nodes staggered pulse ── */
+  /* ── Process - step nodes staggered pulse ── */
   @keyframes processNodePulse {
     0%,100% { opacity: .35; transform: scale(1); }
     50%      { opacity: 1;   transform: scale(1.6); }
@@ -1060,7 +1076,7 @@
   #contactMid  { animation: sectionBreathe  7s ease-in-out infinite 1s; }
   #contactNear { animation: sectionBreathe  9s ease-in-out infinite 2s; }
 
-  /* ── Contact — concentric rings outward ripple ── */
+  /* ── Contact - concentric rings outward ripple ── */
   @keyframes contactRingExpand {
     0%   { r: 80;  opacity: .06; }
     100% { r: 280; opacity: 0; }
@@ -1069,7 +1085,7 @@
   .contactRippleRing.crr2 { animation-delay: 1.33s; }
   .contactRippleRing.crr3 { animation-delay: 2.66s; }
 
-  /* ── Contact — center dot pulse ── */
+  /* ── Contact - center dot pulse ── */
   @keyframes contactCenterPulse {
     0%,100% { opacity: .25; transform: scale(1); }
     50%      { opacity: .8;  transform: scale(2); }
@@ -1079,7 +1095,7 @@
     animation: contactCenterPulse 3s ease-in-out infinite;
   }
 
-  /* ── Contact — radar sweep rotation ── */
+  /* ── Contact - radar sweep rotation ── */
   @keyframes radarSweep {
     from { transform: rotate(0deg); }
     to   { transform: rotate(360deg); }
@@ -1108,7 +1124,7 @@
   }
 
   /* ─── HERO ANIMATIONS ────────────────────────────────── */
-  /* Chromatic shadow drift — ghost DESIGN text layers slowly separate & close */
+  /* Chromatic shadow drift - ghost DESIGN text layers slowly separate & close */
   @keyframes heroGhostChromatic {
     0%,100% {
       text-shadow:
@@ -1142,7 +1158,7 @@
     0%,100% { opacity: .3; }
     50%      { opacity: .8; }
   }
-  /* SVG layer opacity breathing — different rhythms per depth layer */
+  /* SVG layer opacity breathing - different rhythms per depth layer */
   @keyframes heroDeepBreathe {
     0%,100% { opacity: .7; }
     50%      { opacity: 1; }
@@ -1225,7 +1241,7 @@
       -webkit-backdrop-filter: none !important;
       background: transparent !important;
     }
-    /* Mobile menu — fullscreen frosted overlay when open */
+    /* Mobile menu - fullscreen frosted overlay when open */
     .nav-links {
       position: fixed; inset: 0;
       margin: 0; padding: 80px 20px 40px; list-style: none;
@@ -1301,7 +1317,7 @@
     .work-num { display: none; }
     .work-kpi { padding: 24px; }
     .kpi-value { font-size: 36px; }
-    /* CTA — tighten so the no-wrap button sits comfortably on a phone */
+    /* CTA - tighten so the no-wrap button sits comfortably on a phone */
     .work-cta {
       margin-top: 24px; padding: 14px 18px; gap: 12px;
       font-size: 11px; letter-spacing: .2em;
@@ -1340,7 +1356,7 @@
     .process-wrap { padding: 64px 16px; }
     .contact-wrap { padding: 80px 16px; }
 
-    /* About stats — stack to 1 col */
+    /* About stats - stack to 1 col */
     .about-stats { grid-template-columns: 1fr; gap: 24px; }
     .stat-big { font-size: 48px; }
 
@@ -1410,7 +1426,7 @@
       <line x1="360"  y1="0" x2="360"  y2="900" stroke="rgba(0,0,0,.025)" stroke-width=".5"/>
       <line x1="720"  y1="0" x2="720"  y2="900" stroke="rgba(0,0,0,.025)" stroke-width=".5"/>
       <line x1="1080" y1="0" x2="1080" y2="900" stroke="rgba(0,0,0,.025)" stroke-width=".5"/>
-      <!-- dot field — upper right -->
+      <!-- dot field - upper right -->
       <circle cx="900"  cy="120" r="1.5" fill="rgba(0,0,0,.06)"/>
       <circle cx="940"  cy="120" r="1.5" fill="rgba(0,0,0,.06)"/>
       <circle cx="980"  cy="120" r="1.5" fill="rgba(0,0,0,.06)"/>
@@ -1425,7 +1441,7 @@
       <circle cx="1020" cy="190" r="1.5" fill="rgba(0,0,0,.04)"/>
     </g>
 
-    <!-- Horizontal scan line — animates across the full width -->
+    <!-- Horizontal scan line - animates across the full width -->
     <line id="heroScan" x1="0" y1="460" x2="80" y2="460" stroke="rgba(232,49,42,.18)" stroke-width=".6"/>
 
     <!-- MID: Swiss geometric shapes -->
@@ -1435,14 +1451,14 @@
       <rect x="1120" y="220" width="240" height="360" rx="0" fill="none" stroke="rgba(232,49,42,.03)" stroke-width=".6"/>
       <!-- horizontal rule through rect centre -->
       <line x1="1100" y1="400" x2="1380" y2="400" stroke="rgba(0,0,0,.05)" stroke-width=".5" stroke-dasharray="4 8"/>
-      <!-- large faint circle — left composition, slow rotating dashed ring -->
+      <!-- large faint circle - left composition, slow rotating dashed ring -->
       <circle cx="220" cy="420" r="260" fill="none" stroke="rgba(0,0,0,.035)" stroke-width="1"/>
       <circle id="heroMidRing" cx="220" cy="420" r="180" fill="none" stroke="rgba(232,49,42,.025)" stroke-width=".7" stroke-dasharray="8 16"/>
     </g>
 
     <!-- NEAR: measurement annotations + corner marks -->
     <g id="heroNear">
-      <!-- corner registration — all four -->
+      <!-- corner registration - all four -->
       <line x1="56"   y1="56"  x2="56"   y2="88"  stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
       <line x1="40"   y1="72"  x2="72"   y2="72"  stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
       <line x1="1384" y1="56"  x2="1384" y2="88"  stroke="rgba(232,49,42,.2)" stroke-width=".8"/>
@@ -1513,7 +1529,7 @@
       </filter>
     </defs>
 
-    <!-- ══ LAYER 1 — deep background particles (slowest parallax) ══ -->
+    <!-- ══ LAYER 1 - deep background particles (slowest parallax) ══ -->
     <g id="aboutDeep">
       <!-- Floating micro particles -->
       <circle cx="620" cy="120" r="1.2" fill="rgba(255,255,255,.18)" style="animation:particleFloat 9s 0s ease-in-out infinite"/>
@@ -1533,9 +1549,9 @@
       <line x1="56"  y1="520" x2="790" y2="520" stroke="rgba(255,255,255,.04)" stroke-width=".5" stroke-dasharray="3 12"/>
     </g>
 
-    <!-- ══ LAYER 2 — connection lines (mid parallax) ══ -->
+    <!-- ══ LAYER 2 - connection lines (mid parallax) ══ -->
     <g id="aboutMid">
-      <!-- Static base connections — L1→L2 (white, subtle) -->
+      <!-- Static base connections - L1→L2 (white, subtle) -->
       <line x1="820" y1="160" x2="980" y2="200" stroke="rgba(255,255,255,.08)" stroke-width=".8"/>
       <line x1="820" y1="160" x2="980" y2="340" stroke="rgba(255,255,255,.06)" stroke-width=".8"/>
       <line x1="820" y1="160" x2="980" y2="480" stroke="rgba(255,255,255,.04)" stroke-width=".8"/>
@@ -1590,13 +1606,13 @@
         style="animation:flowPacket 2s 2.9s linear infinite"/>
     </g>
 
-    <!-- ══ LAYER 3 — nodes (nearest, most parallax) ══ -->
+    <!-- ══ LAYER 3 - nodes (nearest, most parallax) ══ -->
     <g id="aboutNear">
       <!-- INPUT label -->
       <text x="826" y="136" font-family="Helvetica Neue,Helvetica,Inter,Arial,sans-serif" font-size="7" fill="rgba(255,255,255,.22)" letter-spacing="1.5">INPUT</text>
       <line x1="826" y1="140" x2="826" y2="148" stroke="rgba(255,255,255,.15)" stroke-width=".6"/>
 
-      <!-- L1 — input nodes (red) -->
+      <!-- L1 - input nodes (red) -->
       <g class="about-node" style="animation:nodeBreathRed 2.8s 0s ease-in-out infinite">
         <circle cx="820" cy="160" r="3.5" fill="rgba(232,49,42,.7)" filter="url(#redglow)"/>
       </g>
@@ -1610,7 +1626,7 @@
         <circle cx="820" cy="520" r="3.5" fill="rgba(232,49,42,.7)" filter="url(#redglow)"/>
       </g>
 
-      <!-- L2 — hidden nodes (white) -->
+      <!-- L2 - hidden nodes (white) -->
       <g class="about-node" style="animation:nodeBreath 3.5s 0.3s ease-in-out infinite">
         <circle cx="980" cy="200" r="3.5" fill="rgba(255,255,255,.5)"/>
       </g>
@@ -1621,7 +1637,7 @@
         <circle cx="980" cy="480" r="3.5" fill="rgba(255,255,255,.5)"/>
       </g>
 
-      <!-- L3 — hidden nodes (red, dimmer) -->
+      <!-- L3 - hidden nodes (red, dimmer) -->
       <g class="about-node" style="animation:nodeBreathRed 3s 0.7s ease-in-out infinite">
         <circle cx="1140" cy="260" r="3.5" fill="rgba(232,49,42,.6)" filter="url(#redglow)"/>
       </g>
@@ -1629,7 +1645,7 @@
         <circle cx="1140" cy="420" r="3.5" fill="rgba(232,49,42,.6)" filter="url(#redglow)"/>
       </g>
 
-      <!-- Output node — double ring + ripple -->
+      <!-- Output node - double ring + ripple -->
       <circle cx="1300" cy="340" r="40" fill="none" stroke="rgba(232,49,42,.06)"
         style="animation:ripple 3s 0s ease-out infinite; transform-box:fill-box; transform-origin:center"/>
       <circle cx="1300" cy="340" r="40" fill="none" stroke="rgba(232,49,42,.05)"
@@ -1676,7 +1692,7 @@
 
   <div class="about-grid">
     <div>
-      <div class="eyebrow reveal">01 — About</div>
+      <div class="eyebrow reveal">01 / About</div>
       <h2 class="about-heading reveal d1">
         Sharp<br>instincts.<br><em>Shipped.</em>
       </h2>
@@ -1689,9 +1705,9 @@
         I make it. No hand-holding required.
       </p>
       <p class="about-text reveal d1">
-        I pair deep design instinct with AI to move embarrassingly fast.
-        Figma, Claude, a little code, a lot of opinions. From blank canvas
-        to shipped product faster than most teams finish their kickoff meeting.
+        I use AI to move embarrassingly fast. Figma, Claude, a little code,
+        a lot of opinions. Blank canvas to shipped product before most teams
+        finish their kickoff meeting.
       </p>
       <div class="about-stats">
         <div class="reveal">
@@ -1743,7 +1759,7 @@
       <line x1="20"   y1="574" x2="52"   y2="574" stroke="rgba(232,49,42,.25)" stroke-width=".8"/>
       <line x1="1408" y1="568" x2="1408" y2="580" stroke="rgba(232,49,42,.25)" stroke-width=".8"/>
       <line x1="1388" y1="574" x2="1420" y2="574" stroke="rgba(232,49,42,.25)" stroke-width=".8"/>
-      <!-- Large overlapping discipline circles — each breathes at staggered phase -->
+      <!-- Large overlapping discipline circles - each breathes at staggered phase -->
       <circle class="stackVenn"    cx="1080" cy="260" r="180" fill="rgba(232,49,42,.015)" stroke="rgba(232,49,42,.07)" stroke-width="1"/>
       <circle class="stackVenn v2" cx="1210" cy="320" r="180" fill="rgba(0,0,0,.01)"      stroke="rgba(0,0,0,.06)"     stroke-width="1"/>
       <circle class="stackVenn v3" cx="1145" cy="160" r="180" fill="rgba(0,0,0,.01)"      stroke="rgba(0,0,0,.05)"     stroke-width="1"/>
@@ -1767,7 +1783,7 @@
   </svg>
 
   <div class="section-inner" id="stackInner">
-    <div class="eyebrow reveal">02 — Toolkit</div>
+    <div class="eyebrow reveal">02 / Toolkit</div>
     <h2 class="section-heading reveal d1">The<br>Stack.</h2>
 
     <div class="stack-grid">
@@ -1833,7 +1849,7 @@
 
     <!-- MID: wireframe browser screens -->
     <g id="workMid">
-      <!-- Wireframe browser/screen — top right -->
+      <!-- Wireframe browser/screen - top right -->
       <rect x="1140" y="60" width="260" height="180" rx="2" fill="none" stroke="rgba(0,0,0,.07)" stroke-width="1"/>
       <line x1="1140" y1="82" x2="1400" y2="82" stroke="rgba(0,0,0,.06)" stroke-width=".8"/>
       <circle cx="1156" cy="71" r="4" fill="none" stroke="rgba(232,49,42,.25)" stroke-width=".8"/>
@@ -1863,7 +1879,7 @@
       <polyline id="workMetricLine"
         points="1050,1100 1100,1070 1160,1040 1220,980 1280,920 1340,860 1390,780"
         fill="none" stroke="rgba(232,49,42,.18)" stroke-width="1.5" stroke-linejoin="round"/>
-      <!-- Data points — staggered pulse -->
+      <!-- Data points - staggered pulse -->
       <circle class="workDot"    cx="1100" cy="1070" r="3" fill="rgba(232,49,42,.35)"/>
       <circle class="workDot d2" cx="1220" cy="980"  r="3" fill="rgba(232,49,42,.35)"/>
       <circle class="workDot d3" cx="1340" cy="860"  r="3" fill="rgba(232,49,42,.35)"/>
@@ -1873,7 +1889,7 @@
   </svg>
 
   <div class="work-inner" id="workInner">
-    <div class="eyebrow reveal">03 — Case Studies</div>
+    <div class="eyebrow reveal">03 / Case Studies</div>
     <h2 class="section-heading reveal d1">Selected<br>Work.</h2>
 
     <div class="work-list">
@@ -1888,22 +1904,23 @@
           </div>
           <h3 class="work-title">SCE.com<br>Rebuilt.</h3>
           <p class="work-desc">
-            SCE.com needed more than a refresh. Led the full brand overhaul
-            from the ground up — new design language, component library,
-            layout standards, iconography. One system. One source of truth.
-            The kind of foundation every product team actually wants to build on.
+            SCE.com serves 15 million customers, and the site had drifted into
+            a patchwork. I led the rebuild from the ground up: a modular template
+            system that scales from outage alerts to clean-energy storytelling,
+            built on a new design language, component library, and layout standards.
+            One system, one source of truth.
           </p>
           <p class="work-desc">
-            Took it further. Built the design system parent-down from Figma —
-            pixel-faithful components, a live Storybook, real tokens engineers
-            could actually consume. The Figma file and the codebase, finally
-            in sync.
+            Then I took it further and built the design system parent-down
+            from Figma. Pixel-faithful components, a live Storybook, real
+            tokens engineers could pull straight into code. The Figma file and
+            the codebase, finally in sync.
           </p>
           <p class="work-desc">
-            Did the same for words. Built the Brand Voice Tool —
-            real-time scoring across six brand dimensions, one-click AI
-            rewrites, the full Brand Copy Playbook baked into the interface.
-            So anyone shipping copy stays on-brand without a reviewer in the loop.
+            Then I did the same for words. Built the Brand Voice Tool: real-time
+            scoring across six brand dimensions, one-click AI rewrites, the whole
+            Brand Copy Playbook baked right in. Anyone can ship on-brand copy
+            without waiting on a reviewer. Both tools are live, links below.
           </p>
           <div class="work-ctas">
             <a class="work-cta" href="case-sce.html" data-case="case-sce.html">
@@ -1920,8 +1937,8 @@
         <div class="work-kpi-col">
           <div class="work-kpi">
             <div class="kpi-label">Key Outcome</div>
-            <div class="kpi-value">1 System</div>
-            <div class="kpi-note">Unified design language across all of SCE.com. Color, type, components, layout — all defined and shipped.</div>
+            <div class="kpi-value">3 Tools</div>
+            <div class="kpi-note">A template system, a live Storybook design system, and a Brand Voice Tool. All shipped, all in production.</div>
           </div>
           <div class="work-tools-lbl">Tools Used</div>
           <div class="work-tools-val">Figma · Claude · Design Tokens</div>
@@ -1938,10 +1955,14 @@
           </div>
           <h3 class="work-title">Screening Manager<br>Reimagined.</h3>
           <p class="work-desc">
-            HireRight's enterprise screening tool was overdue for a rethink.
-            Ran the full process — market research, competitor teardowns, user
-            needs — then straight into wireframes and production. The most
-            critical workflow for enterprise HR teams, rebuilt from scratch.
+            HireRight runs background checks for 40,000+ organizations, and its
+            core screening tool had buckled under its own complexity. I led the
+            rebuild end to end as Lead Product Designer, driving a team of three:
+            research, competitor teardowns, and user interviews, then wireframes
+            straight to production. I collapsed a
+            tangle of order statuses into six states that read the same in Dallas
+            or Düsseldorf, and turned the densest documents in HR into something
+            a recruiter can scan in seconds.
           </p>
           <div class="work-ctas">
             <a class="work-cta" href="case-screening.html" data-case="case-screening.html">
@@ -1952,8 +1973,8 @@
         <div class="work-kpi-col">
           <div class="work-kpi">
             <div class="kpi-label">Key Outcome</div>
-            <div class="kpi-value">0 → 1</div>
-            <div class="kpi-note">End-to-end ownership from research to production. Discovery, strategy, design, and handoff. Solo.</div>
+            <div class="kpi-value">Lead</div>
+            <div class="kpi-note">Lead Product Designer on a platform used by 40,000+ organizations. Drove research, strategy, design, and handoff with a team of three.</div>
           </div>
           <div class="work-tools-lbl">Tools Used</div>
           <div class="work-tools-val">Figma · Sketch · Prototyping</div>
@@ -1970,10 +1991,12 @@
           </div>
           <h3 class="work-title">Space Force<br>Ops Tools.</h3>
           <p class="work-desc">
-            Partnered with US Space Force operators and strategists to design
-            software for the Space Tasking Cycle. Real tools for real missions.
-            User research and usability testing weren't optional — they were
-            the job. No stock photo UI here.
+            The US Space Force needed real software for the Space Tasking Cycle,
+            not stock-photo UI. I co-designed with 42+ operators and strategists
+            and ran 88 usability sessions on the watch floor, not in a lab. The
+            result is an SOD authoring tool that turns 12 document types into
+            reusable, structured components. Shipped in 2022 and still in active
+            use across the CFSCC mission set.
           </p>
           <div class="work-ctas">
             <a class="work-cta" href="case-relaystrat.html" data-case="case-relaystrat.html">
@@ -1984,8 +2007,8 @@
         <div class="work-kpi-col">
           <div class="work-kpi">
             <div class="kpi-label">Key Outcome</div>
-            <div class="kpi-value">DoD</div>
-            <div class="kpi-note">Mission-critical software used by Space Force operators. Designed to the same standard as the mission itself.</div>
+            <div class="kpi-value">In Use</div>
+            <div class="kpi-note">Shipped 2022, still running across the CFSCC mission set. Built from 42+ operator co-design sessions and 88 usability tests.</div>
           </div>
           <div class="work-tools-lbl">Tools Used</div>
           <div class="work-tools-val">Figma · Sketch · User Research</div>
@@ -2002,13 +2025,17 @@
           </div>
           <h3 class="work-title">Halo UI<br>for Bungie.</h3>
           <p class="work-desc">
-            Designed the menu systems and game UI for Bungie's Halo franchise.
-            The interface millions of players touched every time they booted up
-            the game. Tight constraints, high stakes, zero room for confusion.
-            Turned out pretty good.
+            I designed menu systems and game UI for Bungie's Halo franchise, the
+            interface millions of players touched every time they booted up.
+            Console-first and controller-driven, where a clumsy menu isn't a
+            papercut, it's the first thing a player feels. The patterns I built
+            became the template the rest of the franchise reused. Tight constraints,
+            high stakes, zero room for confusion. Turned out pretty good.
           </p>
           <div class="work-ctas">
-            <a class="work-cta" href="case-halo-assets/halo_casestudy.mp4" data-video="case-halo-assets/halo_casestudy.mp4">
+            <a class="work-cta" href="case-halo-assets/halo_casestudy.mp4" data-video="case-halo-assets/halo_casestudy.mp4"
+               data-video-title="Halo UI for Bungie"
+               data-video-caption="Menu systems and game UI, console-first and controller-driven. The patterns I built became the template reused across the rest of the franchise.">
               Case Study <span class="arr">&rarr;</span>
             </a>
           </div>
@@ -2016,8 +2043,8 @@
         <div class="work-kpi-col">
           <div class="work-kpi">
             <div class="kpi-label">Key Outcome</div>
-            <div class="kpi-value">Millions</div>
-            <div class="kpi-note">Players worldwide navigating UI I designed. One of the best-selling game franchises ever made.</div>
+            <div class="kpi-value">Franchise</div>
+            <div class="kpi-note">The menu patterns I designed became the template reused across the rest of the Halo franchise. Seen by millions of players.</div>
           </div>
           <div class="work-tools-lbl">Tools Used</div>
           <div class="work-tools-val">Photoshop · Illustrator · After Effects</div>
@@ -2054,7 +2081,7 @@
 <!-- ══════════════════ PORTFOLIO ══════════════════ -->
 <div class="portfolio-wrap" id="portfolio">
   <div class="section-inner">
-    <div class="eyebrow reveal">04 — Gallery</div>
+    <div class="eyebrow reveal">04 / Gallery</div>
     <h2 class="section-heading reveal d1">Selects.</h2>
 
     <div class="portfolio-grid">
@@ -2258,7 +2285,7 @@
     <div class="lb-hit-arrow">→</div>
   </div>
 </div>
-<!-- Fixed close button — always visible while lightbox is open -->
+<!-- Fixed close button - always visible while lightbox is open -->
 <button class="lb-close-fixed" id="lb-close-fixed" aria-label="Close">✕</button>
 
 <!-- ══════════════════ CASE STUDY OVERLAY ══════════════════ -->
@@ -2266,6 +2293,10 @@
   <div class="cs-inner">
     <iframe class="cs-frame" id="cs-frame" src="about:blank" title="Case study" loading="lazy"></iframe>
     <video class="cs-video" id="cs-video" controls playsinline preload="metadata"></video>
+    <div class="cs-caption" id="cs-caption">
+      <div class="cs-cap-title" id="cs-cap-title"></div>
+      <div class="cs-cap-sub" id="cs-cap-sub"></div>
+    </div>
   </div>
 </div>
 <button class="cs-close" id="cs-close" aria-label="Close case study">✕</button>
@@ -2307,7 +2338,7 @@
 
     <!-- NEAR: step nodes + drop lines + inner dots -->
     <g id="processNear">
-      <!-- Outer ring nodes — staggered pulse sequence -->
+      <!-- Outer ring nodes - staggered pulse sequence -->
       <circle class="pNode"     cx="196"  cy="490" r="5" fill="none" stroke="rgba(232,49,42,.35)" stroke-width="1.2"/>
       <circle class="pNode pn2" cx="484"  cy="490" r="5" fill="none" stroke="rgba(0,0,0,.2)"      stroke-width="1.2"/>
       <circle class="pNode pn3" cx="772"  cy="490" r="5" fill="none" stroke="rgba(232,49,42,.35)" stroke-width="1.2"/>
@@ -2327,7 +2358,7 @@
   </svg>
 
   <div class="process-inner" id="processInner">
-    <div class="eyebrow reveal">05 — Process</div>
+    <div class="eyebrow reveal">05 / Process</div>
     <h2 class="section-heading reveal d1">From Brief<br>to Ship.</h2>
 
     <div class="process-steps">
@@ -2383,11 +2414,11 @@
       <circle cx="720" cy="300" r="80"  fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
       <circle cx="720" cy="300" r="160" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
       <circle cx="720" cy="300" r="240" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
-      <!-- Outward ripple rings — 3 staggered -->
+      <!-- Outward ripple rings - 3 staggered -->
       <circle class="contactRippleRing"      cx="720" cy="300" r="80" fill="none" stroke="rgba(255,255,255,.12)" stroke-width=".8"/>
       <circle class="contactRippleRing crr2" cx="720" cy="300" r="80" fill="none" stroke="rgba(255,255,255,.12)" stroke-width=".8"/>
       <circle class="contactRippleRing crr3" cx="720" cy="300" r="80" fill="none" stroke="rgba(255,255,255,.12)" stroke-width=".8"/>
-      <!-- Centre dot — pulsing -->
+      <!-- Centre dot - pulsing -->
       <circle cx="720" cy="300" r="4"   fill="rgba(255,255,255,.25)"/>
       <circle id="contactCenterDot" cx="720" cy="300" r="1.5" fill="rgba(255,255,255,.7)"/>
     </g>
@@ -2402,7 +2433,7 @@
       <line x1="20"   y1="574" x2="52"   y2="574" stroke="rgba(255,255,255,.3)" stroke-width=".8"/>
       <line x1="1408" y1="568" x2="1408" y2="580" stroke="rgba(255,255,255,.3)" stroke-width=".8"/>
       <line x1="1388" y1="574" x2="1420" y2="574" stroke="rgba(255,255,255,.3)" stroke-width=".8"/>
-      <!-- Radar sweep — rotates around centre (720,300) -->
+      <!-- Radar sweep - rotates around centre (720,300) -->
       <g id="contactSweepGroup" style="transform-origin:720px 300px">
         <line x1="720" y1="300" x2="880" y2="140" stroke="rgba(255,255,255,.18)" stroke-width=".8"/>
         <!-- Glow trail behind sweep -->
@@ -2485,13 +2516,13 @@
 })();
 
 /* ────────────────────────────────────────────
-   PARALLAX — data-speed handler removed;
+   PARALLAX - data-speed handler removed;
    all parallax is now handled by makeParallax
    below using section-centre-relative offsets.
 ──────────────────────────────────────────── */
 
 /* ────────────────────────────────────────────
-   MULTI-LAYER PARALLAX — ALL SECTIONS
+   MULTI-LAYER PARALLAX - ALL SECTIONS
    Disabled on mobile/touch to prevent scroll
    height issues and improve performance.
 ──────────────────────────────────────────── */
@@ -2697,9 +2728,13 @@ try {
     document.body.style.overflow = 'hidden';
     if (closeBtn) closeBtn.classList.add('cs-visible');
   }
-  function openVideo(url) {
+  function openVideo(url, title, caption) {
     overlay.classList.add('cs-video-mode');
     if (video) { video.src = url; }
+    var capT = document.getElementById('cs-cap-title');
+    var capS = document.getElementById('cs-cap-sub');
+    if (capT) capT.textContent = title || '';
+    if (capS) capS.textContent = caption || '';
     overlay.classList.add('cs-open');
     document.body.style.overflow = 'hidden';
     if (closeBtn) closeBtn.classList.add('cs-visible');
@@ -2721,7 +2756,7 @@ try {
     a.addEventListener('click', e => {
       e.preventDefault();
       const v = a.getAttribute('data-video');
-      if (v) openVideo(v);
+      if (v) openVideo(v, a.getAttribute('data-video-title'), a.getAttribute('data-video-caption'));
       else openCS(a.getAttribute('data-case'));
     });
   });
@@ -2735,7 +2770,7 @@ try {
 })();
 
 /* ──────────────────────────────────────────────
-   NAV COLOUR — swap dark/light based on section bg
+   NAV COLOUR - swap dark/light based on section bg
    Light sections (white/grey): nav--dark (black text)
    Dark sections (black/red):   nav--light (white text)
 ──────────────────────────────────────────────── */
