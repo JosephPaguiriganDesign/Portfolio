@@ -756,6 +756,11 @@
     border: 0; display: block;
     background: #0B2545;
   }
+  /* Video case study */
+  .cs-video { display: none; width: 100%; height: 100%; background: #000; object-fit: contain; }
+  .cs-overlay.cs-video-mode .cs-frame { display: none; }
+  .cs-overlay.cs-video-mode .cs-video { display: block; }
+  .cs-overlay.cs-video-mode .cs-inner { background: #000; }
   .cs-close {
     position: fixed;
     top: 24px; right: 24px;
@@ -1985,6 +1990,11 @@
             the game. Tight constraints, high stakes, zero room for confusion.
             Turned out pretty good.
           </p>
+          <div class="work-ctas">
+            <a class="work-cta" href="case-halo-assets/halo_casestudy.mp4" data-video="case-halo-assets/halo_casestudy.mp4">
+              Case Study <span class="arr">&rarr;</span>
+            </a>
+          </div>
         </div>
         <div class="work-kpi-col">
           <div class="work-kpi">
@@ -2238,6 +2248,7 @@
 <div class="cs-overlay" id="cs-overlay" role="dialog" aria-modal="true" aria-label="Case study">
   <div class="cs-inner">
     <iframe class="cs-frame" id="cs-frame" src="about:blank" title="Case study" loading="lazy"></iframe>
+    <video class="cs-video" id="cs-video" controls playsinline preload="metadata"></video>
   </div>
 </div>
 <button class="cs-close" id="cs-close" aria-label="Close case study">✕</button>
@@ -2653,26 +2664,43 @@ try {
 (function () {
   const overlay  = document.getElementById('cs-overlay');
   const frame    = document.getElementById('cs-frame');
+  const video    = document.getElementById('cs-video');
   const closeBtn = document.getElementById('cs-close');
   if (!overlay || !frame) return;
 
   function openCS(url) {
+    overlay.classList.remove('cs-video-mode');
     frame.src = url;
     overlay.classList.add('cs-open');
     document.body.style.overflow = 'hidden';
     if (closeBtn) closeBtn.classList.add('cs-visible');
   }
+  function openVideo(url) {
+    overlay.classList.add('cs-video-mode');
+    if (video) { video.src = url; }
+    overlay.classList.add('cs-open');
+    document.body.style.overflow = 'hidden';
+    if (closeBtn) closeBtn.classList.add('cs-visible');
+    if (video) { video.play().catch(function(){}); }
+  }
   function closeCS() {
     overlay.classList.remove('cs-open');
     document.body.style.overflow = '';
     if (closeBtn) closeBtn.classList.remove('cs-visible');
-    setTimeout(() => { frame.src = 'about:blank'; }, 400);
+    if (video) { video.pause(); }
+    setTimeout(() => {
+      frame.src = 'about:blank';
+      if (video) { video.removeAttribute('src'); video.load(); }
+      overlay.classList.remove('cs-video-mode');
+    }, 400);
   }
 
-  document.querySelectorAll('.work-cta[data-case]').forEach(a => {
+  document.querySelectorAll('.work-cta[data-case], .work-cta[data-video]').forEach(a => {
     a.addEventListener('click', e => {
       e.preventDefault();
-      openCS(a.getAttribute('data-case'));
+      const v = a.getAttribute('data-video');
+      if (v) openVideo(v);
+      else openCS(a.getAttribute('data-case'));
     });
   });
   if (closeBtn) closeBtn.addEventListener('click', closeCS);
