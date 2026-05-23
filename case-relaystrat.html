@@ -1421,7 +1421,7 @@
     function fit() {
       var w = window.innerWidth;
       if (w < 768) { document.body.style.zoom = ''; return; }
-      document.body.style.zoom = Math.min(1, w / 1920);
+      document.body.style.zoom = Math.min(1.35, w / 1920);
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fit);
     else fit();

@@ -743,7 +743,7 @@
   .cs-inner {
     position: relative;
     width: 100%; height: 100%;
-    max-width: 1920px;
+    max-width: 2592px;
     background: var(--white);
     overflow: hidden;
     transform: scale(.96);
@@ -2767,6 +2767,20 @@ try {
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && overlay.classList.contains('cs-open')) closeCS();
   });
+
+  // Scroll bridge: forward wheel events anywhere over the overlay (including the
+  // dark side margins on wide screens) into the case study iframe. Wheel events
+  // that land directly on the iframe are handled by it natively and never reach
+  // this listener, so there's no double-scroll. Same-origin, so contentWindow is
+  // accessible.
+  overlay.addEventListener('wheel', function (e) {
+    if (overlay.classList.contains('cs-video-mode')) return;
+    if (!overlay.classList.contains('cs-open')) return;
+    try {
+      var win = frame.contentWindow;
+      if (win) { win.scrollBy(0, e.deltaY); e.preventDefault(); }
+    } catch (err) { /* cross-origin or not ready */ }
+  }, { passive: false });
 })();
 
 /* ──────────────────────────────────────────────

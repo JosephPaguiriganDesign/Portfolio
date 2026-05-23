@@ -2067,7 +2067,7 @@
       var w = window.innerWidth;
       var mobile = w < 768;
       if (!mobile) {
-        document.body.style.zoom = Math.min(1, w / 1920);
+        document.body.style.zoom = Math.min(1.35, w / 1920);
         WIDE.forEach(function (sel) {
           document.querySelectorAll(sel + ' .scr').forEach(clearScreen);
         });
