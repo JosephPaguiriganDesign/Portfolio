@@ -410,10 +410,36 @@
   }
   .work-desc {
     font-size: 15px; line-height: 1.75; font-weight: 400;
-    color: rgba(0,0,0,.78); max-width: 540px;
+    color: rgba(0,0,0,.78); max-width: none;
     margin-bottom: 14px;
   }
   .work-desc:last-of-type { margin-bottom: 0; }
+
+  /* Case study preview + copy (flex, no float) */
+  .work-body { display: flex; gap: 32px; align-items: flex-start; }
+  .work-copy { flex: 1 1 auto; min-width: 0; }
+  .work-preview {
+    flex: 0 0 300px; width: 300px; margin: 4px 0 0;
+    aspect-ratio: 16 / 9; overflow: hidden;
+    border: 1px solid rgba(0,0,0,.1);
+    background: var(--grey-light);
+    cursor: pointer; position: relative;
+  }
+  .work-preview img {
+    width: 100%; height: 100%; object-fit: cover; object-position: top center;
+    display: block;
+  }
+  /* Wide single-screen dashboards: show the whole screen, no crop */
+  .work-preview--wide { aspect-ratio: 2608 / 1232; background: #fff; }
+  .work-preview--wide img { object-fit: contain; object-position: center; }
+  .work-preview::after {
+    content: "View Case Study"; position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 16px 18px; font-size: 10px; font-weight: 700;
+    letter-spacing: .2em; text-transform: uppercase; color: #fff;
+    background: linear-gradient(0deg, rgba(0,0,0,.6), transparent);
+    opacity: 0; transition: opacity .3s ease; pointer-events: none;
+  }
+  .work-preview:hover::after { opacity: 1; }
   .work-cta {
     position: relative;
     display: inline-flex; align-items: center; gap: 16px;
@@ -561,7 +587,7 @@
   .portfolio-wrap .eyebrow::after { background: rgba(0,0,0,.15); }
   .portfolio-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 2px;
     margin-top: 80px;
   }
@@ -1315,6 +1341,9 @@
       padding: 40px 0;
     }
     .work-num { display: none; }
+    .work-kpi-col { grid-column: 1; }
+    .work-body { flex-direction: column; gap: 0; }
+    .work-preview { flex: none; width: 100%; margin: 0 0 20px; }
     .work-kpi { padding: 24px; }
     .kpi-value { font-size: 36px; }
     /* CTA - tighten so the no-wrap button sits comfortably on a phone */
@@ -1903,7 +1932,12 @@
             <span class="work-tag">Design System</span>
           </div>
           <h3 class="work-title">SCE.com<br>Rebuilt.</h3>
-          <p class="work-desc">
+          <div class="work-body">
+            <a class="work-preview" data-case="case-sce.html" href="case-sce.html" aria-label="Open SCE.com case study">
+            <img src="case-sce-assets/T01-home-desktop.jpg" alt="SCE.com homepage preview" loading="lazy">
+          </a>
+            <div class="work-copy">
+              <p class="work-desc">
             SCE.com serves 15 million customers, and the site had drifted into
             a patchwork. I led the rebuild from the ground up: a modular template
             system that scales from outage alerts to clean-energy storytelling,
@@ -1922,6 +1956,8 @@
             Brand Copy Playbook baked right in. Anyone can ship on-brand copy
             without waiting on a reviewer. Both tools are live, links below.
           </p>
+            </div>
+          </div>
           <div class="work-ctas">
             <a class="work-cta" href="case-sce.html" data-case="case-sce.html">
               Case Study <span class="arr">&rarr;</span>
@@ -1954,7 +1990,12 @@
             <span class="work-tag">End-to-End Design</span>
           </div>
           <h3 class="work-title">Screening Manager<br>Reimagined.</h3>
-          <p class="work-desc">
+          <div class="work-body">
+            <a class="work-preview work-preview--wide" data-case="case-screening.html" href="case-screening.html" aria-label="Open Screening Manager case study">
+            <img src="case-screening-assets/hireright-preview.jpg" alt="HireRight Screening Manager preview" loading="lazy">
+          </a>
+            <div class="work-copy">
+              <p class="work-desc">
             HireRight runs background checks for 40,000+ organizations, and its
             core screening tool had buckled under its own complexity. I led the
             rebuild end to end as Lead Product Designer, driving a team of three:
@@ -1964,6 +2005,8 @@
             or Düsseldorf, and turned the densest documents in HR into something
             a recruiter can scan in seconds.
           </p>
+            </div>
+          </div>
           <div class="work-ctas">
             <a class="work-cta" href="case-screening.html" data-case="case-screening.html">
               Case Study <span class="arr">&rarr;</span>
@@ -1990,7 +2033,12 @@
             <span class="work-tag">Mission-Critical UX</span>
           </div>
           <h3 class="work-title">Space Force<br>Ops Tools.</h3>
-          <p class="work-desc">
+          <div class="work-body">
+            <a class="work-preview" data-case="case-relaystrat.html" href="case-relaystrat.html" aria-label="Open Space Force Ops Tools case study">
+            <img src="case-relaystrat-preview.jpg" alt="Relay Strat operations platform preview" loading="lazy">
+          </a>
+            <div class="work-copy">
+              <p class="work-desc">
             The US Space Force needed real software for the Space Tasking Cycle,
             not stock-photo UI. I co-designed with 42+ operators and strategists
             and ran 88 usability sessions on the watch floor, not in a lab. The
@@ -1998,6 +2046,8 @@
             reusable, structured components. Shipped in 2022 and still in active
             use across the CFSCC mission set.
           </p>
+            </div>
+          </div>
           <div class="work-ctas">
             <a class="work-cta" href="case-relaystrat.html" data-case="case-relaystrat.html">
               Case Study <span class="arr">&rarr;</span>
@@ -2024,7 +2074,12 @@
             <span class="work-tag">Interaction Design</span>
           </div>
           <h3 class="work-title">Halo UI<br>for Bungie.</h3>
-          <p class="work-desc">
+          <div class="work-body">
+            <a class="work-preview" data-case="case-halo.html" href="case-halo.html" aria-label="Open Halo UI case study">
+            <img src="portfolio-halo-reach.jpg" alt="Halo: Reach game UI preview" loading="lazy">
+          </a>
+            <div class="work-copy">
+              <p class="work-desc">
             I designed menu systems and game UI for Bungie's Halo franchise, the
             interface millions of players touched every time they booted up.
             Console-first and controller-driven, where a clumsy menu isn't a
@@ -2032,10 +2087,10 @@
             became the template the rest of the franchise reused. Tight constraints,
             high stakes, zero room for confusion. Turned out pretty good.
           </p>
+            </div>
+          </div>
           <div class="work-ctas">
-            <a class="work-cta" href="case-halo-assets/halo_casestudy.mp4" data-video="case-halo-assets/halo_casestudy.mp4"
-               data-video-title="Halo UI for Bungie"
-               data-video-caption="Menu systems and game UI, console-first and controller-driven. The patterns I built became the template reused across the rest of the franchise.">
+            <a class="work-cta" href="case-halo.html" data-case="case-halo.html">
               Case Study <span class="arr">&rarr;</span>
             </a>
           </div>
@@ -2086,68 +2141,8 @@
 
     <div class="portfolio-grid">
 
-      <!-- 01 Halo: Reach -->
-      <div class="portfolio-card reveal" data-img="portfolio-halo-reach.jpg" data-title="Halo: Reach: Game UI">
-        <div class="portfolio-thumb">
-          <img src="portfolio-halo-reach.jpg" alt="Halo: Reach UI design" loading="lazy">
-          <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
-        </div>
-        <div class="portfolio-info">
-          <div class="portfolio-tags">
-            <span class="portfolio-tag-item">Game UI</span>
-            <span class="portfolio-tag-item">Xbox 360</span>
-          </div>
-          <div class="portfolio-title">Halo: Reach</div>
-        </div>
-      </div>
-
-      <!-- 02 Norton Security -->
-      <div class="portfolio-card reveal d1" data-img="portfolio-norton.jpg" data-title="Norton Security: Mobile App">
-        <div class="portfolio-thumb">
-          <img src="portfolio-norton.jpg" alt="Norton Security mobile app" loading="lazy">
-          <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
-        </div>
-        <div class="portfolio-info">
-          <div class="portfolio-tags">
-            <span class="portfolio-tag-item">Mobile</span>
-            <span class="portfolio-tag-item">iOS</span>
-          </div>
-          <div class="portfolio-title">Norton Security</div>
-        </div>
-      </div>
-
-      <!-- 03 Cannes Lions -->
-      <div class="portfolio-card reveal d2" data-img="portfolio-cannes-lions.jpg" data-title="Cannes Lions: Interactive Installation">
-        <div class="portfolio-thumb">
-          <img src="portfolio-cannes-lions.jpg" alt="Cannes Lions interactive installation" loading="lazy">
-          <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
-        </div>
-        <div class="portfolio-info">
-          <div class="portfolio-tags">
-            <span class="portfolio-tag-item">Installation</span>
-            <span class="portfolio-tag-item">Touch UI</span>
-          </div>
-          <div class="portfolio-title">Cannes Lions</div>
-        </div>
-      </div>
-
-      <!-- 04 Relay Strat -->
-      <div class="portfolio-card reveal d1" data-img="portfolio-relay-strat.jpg" data-title="Relay Strat: Military Operations Platform">
-        <div class="portfolio-thumb">
-          <img src="portfolio-relay-strat.jpg" alt="Relay Strat operations platform" loading="lazy">
-          <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
-        </div>
-        <div class="portfolio-info">
-          <div class="portfolio-tags">
-            <span class="portfolio-tag-item">SaaS</span>
-            <span class="portfolio-tag-item">Gov · Defense</span>
-          </div>
-          <div class="portfolio-title">Relay Strat</div>
-        </div>
-      </div>
-
-      <!-- 05 Insights -->
-      <div class="portfolio-card reveal d2" data-img="portfolio-insights.jpg" data-title="Insights: HR Analytics Dashboard">
+      <!-- Insights -->
+      <div class="portfolio-card reveal" data-img="portfolio-insights.jpg" data-title="Insights: HR Analytics Dashboard">
         <div class="portfolio-thumb">
           <img src="portfolio-insights.jpg" alt="Insights HR analytics dashboard" loading="lazy">
           <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
@@ -2161,49 +2156,22 @@
         </div>
       </div>
 
-      <!-- 06 Section 31 -->
-      <div class="portfolio-card reveal d3" data-img="portfolio-section31.jpg" data-title="Section 31: Brand & Product Design">
+      <!-- Cannes Lions -->
+      <div class="portfolio-card reveal d1" data-img="portfolio-cannes-lions.jpg" data-title="Cannes Lions: Interactive Installation">
         <div class="portfolio-thumb">
-          <img src="portfolio-section31.jpg" alt="Section 31 brand and product design" loading="lazy">
+          <img src="portfolio-cannes-lions.jpg" alt="Cannes Lions interactive installation" loading="lazy">
           <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
         </div>
         <div class="portfolio-info">
           <div class="portfolio-tags">
-            <span class="portfolio-tag-item">Brand</span>
-            <span class="portfolio-tag-item">Product</span>
+            <span class="portfolio-tag-item">Installation</span>
+            <span class="portfolio-tag-item">Touch UI</span>
           </div>
-          <div class="portfolio-title">Section 31</div>
+          <div class="portfolio-title">Cannes Lions</div>
         </div>
       </div>
 
-      <div class="portfolio-card reveal" data-img="portfolio-norton360.jpg" data-title="Norton 360 for Gamers: Mobile App">
-        <div class="portfolio-thumb">
-          <img src="portfolio-norton360.jpg" alt="Norton 360 for Gamers mobile app" loading="lazy">
-          <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
-        </div>
-        <div class="portfolio-info">
-          <div class="portfolio-tags">
-            <span class="portfolio-tag-item">Mobile</span>
-            <span class="portfolio-tag-item">Product</span>
-          </div>
-          <div class="portfolio-title">Norton 360 for Gamers</div>
-        </div>
-      </div>
-
-      <div class="portfolio-card reveal d1" data-img="portfolio-affirm-mobile.jpg" data-title="Affirm: Mobile App">
-        <div class="portfolio-thumb">
-          <img src="portfolio-affirm-mobile.jpg" alt="Affirm mobile app" loading="lazy">
-          <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
-        </div>
-        <div class="portfolio-info">
-          <div class="portfolio-tags">
-            <span class="portfolio-tag-item">Mobile</span>
-            <span class="portfolio-tag-item">Fintech</span>
-          </div>
-          <div class="portfolio-title">Affirm</div>
-        </div>
-      </div>
-
+      <!-- Target Ticket -->
       <div class="portfolio-card reveal d2" data-img="portfolio-target-ticket.jpg" data-title="Target Ticket: Entertainment Platform">
         <div class="portfolio-thumb">
           <img src="portfolio-target-ticket.jpg" alt="Target Ticket entertainment platform" loading="lazy">
@@ -2218,7 +2186,8 @@
         </div>
       </div>
 
-      <div class="portfolio-card reveal d1" data-img="portfolio-kobayashi-maru.jpg" data-title="Kobayashi Maru: Defense Tech Brand">
+      <!-- Kobayashi Maru -->
+      <div class="portfolio-card reveal d3" data-img="portfolio-kobayashi-maru.jpg" data-title="Kobayashi Maru: Defense Tech Brand">
         <div class="portfolio-thumb">
           <img src="portfolio-kobayashi-maru.jpg" alt="Kobayashi Maru defense tech brand" loading="lazy">
           <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
@@ -2232,6 +2201,37 @@
         </div>
       </div>
 
+      <!-- Section 31 -->
+      <div class="portfolio-card reveal" data-img="portfolio-section31.jpg" data-title="Section 31: Brand & Product Design">
+        <div class="portfolio-thumb">
+          <img src="portfolio-section31.jpg" alt="Section 31 brand and product design" loading="lazy">
+          <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-tags">
+            <span class="portfolio-tag-item">Brand</span>
+            <span class="portfolio-tag-item">Product</span>
+          </div>
+          <div class="portfolio-title">Section 31</div>
+        </div>
+      </div>
+
+      <!-- Norton -->
+      <div class="portfolio-card reveal d1" data-img="portfolio-norton-combined.jpg" data-title="Norton: Security &amp; 360 for Gamers">
+        <div class="portfolio-thumb">
+          <img src="portfolio-norton-combined.jpg" alt="Norton Security and Norton 360 for Gamers mobile apps" loading="lazy">
+          <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-tags">
+            <span class="portfolio-tag-item">Mobile</span>
+            <span class="portfolio-tag-item">iOS</span>
+          </div>
+          <div class="portfolio-title">Norton</div>
+        </div>
+      </div>
+
+      <!-- Time Warner Cable -->
       <div class="portfolio-card reveal d2" data-img="portfolio-twc.jpg" data-title="Time Warner Cable: On Demand UI">
         <div class="portfolio-thumb">
           <img src="portfolio-twc.jpg" alt="Time Warner Cable On Demand UI" loading="lazy">
@@ -2246,13 +2246,15 @@
         </div>
       </div>
 
-      <div class="portfolio-card reveal d3" data-img="portfolio-affirm-web.jpg" data-title="Affirm: Website & Landing Pages">
+      <!-- Affirm -->
+      <div class="portfolio-card reveal d3" data-img="portfolio-affirm-combined.jpg" data-title="Affirm: Mobile App &amp; Website">
         <div class="portfolio-thumb">
-          <img src="portfolio-affirm-web.jpg" alt="Affirm website and landing pages" loading="lazy">
+          <img src="portfolio-affirm-combined.jpg" alt="Affirm mobile app and website" loading="lazy">
           <div class="portfolio-overlay"><span class="portfolio-view">View Project</span></div>
         </div>
         <div class="portfolio-info">
           <div class="portfolio-tags">
+            <span class="portfolio-tag-item">Mobile</span>
             <span class="portfolio-tag-item">Web</span>
             <span class="portfolio-tag-item">Fintech</span>
           </div>
@@ -2752,7 +2754,7 @@ try {
     }, 400);
   }
 
-  document.querySelectorAll('.work-cta[data-case], .work-cta[data-video]').forEach(a => {
+  document.querySelectorAll('.work-cta[data-case], .work-cta[data-video], .work-preview[data-case], .work-preview[data-video]').forEach(a => {
     a.addEventListener('click', e => {
       e.preventDefault();
       const v = a.getAttribute('data-video');

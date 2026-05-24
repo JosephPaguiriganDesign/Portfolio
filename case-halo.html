@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Halo UI for Bungie, Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080B14; --bg2:#0E1628; --ink:#E8ECF5; --mute:#8A93A6;
+    --accent:#3FD2FF; --accent2:#76E0A8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1100px;margin:0 auto;padding:140px 40px 140px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);margin-bottom:24px;font-weight:600}
+  h1{font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(48px,8vw,104px);line-height:0.95;letter-spacing:-0.04em;color:#fff;margin-bottom:32px}
+  h1 em{font-style:normal;color:var(--accent)}
+  .sub{font-size:clamp(18px,2.4vw,26px);line-height:1.45;color:var(--mute);max-width:760px;margin-bottom:40px;font-weight:400}
+  .tags{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:72px}
+  .tags span{padding:10px 20px;border:1px solid rgba(255,255,255,0.18);border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#fff}
+  .bar{height:6px;width:100%;background:linear-gradient(90deg,var(--accent) 0 40%,var(--accent2) 40% 70%,rgba(255,255,255,0.08) 70%);margin-bottom:72px}
+  .label{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.3em;text-transform:uppercase;color:var(--mute);margin:0 0 22px;font-weight:600}
+  video{display:block;width:100%;max-width:880px;margin:0 auto;height:auto;border:1px solid rgba(255,255,255,0.1);border-radius:6px;background:#000}
+  .shot{display:block;width:100%;height:auto;border:1px solid rgba(255,255,255,0.1);border-radius:6px}
+  .block{margin-top:96px}
+  .block h2{font-family:'Inter',sans-serif;font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:-0.025em;color:#fff;margin-bottom:16px;line-height:1.1}
+  .block p{font-size:clamp(15px,2vw,19px);line-height:1.55;color:var(--mute);max-width:720px;margin-bottom:36px}
+  .foot{border-top:1px solid rgba(255,255,255,0.1);margin-top:120px;padding-top:32px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+  .foot .n{font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:#fff}
+  .foot .m{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.2em;text-transform:uppercase;color:var(--mute)}
+  @media (max-width:680px){ .wrap{padding:90px 20px 90px} .block{margin-top:64px} }
+
+  .jp-back-nav{position:fixed;top:24px;left:24px;z-index:99999;display:inline-flex;align-items:center;gap:10px;padding:12px 20px;background:rgba(14,22,40,0.92);color:#fff;font-family:'Inter',system-ui,sans-serif;font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;border-radius:999px;backdrop-filter:blur(8px);border:1px solid rgba(63,210,255,0.35);box-shadow:0 8px 24px rgba(0,0,0,0.35);transition:background .2s ease, transform .2s ease}
+  .jp-back-nav:hover{background:var(--accent);color:#06121a;transform:translateX(-2px)}
+  .jp-back-nav .arr{display:inline-block;transition:transform .2s ease}
+  .jp-back-nav:hover .arr{transform:translateX(-3px)}
+  @media (max-width:680px){ .jp-back-nav{top:16px;left:16px;font-size:11px;padding:10px 16px} }
+</style>
+</head>
+<body>
+<a class="jp-back-nav" href="index.html#work"><span class="arr">&larr;</span> Back to Portfolio</a>
+<script>
+  if (window.self !== window.top) { var n = document.querySelector('.jp-back-nav'); if (n) n.style.display = 'none'; }
+</script>
+
+<div class="wrap">
+  <div class="eyebrow">Case Study / 04</div>
+  <h1>Halo UI<br>for <em>Bungie.</em></h1>
+  <p class="sub">Menu systems and game UI for one of the best-selling franchises ever made. Console-first, controller-driven, and seen by millions of players every time they booted up.</p>
+  <div class="tags"><span>Game UI</span><span>Interaction Design</span><span>Console</span><span>Bungie</span></div>
+  <div class="bar"></div>
+
+  <div class="label">Walkthrough</div>
+  <video id="haloVid" controls playsinline autoplay preload="auto">
+    <source src="case-halo-assets/halo_casestudy.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <script>
+    (function () {
+      var v = document.getElementById('haloVid');
+      if (!v) return;
+      // Try to play with sound (allowed because the user clicked to open this page).
+      v.muted = false; v.volume = 1;
+      var p = v.play();
+      if (p && p.catch) {
+        p.catch(function () {
+          // Browser blocked sound-on autoplay: start muted instead so it still plays.
+          v.muted = true;
+          v.play().catch(function () {});
+        });
+      }
+    })();
+  </script>
+
+  <div class="block">
+    <div class="label">The Shipped Interface</div>
+    <h2>The screens millions of players touched.</h2>
+    <p>The menus and in-game UI players navigated every session. Tight constraints, high stakes, zero room for confusion. The patterns I built became the template the rest of the Halo franchise reused.</p>
+    <img class="shot" src="portfolio-halo-reach.jpg" alt="Halo: Reach game UI">
+  </div>
+
+  <div class="foot">
+    <div class="n">Halo &nbsp;·&nbsp; Bungie</div>
+    <div class="m">Game UI · Interaction Design</div>
+  </div>
+</div>
+</body>
+</html>
