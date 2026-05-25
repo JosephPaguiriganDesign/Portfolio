@@ -672,7 +672,7 @@
     position: fixed; inset: 0;
     background: rgba(0,0,0,.92);
     z-index: 2000;
-    display: flex; align-items: flex-start; justify-content: center;
+    display: block;
     padding: 40px 20px;
     overflow-y: auto;
     opacity: 0; pointer-events: none;
@@ -682,7 +682,7 @@
   .lb-overlay.lb-open { opacity: 1; pointer-events: all; }
   .lb-inner {
     position: relative;
-    max-width: 900px; width: 100%;
+    max-width: 900px; width: 100%; margin: 0 auto;
   }
   .lb-img {
     width: 100%; display: block;
