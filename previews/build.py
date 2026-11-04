@@ -71,8 +71,8 @@ CASES = [
     ("case-halo.html", "Halo: Reach (2010) Menu UI (Schematic, for Bungie)."),
 ]
 
-DS = "https://josephpaguirigandesign.github.io/SEC-DesignSystem"
-VOICE = "https://josephpaguirigandesign.github.io/SEC-BrandVoiceTool/"
+DS = "https://josephpaguirigandesign.github.io/SCE-DesignSystem/"
+VOICE = "https://josephpaguirigandesign.github.io/SCE-BrandVoiceTool/"
 
 PROJECTS = [
     {
